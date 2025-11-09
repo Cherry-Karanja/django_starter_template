@@ -42,15 +42,25 @@ class SessionActivityMiddleware:
             # Get current session record
             session = UserSession.objects.get(
                 session_key=request.session.session_key,
-                is_active=True
+                revoked_at__isnull=True
             )
             
-            # Check if session has expired
-            if session.is_expired:
-                session.revoke(reason='expired')
-                # Don't flush the session immediately - let it expire naturally
-                # The session will be invalid on the next request anyway
-                # request.session.flush()
+            # Check if not expired
+            if session.is_expired():
+                # Session is expired, don't process
+                return
+            
+            # Update expires_at to always be 1 hour from now (SESSION_COOKIE_AGE)
+            from django.contrib.sessions.models import Session
+            try:
+                Session.objects.get(session_key=request.session.session_key)
+                # Django session exists, update expires_at
+                session.expires_at = timezone.now() + timedelta(seconds=3600)
+                session.save()
+            except Session.DoesNotExist:
+                # Django session doesn't exist, mark UserSession as expired
+                UserSession.objects.filter(id=session.id).update(is_active=False)
+                return
                 
             # Populate device_info if not set
             if not session.device_info:
@@ -81,21 +91,34 @@ class SessionActivityMiddleware:
                     # Check if there's an existing inactive session with this session_key
                     existing_session = UserSession.objects.filter(
                         session_key=request.session.session_key,
-                        is_active=False
+                        revoked_at__isnull=False
                     ).first()
                     
                     if existing_session:
-                        # Reactivate the existing session
-                        existing_session.is_active = True
-                        existing_session.expires_at = timezone.now() + timedelta(days=7)
-                        existing_session.save(update_fields=['is_active', 'expires_at'])
+                        # Reactivate if Django session exists
+                        from django.contrib.sessions.models import Session
+                        try:
+                            Session.objects.get(session_key=request.session.session_key)
+                            # Django session exists, reactivate UserSession
+                            existing_session.expires_at = timezone.now() + timedelta(seconds=3600)
+                            existing_session.revoked_at = None  # Clear revocation if reactivating
+                            existing_session.save()
+                        except Session.DoesNotExist:
+                            # Django session doesn't exist, don't reactivate UserSession
+                            pass
                     else:
-                        # Create new session record if authenticated user
-                        UserSession.create_session(
-                            user=request.user,
-                            request=request,
-                            created_via='middleware_recovery'
-                        )
+                        # Create new session record if authenticated user and Django session exists
+                        from django.contrib.sessions.models import Session
+                        try:
+                            django_session = Session.objects.get(session_key=request.session.session_key)
+                            UserSession.create_session(
+                                user=request.user,
+                                request=request,
+                                created_via='middleware_recovery'
+                            )
+                        except Session.DoesNotExist:
+                            # Django session doesn't exist, don't create UserSession
+                            pass
                 except Exception as e:
                     # Log the error but don't fail the request
                     import logging
@@ -201,8 +224,19 @@ class LoginSecurityMiddleware:
         user_agent = request.META.get('HTTP_USER_AGENT', '')
         email = self._extract_email_from_request(request)
         
-        # Determine if login was successful
-        success = request.user.is_authenticated and response.status_code in [200, 201]
+        # Determine if login was successful based on path and response
+        is_admin_login = '/admin/login' in request.path
+        is_api_login = '/auth/login' in request.path
+        
+        if is_admin_login:
+            # Django admin login: success is authenticated user + redirect (302)
+            success = request.user.is_authenticated and response.status_code == 302
+        elif is_api_login:
+            # API login: success is authenticated user + 200/201
+            success = request.user.is_authenticated and response.status_code in [200, 201]
+        else:
+            # Fallback: authenticated user + success status
+            success = request.user.is_authenticated and response.status_code in [200, 201, 302]
         
         try:
             # Find user if successful
@@ -250,13 +284,16 @@ class LoginSecurityMiddleware:
             ip_address = get_client_ip(request)
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             
+            # Set expires_at to 1 hour from now
+            session_expires_at = timezone.now() + timedelta(seconds=3600)
+            
             session, created = UserSession.objects.get_or_create(
                 session_key=session_key,
                 defaults={
                     'user': request.user,
                     'ip_address': ip_address,
                     'user_agent': user_agent,
-                    'expires_at': timezone.now() + timedelta(days=7)  # 7 days
+                    'expires_at': session_expires_at
                 }
             )
             
@@ -265,7 +302,7 @@ class LoginSecurityMiddleware:
                 session.user = request.user
                 session.ip_address = ip_address
                 session.user_agent = user_agent
-                session.expires_at = timezone.now() + timedelta(days=7)
+                session.expires_at = session_expires_at
                 session.is_active = True
                 session.save()
             

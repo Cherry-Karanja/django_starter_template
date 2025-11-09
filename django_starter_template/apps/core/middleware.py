@@ -105,3 +105,26 @@ class ErrorHandlingMiddleware(MiddlewareMixin):
             }, status=500)
 
         return None
+
+
+class CurrentUserMiddleware(MiddlewareMixin):
+    """
+    Middleware to set the current user in thread local storage
+    for audit field tracking
+    """
+
+    def process_request(self, request):
+        # Import here to avoid circular imports
+        from .signals import set_current_user
+
+        # Set the current user in thread local storage
+        if hasattr(request, 'user') and request.user.is_authenticated:
+            set_current_user(request.user)
+        else:
+            set_current_user(None)
+
+    def process_response(self, request, response):
+        # Clean up after the request
+        from .signals import set_current_user
+        set_current_user(None)
+        return response

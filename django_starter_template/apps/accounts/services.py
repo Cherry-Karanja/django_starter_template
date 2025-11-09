@@ -210,7 +210,7 @@ class AuthenticationService:
         return user.is_account_locked()
 
     @staticmethod
-    def create_user_session(user, session_key, ip_address, user_agent):
+    def create_user_session(user, session_key, ip_address, user_agent, expires_at=None):
         """Create user session record"""
         try:
             # Expire old sessions if too many active
@@ -228,12 +228,15 @@ class AuthenticationService:
                 sessions_to_expire.update(is_active=False)
 
             # Create new session
+            if expires_at is None:
+                expires_at = timezone.now() + timedelta(days=7)  # 7 days fallback
+            
             session = UserSession.objects.create(
                 user=user,
                 session_key=session_key,
                 ip_address=ip_address,
                 user_agent=user_agent,
-                expires_at=timezone.now() + timedelta(days=7)  # 7 days
+                expires_at=expires_at
             )
 
             return session

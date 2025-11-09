@@ -16,7 +16,7 @@ class UserAdmin(BaseUserAdmin):
     """Custom admin interface for the User model"""
 
     # Fields to display in the user list
-    list_display = ('email', 'full_name', 'role_badge', 'status_badges', 'security_status', 'login_info', 'created_at')
+    list_display = ('email', 'full_name', 'role_badge', 'status_badges', 'security_status', 'login_info', 'created_at_display')
     list_filter = ('role', 'is_approved', 'is_verified', 'is_active', 'is_staff', 'is_superuser',
                    'account_locked_until', 'must_change_password', 'created_at', 'last_login')
     search_fields = ('email', 'first_name', 'last_name', 'employee_id')
@@ -141,6 +141,19 @@ class UserAdmin(BaseUserAdmin):
         return obj.email
     full_name.short_description = 'Name'
 
+    def created_at_display(self, obj):
+        """Display created timestamp in configured timezone"""
+        if obj.date_joined:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.date_joined.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    created_at_display.short_description = 'Created'
+    created_at_display.admin_order_field = 'date_joined'
+
     # Bulk Actions
     def approve_users(self, request, queryset):
         """Bulk approve selected users"""
@@ -186,7 +199,7 @@ class UserAdmin(BaseUserAdmin):
 class UserRoleAdmin(admin.ModelAdmin):
     """Admin interface for UserRole model"""
 
-    list_display = ('name', 'description', 'user_count', 'status_badge', 'permission_count', 'created_at')
+    list_display = ('name', 'description', 'user_count', 'status_badge', 'permission_count', 'created_at_display')
     list_filter = ('is_active', 'created_at', 'permissions')
     search_fields = ('name', 'description')
     filter_horizontal = ('permissions',)
@@ -227,6 +240,19 @@ class UserRoleAdmin(admin.ModelAdmin):
         return count
     permission_count.short_description = 'Permissions'
 
+    def created_at_display(self, obj):
+        """Display created timestamp in configured timezone"""
+        if obj.created_at:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.created_at.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    created_at_display.short_description = 'Created'
+    created_at_display.admin_order_field = 'created_at'
+
     def activate_roles(self, request, queryset):
         """Bulk activate selected roles"""
         updated = queryset.update(is_active=True)
@@ -244,7 +270,7 @@ class UserRoleAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     """Admin interface for UserProfile model"""
 
-    list_display = ('user_link', 'bio_preview', 'last_activity', 'created_at')
+    list_display = ('user_link', 'bio_preview', 'last_activity', 'created_at_display')
     list_filter = ('preferred_language', 'interface_theme', 'allow_notifications', 'created_at')
     search_fields = ('user__email', 'user__first_name', 'user__last_name', 'bio')
     ordering = ('-created_at',)
@@ -280,7 +306,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     bio_preview.short_description = 'Bio'
 
     def last_activity(self, obj):
-        """Display last activity based on user login"""
+        """Display last activity from user"""
         if obj.user.last_login:
             days_since = (timezone.now() - obj.user.last_login).days
             if days_since == 0:
@@ -294,12 +320,25 @@ class UserProfileAdmin(admin.ModelAdmin):
         return format_html('<span style="color: #6c757d;">Never</span>')
     last_activity.short_description = 'Last Activity'
 
+    def created_at_display(self, obj):
+        """Display created timestamp in configured timezone"""
+        if obj.created_at:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.created_at.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    created_at_display.short_description = 'Created'
+    created_at_display.admin_order_field = 'created_at'
+
 
 @admin.register(LoginAttempt)
 class LoginAttemptAdmin(admin.ModelAdmin):
     """Admin interface for tracking login attempts"""
 
-    list_display = ('email', 'user_link', 'ip_address', 'success_badge', 'device_info', 'failure_reason_display', 'created_at')
+    list_display = ('email', 'user_link', 'ip_address', 'success_badge', 'device_info', 'failure_reason_display', 'created_at_display')
     list_filter = ('success', 'device_type', 'created_at', 'failure_reason', 'device_os', 'browser')
     search_fields = ('email', 'ip_address', 'user__email', 'user_agent')
     readonly_fields = ('user', 'email', 'ip_address', 'success', 'user_agent', 'failure_reason', 'location_info',
@@ -369,21 +408,34 @@ class LoginAttemptAdmin(admin.ModelAdmin):
         return obj.device_type or '-'
     device_info.short_description = 'Device'
 
+    def created_at_display(self, obj):
+        """Display created timestamp in configured timezone"""
+        if obj.created_at:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.created_at.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    created_at_display.short_description = 'Created'
+    created_at_display.admin_order_field = 'created_at'
+
 
 @admin.register(UserSession)
 class UserSessionAdmin(admin.ModelAdmin):
     """Admin interface for user session tracking"""
 
-    list_display = ('user_link', 'status_badge', 'device_info', 'last_activity', 'expires_at')
-    list_filter = ('is_active', 'device_type', 'created_at')
+    list_display = ('id', 'user_link', 'status_badge', 'device_info', 'last_activity_display', 'expires_at_display')
+    list_filter = ('revoked_at', 'device_type', 'created_at')
     search_fields = ('user__email', 'ip_address', 'session_key', 'device_type')
-    readonly_fields = ('user', 'session_key', 'ip_address', 'user_agent', 'is_active', 'device_type',
+    readonly_fields = ('user', 'session_key', 'ip_address', 'user_agent', 'revoked_at', 'device_type',
                       'device_os', 'browser', 'location_info', 'last_activity', 'expires_at', 'created_at', 'updated_at')
     ordering = ('-last_activity',)
     actions = ['revoke_sessions']
 
     fieldsets = (
-        (None, {'fields': ('user', 'session_key', 'is_active')}),
+        (None, {'fields': ( 'user', 'session_key', 'revoked_at')}),
         (_('Session Info'), {
             'fields': ('last_activity', 'expires_at'),
         }),
@@ -399,16 +451,7 @@ class UserSessionAdmin(admin.ModelAdmin):
         }),
     )
 
-    def status_badge(self, obj):
-        """Display active status as a colored badge"""
-        if obj.is_active:
-            if obj.is_expired:
-                return format_html('<span style="background-color: #ffc107; color: black; padding: 3px 7px; border-radius: 3px;">Expired</span>')
-            else:
-                return format_html('<span style="background-color: #28a745; color: white; padding: 3px 7px; border-radius: 3px;">Active</span>')
-        else:
-            return format_html('<span style="background-color: #dc3545; color: white; padding: 3px 7px; border-radius: 3px;">Revoked</span>')
-    status_badge.short_description = 'Status'
+
 
     def user_link(self, obj):
         """Link to the user in admin"""
@@ -423,10 +466,47 @@ class UserSessionAdmin(admin.ModelAdmin):
         return obj.device_type or '-'
     device_info.short_description = 'Device'
 
+    def last_activity_display(self, obj):
+        """Display last activity timestamp in configured timezone"""
+        if obj.last_activity:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.last_activity.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    last_activity_display.short_description = 'Last Activity'
+    last_activity_display.admin_order_field = 'last_activity'
+
+    def expires_at_display(self, obj):
+        """Display expiration timestamp in configured timezone"""
+        if obj.expires_at:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.expires_at.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    expires_at_display.short_description = 'Expires At'
+    expires_at_display.admin_order_field = 'expires_at'
+
+    def status_badge(self, obj):
+        """Display active status as a colored badge"""
+        if obj.revoked_at:
+            return format_html('<span style="background-color: #dc3545; color: white; padding: 3px 7px; border-radius: 3px;">Revoked</span>')
+        elif obj.is_expired():
+            return format_html('<span style="background-color: #6c757d; color: white; padding: 3px 7px; border-radius: 3px;">Expired</span>')
+        else:
+            return format_html('<span style="background-color: #28a745; color: white; padding: 3px 7px; border-radius: 3px;">Active</span>')
+    status_badge.short_description = 'Status'
+
     def revoke_sessions(self, request, queryset):
         """Admin action to revoke selected sessions"""
+        from django.utils import timezone
         for session in queryset:
-            if session.is_active:
+            if not session.revoked_at:
                 session.revoke(revoked_by=request.user, reason='admin_action')
 
         self.message_user(request, f"{queryset.count()} sessions have been revoked.")
@@ -437,7 +517,7 @@ class UserSessionAdmin(admin.ModelAdmin):
 class UserRoleHistoryAdmin(admin.ModelAdmin):
     """Admin interface for UserRoleHistory model"""
 
-    list_display = ('user_link', 'role_change_display', 'changed_by_link', 'reason_badge', 'created_at')
+    list_display = ('user_link', 'role_change_display', 'changed_by_link', 'reason_badge', 'created_at_display')
     list_filter = ('old_role', 'new_role', 'changed_by', 'created_at')
     search_fields = ('user__email', 'user__first_name', 'user__last_name', 'reason', 'old_role__name', 'new_role__name')
     readonly_fields = ('user', 'old_role', 'new_role', 'changed_by', 'reason', 'created_at')
@@ -535,3 +615,16 @@ class UserRoleHistoryAdmin(admin.ModelAdmin):
             color, obj.reason[:20] + ('...' if len(obj.reason) > 20 else '')
         )
     reason_badge.short_description = 'Reason'
+
+    def created_at_display(self, obj):
+        """Display created timestamp in configured timezone"""
+        if obj.created_at:
+            # Convert to configured timezone
+            from django.conf import settings
+            import pytz
+            tz = pytz.timezone(settings.TIME_ZONE)
+            local_time = obj.created_at.astimezone(tz)
+            return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
+        return '-'
+    created_at_display.short_description = 'Created'
+    created_at_display.admin_order_field = 'created_at'

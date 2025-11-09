@@ -82,6 +82,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'apps.core.middleware.APICSRFMiddleware',  # Custom CSRF middleware for API
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.core.middleware.CurrentUserMiddleware',  # Set current user in thread locals for audit fields
     'apps.accounts.middleware.LoginSecurityMiddleware',  # Login security enforcement
     'apps.accounts.middleware.SessionActivityMiddleware',  # Track session activity
     'apps.security.middleware.RateLimitMiddleware',  # Rate limiting

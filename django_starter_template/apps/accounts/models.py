@@ -11,6 +11,7 @@ from django.conf import settings
 from apps.core.models import TimestampedModel, AuditMixin, SoftDeleteMixin, BaseModel
 from django_otp.plugins.otp_totp.models import TOTPDevice
 import uuid
+import pytz
 
 
 class UserRole(TimestampedModel, AuditMixin, SoftDeleteMixin):
@@ -464,14 +465,11 @@ class UserSession(TimestampedModel, AuditMixin):
         blank=True,
         help_text=_("Parsed device information from user agent")
     )
-    risk_score = models.IntegerField(
-        default=0,
-        help_text=_("Risk score for this session (0-100)")
-    )
 
-    is_active = models.BooleanField(
-        default=True,
-        help_text=_("Whether this session is currently active")
+    revoked_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text=_("When this session was revoked (if applicable)")
     )
 
     expires_at = models.DateTimeField(
@@ -489,7 +487,7 @@ class UserSession(TimestampedModel, AuditMixin):
         indexes = [
             models.Index(fields=['user']),
             models.Index(fields=['session_key']),
-            models.Index(fields=['is_active']),
+            models.Index(fields=['revoked_at']),
             models.Index(fields=['expires_at']),
             models.Index(fields=['last_activity']),
         ]
@@ -498,27 +496,48 @@ class UserSession(TimestampedModel, AuditMixin):
         return f"Session for {self.user.email} from {self.ip_address}"
 
     def is_expired(self):
-        """Check if session has expired"""
-        # Ensure both times are in UTC for comparison
-        now_utc = timezone.now().astimezone(timezone.utc)
-        expires_utc = self.expires_at.astimezone(timezone.utc) if self.expires_at.tzinfo else timezone.utc.localize(self.expires_at)
-        return now_utc > expires_utc
+        """Check if session has expired based on Django session"""
+        from django.contrib.sessions.models import Session
+        try:
+            django_session = Session.objects.get(session_key=self.session_key)
+            # Handle timezone-aware or naive expire_date
+            if timezone.is_naive(django_session.expire_date):
+                expire_date_utc = timezone.make_aware(django_session.expire_date, timezone=pytz.UTC)
+            else:
+                expire_date_utc = django_session.expire_date
+            # Compare with current time in UTC
+            return expire_date_utc <= timezone.now()
+        except Session.DoesNotExist:
+            return True
+
+    @property
+    def is_active(self):
+        """Check if session is active (not expired and not revoked)"""
+        return not (self.revoked_at or self.is_expired())
 
     def update_activity(self):
-        """Update last activity timestamp"""
-        self.last_activity = timezone.now()
-        self.save(update_fields=['last_activity'])
+        """Update last activity timestamp and sync expiration with Django session"""
+        from django.contrib.sessions.models import Session
+        try:
+            django_session = Session.objects.get(session_key=self.session_key)
+            UserSession.objects.filter(id=self.id).update(
+                last_activity=timezone.now(),
+                expires_at=django_session.expire_date
+            )
+        except Session.DoesNotExist:
+            # If Django session doesn't exist, mark as inactive
+            UserSession.objects.filter(id=self.id).update(is_active=False)
 
     def expire(self):
         """Mark session as expired"""
-        self.is_active = False
-        self.save(update_fields=['is_active'])
+        # Since expiration is handled by is_expired(), this method is deprecated
+        # But keep for compatibility
+        pass
 
     def revoke(self, reason=None):
         """Revoke session with optional reason"""
-        self.is_active = False
+        UserSession.objects.filter(id=self.id).update(revoked_at=timezone.now())
         # Could add reason to a field if needed in the future
-        self.save(update_fields=['is_active'])
 
     @classmethod
     def create_session(cls, user, request, created_via='login'):
@@ -532,12 +551,17 @@ class UserSession(TimestampedModel, AuditMixin):
         """
         from apps.core.utils import get_client_ip
         from .services import DeviceDetectionService, GeoIPService
+        from django.contrib.sessions.models import Session
         
         session_key = request.session.session_key
         ip_address = get_client_ip(request)
         user_agent = request.META.get('HTTP_USER_AGENT', '')
         device_info = DeviceDetectionService.parse_user_agent(user_agent)
         location_info = GeoIPService.get_location_info(ip_address)
+        
+        # Get the actual expiration from Django session
+        # Django session expire_date is set based on SESSION_COOKIE_AGE
+        django_session_expire_date = request.session.get_expiry_date()
         
         # Check if session already exists (active or inactive)
         existing_session = cls.objects.filter(session_key=session_key).first()
@@ -548,8 +572,7 @@ class UserSession(TimestampedModel, AuditMixin):
             existing_session.user_agent = user_agent
             existing_session.device_info = device_info
             existing_session.location_info = location_info
-            existing_session.is_active = True
-            existing_session.expires_at = timezone.now() + timedelta(days=7)  # 7 days
+            existing_session.expires_at = django_session_expire_date
             existing_session.save()
             session = existing_session
         else:
@@ -561,12 +584,8 @@ class UserSession(TimestampedModel, AuditMixin):
                 user_agent=user_agent,
                 device_info=device_info,
                 location_info=location_info,
-                expires_at=timezone.now() + timedelta(days=7)  # 7 days
+                expires_at=django_session_expire_date
             )
-        
-        # Calculate and set risk score
-        session.risk_score = session.calculate_risk_score()
-        session.save(update_fields=['risk_score'])
         
         return session
 
