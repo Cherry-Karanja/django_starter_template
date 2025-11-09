@@ -125,35 +125,6 @@ CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_DOMAIN = None
 CSRF_COOKIE_PATH = '/'
 
-# JWT Cookie settings for development
-REST_AUTH = {
-    'USE_JWT': True,
-    'JWT_AUTH_COOKIE': 'access_token',
-    'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
-    'JWT_AUTH_SECURE': False,  # HTTP allowed in development
-    'JWT_AUTH_HTTPONLY': False,  # Allow JavaScript/Postman access in development
-    'JWT_AUTH_SAMESITE': 'Lax',
-    'JWT_AUTH_COOKIE_USE_CSRF': False,
-    'USER_DETAILS_SERIALIZER': 'apps.accounts.serializers.UserDetailsSerializer',
-    'REGISTER_SERIALIZER': 'apps.accounts.serializers.CustomRegisterSerializer',
-    'LOGIN_SERIALIZER': 'apps.accounts.serializers.CustomLoginSerializer',
-    'PASSWORD_CHANGE_SERIALIZER': 'apps.accounts.serializers.CustomPasswordChangeSerializer',
-    'JWT_SERIALIZER': 'apps.accounts.serializers.CustomJWTSerializer',
-    'SESSION_LOGIN': False,
-    'LOGIN_URL': None,
-    'LOGOUT_URL': None,
-    'PASSWORD_RESET_URL_PATTERN': None,  # API-only mode
-    'PASSWORD_RESET_CONFIRM_URL_PATTERN': None,  # API-only mode
-    'EMAIL_VERIFICATION_URL_PATTERN': None,
-    'PASSWORD_RESET_USE_SITES_DOMAIN': False,  # Don't use sites framework for reset URLs
-    'SIGNUP_FIELDS': {
-        'email': {'required': True},
-        'username': {'required': False},
-    },
-    'OLD_PASSWORD_FIELD_ENABLED': True,
-    'LOGOUT_ON_PASSWORD_CHANGE': False,
-}
-
 # ==================== AI SERVICES CONFIGURATION ====================
 
 # Direct RAG Client (Monolith Mode) - No external HTTP calls needed

@@ -1,13 +1,14 @@
 """
 Accounts app models for user management and authentication
 """
+from datetime import timedelta
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Permission
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from apps.core.models import TimestampedModel, AuditMixin, SoftDeleteMixin
+from apps.core.models import TimestampedModel, AuditMixin, SoftDeleteMixin, BaseModel
 import uuid
 
 
@@ -61,12 +62,10 @@ class UserRole(TimestampedModel, AuditMixin, SoftDeleteMixin):
             raise ValidationError(_("Display name is required"))
 
 
-class User(AbstractUser, TimestampedModel, AuditMixin):
+class User(AbstractUser, BaseModel):
     """
     Custom user model with email authentication and role-based access
     """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
     # Override username field - not used for authentication
     username = models.CharField(
         max_length=150,
@@ -134,6 +133,10 @@ class User(AbstractUser, TimestampedModel, AuditMixin):
         blank=True,
         help_text=_("When the password was last changed")
     )
+
+    """ timestamp fields"""
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # Override required fields
     USERNAME_FIELD = 'email'
@@ -436,6 +439,79 @@ class UserSession(TimestampedModel, AuditMixin):
         """Mark session as expired"""
         self.is_active = False
         self.save(update_fields=['is_active'])
+
+    def revoke(self, reason=None):
+        """Revoke session with optional reason"""
+        self.is_active = False
+        # Could add reason to a field if needed in the future
+        self.save(update_fields=['is_active'])
+
+    @classmethod
+    def create_session(cls, user, request, created_via='login'):
+        """
+        Create a new session record for tracking
+        
+        Args:
+            user: The user this session belongs to
+            request: The HTTP request object
+            created_via: How this session was created (login, middleware_recovery, etc.)
+        """
+        from apps.core.utils import get_client_ip
+        
+        session_key = request.session.session_key
+        ip_address = get_client_ip(request)
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        
+        return cls.objects.create(
+            user=user,
+            session_key=session_key,
+            ip_address=ip_address,
+            user_agent=user_agent,
+            expires_at=timezone.now() + timedelta(days=7)  # 7 days
+        )
+
+    @classmethod
+    def detect_suspicious_sessions(cls, user, request):
+        """
+        Detect potentially suspicious sessions for a user
+        
+        Returns a list of suspicious sessions based on:
+        - Multiple active sessions from different IP addresses
+        - Sessions from unusual locations (basic check)
+        """
+        if not user or not user.is_authenticated:
+            return []
+            
+        # Get current IP address
+        from apps.core.utils import get_client_ip
+        current_ip = get_client_ip(request)
+        
+        # Get all active sessions for this user
+        active_sessions = cls.objects.filter(
+            user=user,
+            is_active=True,
+            expires_at__gt=timezone.now()
+        ).exclude(ip_address=current_ip)
+        
+        suspicious_sessions = []
+        
+        # Check for multiple sessions from different IPs
+        if active_sessions.count() > 2:  # More than 2 sessions from different IPs
+            suspicious_sessions.extend(active_sessions)
+        
+        # Check for sessions from very different locations (basic check)
+        # This is a simplified version - in production you'd use geo-IP databases
+        current_ip_parts = current_ip.split('.') if current_ip else []
+        for session in active_sessions:
+            if session.ip_address:
+                session_ip_parts = session.ip_address.split('.')
+                # Simple check: if first two octets differ significantly
+                if (len(current_ip_parts) >= 2 and len(session_ip_parts) >= 2 and
+                    current_ip_parts[0] != session_ip_parts[0]):
+                    suspicious_sessions.append(session)
+        
+        # Remove duplicates
+        return list(set(suspicious_sessions))
 
 
 class LoginAttempt(TimestampedModel):

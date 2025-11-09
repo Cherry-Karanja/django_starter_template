@@ -16,7 +16,6 @@ from .models import User, UserProfile, UserRole, UserRoleHistory, UserSession, L
 from .services import UserService, RoleService
 
 
-# Base Serializers
 class PermissionSerializer(serializers.ModelSerializer):
     """Permission serializer"""
     app_label = serializers.CharField(source='content_type.app_label', read_only=True)
@@ -112,8 +111,8 @@ class UserRoleUpdateSerializer(serializers.ModelSerializer):
 # User Serializers
 class UserListSerializer(serializers.ModelSerializer):
     """User serializer for list views"""
-    role_display = serializers.CharField(source='get_role_display', read_only=True)
-    full_name = serializers.CharField(read_only=True)
+    role_display = serializers.CharField(source='role.display_name', read_only=True)
+    full_name = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     is_staff_member = serializers.SerializerMethodField()
     department = serializers.SerializerMethodField()
@@ -128,12 +127,16 @@ class UserListSerializer(serializers.ModelSerializer):
         )
 
     @extend_schema_field(serializers.CharField)
+    def get_full_name(self, obj) -> str:
+        return obj.get_full_name()
+
+    @extend_schema_field(serializers.CharField)
     def get_location(self, obj) -> str:
-        return obj.get_location_display()
+        return ''  # Not implemented
 
     @extend_schema_field(serializers.BooleanField)
     def get_is_staff_member(self, obj) -> bool:
-        return UserService.is_staff_member(obj)
+        return obj.is_staff
 
     @extend_schema_field(serializers.CharField(allow_blank=True))
     def get_department(self, obj: User) -> str:
@@ -146,8 +149,8 @@ class UserListSerializer(serializers.ModelSerializer):
 
 class UserDetailSerializer(serializers.ModelSerializer):
     """User serializer for detail views"""
-    role_display = serializers.CharField(source='get_role_display', read_only=True)
-    full_name = serializers.CharField(read_only=True)
+    role_display = serializers.CharField(source='role.display_name', read_only=True)
+    full_name = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     profile = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()
@@ -174,8 +177,12 @@ class UserDetailSerializer(serializers.ModelSerializer):
         ]
 
     @extend_schema_field(serializers.CharField)
+    def get_full_name(self, obj) -> str:
+        return obj.get_full_name()
+
+    @extend_schema_field(serializers.CharField)
     def get_location(self, obj) -> str:
-        return obj.get_location_display()
+        return ''  # Not implemented
 
     @extend_schema_field(serializers.DictField)
     def get_profile(self, obj) -> Optional[Dict[str, Any]]:
@@ -348,7 +355,7 @@ class UserProfileListSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(serializers.CharField)
     def get_user_name(self, obj) -> str:
-        return obj.user.full_name
+        return obj.user.get_full_name()
 
 
 class UserProfileDetailSerializer(serializers.ModelSerializer):
@@ -368,8 +375,8 @@ class UserProfileDetailSerializer(serializers.ModelSerializer):
         return {
             'id': obj.user.id,
             'email': obj.user.email,
-            'full_name': obj.user.full_name,
-            'role': obj.user.get_role_display()
+            'full_name': obj.user.get_full_name(),
+            'role': obj.user.role.display_name if obj.user.role else None
         }
 
 
@@ -414,11 +421,11 @@ class UserRoleHistorySerializer(serializers.ModelSerializer):
 
     @extend_schema_field(serializers.CharField)
     def get_user_name(self, obj) -> str:
-        return obj.user.full_name
+        return obj.user.get_full_name()
 
     @extend_schema_field(serializers.CharField)
     def get_changed_by_name(self, obj) -> str:
-        return obj.changed_by.full_name if obj.changed_by else ''
+        return obj.changed_by.get_full_name() if obj.changed_by else ''
 
 
 # User Session Serializer
@@ -427,6 +434,7 @@ class UserSessionSerializer(serializers.ModelSerializer):
     user_email = serializers.CharField(source='user.email', read_only=True)
     user_name = serializers.SerializerMethodField()
     duration = serializers.SerializerMethodField()
+    ip_address = serializers.CharField(read_only=True)
 
     class Meta:
         model = UserSession
@@ -437,7 +445,7 @@ class UserSessionSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(serializers.CharField)
     def get_user_name(self, obj) -> str:
-        return obj.user.full_name
+        return obj.user.get_full_name()
 
     @extend_schema_field(serializers.DurationField)
     def get_duration(self, obj) -> Optional[str]:
@@ -451,6 +459,7 @@ class LoginAttemptSerializer(serializers.ModelSerializer):
     """Login attempt serializer"""
     user_email = serializers.CharField(source='user.email', read_only=True)
     user_name = serializers.SerializerMethodField()
+    ip_address = serializers.CharField(read_only=True)
 
     class Meta:
         model = LoginAttempt
@@ -458,7 +467,7 @@ class LoginAttemptSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(serializers.CharField)
     def get_user_name(self, obj) -> str:
-        return obj.user.full_name
+        return obj.user.get_full_name() if obj.user else ''
 
 
 # Management Serializers (for admin operations)
@@ -599,17 +608,19 @@ class SocialAuthURLSerializer(serializers.Serializer):
 
 
 class CustomLoginSerializer(LoginSerializer):
-    """Custom login serializer for dj-rest-auth"""
-    
+    """Custom login serializer that uses email instead of username."""
+    username = None
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(write_only=True)
+
     def validate(self, attrs):
-        username = attrs.get('username')  # This will be email
+        email = attrs.get('email')
         password = attrs.get('password')
-        
-        if username and password:
+        if email and password:
             # Check if user exists and is approved (for staff)
             try:
-                user = User.objects.get(email=username)
-                if user.is_staff_member and not user.is_approved:
+                user = User.objects.get(email=email)
+                if user.is_staff and not user.is_approved:
                     raise serializers.ValidationError(
                         'Your account is pending approval. Please contact your administrator.'
                     )
@@ -617,8 +628,15 @@ class CustomLoginSerializer(LoginSerializer):
                     raise serializers.ValidationError(
                         'Your account is temporarily locked. Please try again later.'
                     )
+                if user and user.check_password(password):
+                    attrs['user'] = user
+                    return attrs
+                else:
+                    raise serializers.ValidationError('Unable to log in with provided credentials.')
             except User.DoesNotExist:
                 pass
+        else:
+            raise serializers.ValidationError('Must include "email" and "password".')
         
         return super().validate(attrs)
 
@@ -626,8 +644,7 @@ class CustomLoginSerializer(LoginSerializer):
 class UserDetailsSerializer(serializers.ModelSerializer):
     """User details serializer for dj-rest-auth"""
     role = UserRoleDetailSerializer(read_only=True)
-    full_name = serializers.ReadOnlyField()
-    location_display = serializers.ReadOnlyField(source='get_location_display')
+    full_name = serializers.SerializerMethodField()
     profile = serializers.SerializerMethodField()
     phone_number = serializers.SerializerMethodField()
     department = serializers.SerializerMethodField()
@@ -636,7 +653,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'email', 'first_name', 'last_name', 'full_name',
-            'phone_number', 'employee_id', 'department', 'location_display',
+            'phone_number', 'employee_id', 'department',
             'role', 'is_verified', 'is_approved',
             'created_at', 'last_login', 'profile'
         ]
@@ -644,6 +661,11 @@ class UserDetailsSerializer(serializers.ModelSerializer):
             'id', 'email', 'is_verified', 'is_approved',
             'created_at', 'last_login'
         ]
+    
+    @extend_schema_field(serializers.CharField)
+    def get_full_name(self, obj: User) -> str:
+        """Get user's full name"""
+        return obj.get_full_name()
     
     @extend_schema_field(serializers.CharField(allow_blank=True))
     def get_phone_number(self, obj: User) -> str:
@@ -814,31 +836,35 @@ class UserRoleHistorySerializer(serializers.ModelSerializer):
 class UserSessionSerializer(serializers.ModelSerializer):
     """Serializer for user session management"""
     user_email = serializers.CharField(source='user.email', read_only=True)
-    user_full_name = serializers.CharField(source='user.full_name', read_only=True)
+    user_full_name = serializers.SerializerMethodField()
     is_expired = serializers.SerializerMethodField()
     risk_score = serializers.SerializerMethodField()
+    ip_address = serializers.CharField(read_only=True)
     
     class Meta:
         model = UserSession
         fields = [
             'id', 'user', 'user_email', 'user_full_name', 'session_key', 'ip_address',
             'user_agent', 'is_active', 'expires_at', 'device_type', 'device_os',
-            'browser', 'location_info', 'last_activity', 'created_via', 'revoked_at',
-            'revoked_by', 'revocation_reason', 'is_expired', 'risk_score', 'created_at', 'updated_at'
+            'browser', 'location_info', 'last_activity', 'is_expired', 'risk_score', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
     
+    def get_user_full_name(self, obj):
+        return obj.user.get_full_name()
+
+    @extend_schema_field(serializers.CharField)
     def get_is_expired(self, obj) -> bool:
         return obj.is_expired
-    
+
+    @extend_schema_field(serializers.FloatField)
     def get_risk_score(self, obj) -> float:
         return obj.risk_score
-
-
 class LoginAttemptSerializer(serializers.ModelSerializer):
     """Serializer for login attempt tracking"""
     user_email = serializers.CharField(source='user.email', read_only=True)
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
+    ip_address = serializers.CharField(read_only=True)
     
     class Meta:
         model = LoginAttempt
@@ -850,7 +876,7 @@ class LoginAttemptSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 
-class PermissionSerializer(serializers.ModelSerializer):
+class PermissionDetailSerializer(serializers.ModelSerializer):
     """Enhanced permission serializer for entity manager"""
     app_label = serializers.CharField(source='content_type.app_label', read_only=True)
     model = serializers.CharField(source='content_type.model', read_only=True)

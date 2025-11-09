@@ -12,8 +12,8 @@ from decouple import config
 # REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'apps.core.authentication.CSRFExemptSessionAuthentication',  # Custom session auth without CSRF for API
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'apps.core.authentication.CSRFExemptSessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissions',

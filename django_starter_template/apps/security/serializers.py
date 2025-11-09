@@ -7,6 +7,7 @@ from .models import AuditLog, RateLimit, SecurityEvent, SecuritySettings, APIKey
 class AuditLogSerializer(serializers.ModelSerializer):
     user_username = serializers.SerializerMethodField()
     user_email = serializers.CharField(source='user.email', read_only=True)
+    ip_address = serializers.CharField(read_only=True)
 
     def get_user_username(self, obj) -> Optional[str]:
         return obj.user.get_username() if obj.user else None
@@ -36,6 +37,7 @@ class SecurityEventSerializer(serializers.ModelSerializer):
     user_username = serializers.SerializerMethodField()
     resolved_by_username = serializers.SerializerMethodField()
     related_audit_logs_count = serializers.SerializerMethodField()
+    ip_address = serializers.CharField(read_only=True)
 
     def get_user_username(self, obj) -> Optional[str]:
         return obj.user.get_username() if obj.user else None

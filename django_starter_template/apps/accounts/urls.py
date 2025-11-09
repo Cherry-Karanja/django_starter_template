@@ -24,10 +24,6 @@ urlpatterns = [
     path('auth/register/', views.CustomRegisterView.as_view(), name='custom-register'),
     path('auth/login/', views.CustomLoginView.as_view(), name='custom-login'),
 
-    # User Management additional endpoints
-    path('users/<int:user_id>/approve/', views.UserViewSet.as_view({'post': 'approve'}), name='approve-user'),
-    path('users/<int:user_id>/change-role/', views.UserViewSet.as_view({'post': 'change_role'}), name='change-user-role'),
-
     # User Statistics
     path('statistics/', views.UserStatisticsView.as_view(), name='user-stats'),
 

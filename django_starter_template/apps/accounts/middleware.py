@@ -1,6 +1,7 @@
 """
 Custom middleware for tracking login attempts and security monitoring
 """
+from datetime import timedelta
 from django.utils import timezone
 from apps.accounts.models import LoginAttempt, UserSession
 
@@ -179,10 +180,29 @@ class LoginSecurityMiddleware:
             request.user.save(update_fields=['last_login_ip'])
             
             # Create session tracking record
-            session = UserSession.create_session(
-                user=request.user,
-                request=request
+            from apps.core.utils import get_client_ip
+            session_key = request.session.session_key
+            ip_address = get_client_ip(request)
+            user_agent = request.META.get('HTTP_USER_AGENT', '')
+            
+            session, created = UserSession.objects.get_or_create(
+                session_key=session_key,
+                defaults={
+                    'user': request.user,
+                    'ip_address': ip_address,
+                    'user_agent': user_agent,
+                    'expires_at': timezone.now() + timedelta(days=7)  # 7 days
+                }
             )
+            
+            # If session already existed, update it with current user info
+            if not created:
+                session.user = request.user
+                session.ip_address = ip_address
+                session.user_agent = user_agent
+                session.expires_at = timezone.now() + timedelta(days=7)
+                session.is_active = True
+                session.save()
             
             # Check for suspicious sessions
             suspicious_sessions = UserSession.detect_suspicious_sessions(request.user, request)
