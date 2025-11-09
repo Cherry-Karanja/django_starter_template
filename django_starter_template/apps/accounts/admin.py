@@ -16,7 +16,7 @@ class UserAdmin(BaseUserAdmin):
     """Custom admin interface for the User model"""
 
     # Fields to display in the user list
-    list_display = ('email', 'full_name', 'role_badge', 'status_badges', 'security_status', 'login_info', 'created_at_display')
+    list_display = ('email', 'full_name', 'employee_id', 'role_badge', 'status_badges', 'security_status', 'two_factor_status', 'login_info', 'created_at_display')
     list_filter = ('role', 'is_approved', 'is_verified', 'is_active', 'is_staff', 'is_superuser',
                    'account_locked_until', 'must_change_password', 'created_at', 'last_login')
     search_fields = ('email', 'first_name', 'last_name', 'employee_id')
@@ -118,6 +118,14 @@ class UserAdmin(BaseUserAdmin):
 
         return format_html(' '.join(indicators))
     security_status.short_description = 'Security'
+
+    def two_factor_status(self, obj):
+        """Display 2FA status"""
+        if obj.is_otp_enabled():
+            return format_html('<span style="color: #28a745;">✓ Enabled</span>')
+        else:
+            return format_html('<span style="color: #dc3545;">✗ Disabled</span>')
+    two_factor_status.short_description = '2FA'
 
     def login_info(self, obj):
         """Display last login information"""
@@ -270,7 +278,7 @@ class UserRoleAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     """Admin interface for UserProfile model"""
 
-    list_display = ('user_link', 'bio_preview', 'last_activity', 'created_at_display')
+    list_display = ('user_link', 'bio_preview', 'preferred_language', 'interface_theme', 'last_activity', 'created_at_display')
     list_filter = ('preferred_language', 'interface_theme', 'allow_notifications', 'created_at')
     search_fields = ('user__email', 'user__first_name', 'user__last_name', 'bio')
     ordering = ('-created_at',)
