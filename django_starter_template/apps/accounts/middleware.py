@@ -47,7 +47,7 @@ class SessionActivityMiddleware:
             
             # Check if not expired
             if session.is_expired():
-                # Session is expired, don't process
+                request.session.flush()
                 return
             
             # Update expires_at to always be 1 hour from now (SESSION_COOKIE_AGE)
