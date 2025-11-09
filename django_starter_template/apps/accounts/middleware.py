@@ -45,18 +45,21 @@ class SessionActivityMiddleware:
                 revoked_at__isnull=True
             )
             
-            # Check if not expired
-            if session.is_expired():
+            # Check if session has expired based on UserSession expires_at
+            if session.expires_at < timezone.now():
                 request.session.flush()
                 return
             
-            # Update expires_at to always be 1 hour from now (SESSION_COOKIE_AGE)
+            # Update expires_at to always be 1 hour from now for both UserSession and Django session
             from django.contrib.sessions.models import Session
             try:
-                Session.objects.get(session_key=request.session.session_key)
-                # Django session exists, update expires_at
-                session.expires_at = timezone.now() + timedelta(seconds=3600)
-                session.save()
+                django_session = Session.objects.get(session_key=request.session.session_key)
+                # Django session exists, update both expires_at fields
+                new_expires_at = timezone.now() + timedelta(seconds=3600)
+                session.expires_at = new_expires_at
+                django_session.expire_date = new_expires_at
+                session.save(update_fields=['expires_at'])
+                django_session.save(update_fields=['expire_date'])
             except Session.DoesNotExist:
                 # Django session doesn't exist, mark UserSession as expired
                 UserSession.objects.filter(id=session.id).update(is_active=False)
@@ -98,11 +101,14 @@ class SessionActivityMiddleware:
                         # Reactivate if Django session exists
                         from django.contrib.sessions.models import Session
                         try:
-                            Session.objects.get(session_key=request.session.session_key)
+                            django_session = Session.objects.get(session_key=request.session.session_key)
                             # Django session exists, reactivate UserSession
-                            existing_session.expires_at = timezone.now() + timedelta(seconds=3600)
+                            new_expires_at = timezone.now() + timedelta(seconds=3600)
+                            existing_session.expires_at = new_expires_at
+                            django_session.expire_date = new_expires_at
                             existing_session.revoked_at = None  # Clear revocation if reactivating
-                            existing_session.save()
+                            existing_session.save(update_fields=['expires_at', 'revoked_at'])
+                            django_session.save(update_fields=['expire_date'])
                         except Session.DoesNotExist:
                             # Django session doesn't exist, don't reactivate UserSession
                             pass

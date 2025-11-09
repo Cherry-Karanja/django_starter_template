@@ -559,9 +559,11 @@ class UserSession(TimestampedModel, AuditMixin):
         device_info = DeviceDetectionService.parse_user_agent(user_agent)
         location_info = GeoIPService.get_location_info(ip_address)
         
-        # Get the actual expiration from Django session
-        # Django session expire_date is set based on SESSION_COOKIE_AGE
-        django_session_expire_date = request.session.get_expiry_date()
+        # Set expiration to 1 hour from now for session management
+        session_expires_at = timezone.now() + timedelta(seconds=3600)
+        
+        # Ensure Django session also expires in 1 hour
+        request.session.set_expiry(3600)
         
         # Check if session already exists (active or inactive)
         existing_session = cls.objects.filter(session_key=session_key).first()
@@ -572,7 +574,7 @@ class UserSession(TimestampedModel, AuditMixin):
             existing_session.user_agent = user_agent
             existing_session.device_info = device_info
             existing_session.location_info = location_info
-            existing_session.expires_at = django_session_expire_date
+            existing_session.expires_at = session_expires_at
             existing_session.save()
             session = existing_session
         else:
@@ -584,7 +586,7 @@ class UserSession(TimestampedModel, AuditMixin):
                 user_agent=user_agent,
                 device_info=device_info,
                 location_info=location_info,
-                expires_at=django_session_expire_date
+                expires_at=session_expires_at
             )
         
         return session
