@@ -287,6 +287,28 @@ class User(AbstractUser, BaseModel):
         """Get the number of remaining backup codes"""
         return len(self.backup_codes) if self.backup_codes else 0
 
+    # Role-based permission properties for compatibility with permissions.py
+    @property
+    def is_staff_member(self):
+        """Check if user is a staff member or higher"""
+        if not self.role or not self.role.is_active:
+            return False
+        return self.role.name in ['staff', 'manager', 'admin', 'super_admin']
+
+    @property
+    def is_supervisor_or_above(self):
+        """Check if user is a supervisor (manager) or higher"""
+        if not self.role or not self.role.is_active:
+            return False
+        return self.role.name in ['manager', 'admin', 'super_admin']
+
+    @property
+    def is_admin_or_above(self):
+        """Check if user is an admin or higher"""
+        if not self.role or not self.role.is_active:
+            return False
+        return self.role.name in ['admin', 'super_admin']
+
 
 class UserProfile(TimestampedModel, AuditMixin, SoftDeleteMixin):
     """
