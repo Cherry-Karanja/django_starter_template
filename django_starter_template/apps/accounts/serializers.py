@@ -21,11 +21,11 @@ class PermissionSerializer(serializers.ModelSerializer):
     """Permission serializer"""
     app_label = serializers.CharField(source='content_type.app_label', read_only=True)
     model = serializers.CharField(source='content_type.model', read_only=True)
+    content_type_name = serializers.CharField(source='content_type.name', read_only=True)
 
     class Meta:
         model = Permission
-        fields = ['id', 'name', 'codename', 'app_label', 'model']
-
+        fields = ['id', 'name', 'codename', 'app_label', 'model', 'content_type_name']
 
 class PermissionCreateSerializer(serializers.ModelSerializer):
     """Permission serializer for create operations"""
