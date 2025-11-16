@@ -27,6 +27,72 @@ class PermissionSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'codename', 'app_label', 'model']
 
 
+class PermissionCreateSerializer(serializers.ModelSerializer):
+    """Permission serializer for create operations"""
+    app_label = serializers.CharField(write_only=True, required=True)
+    model = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = Permission
+        fields = ['name', 'codename', 'app_label', 'model']
+
+    def create(self, validated_data):
+        from django.contrib.contenttypes.models import ContentType
+        app_label = validated_data.pop('app_label')
+        model = validated_data.pop('model')
+
+        try:
+            content_type = ContentType.objects.get(app_label=app_label, model=model)
+        except ContentType.DoesNotExist:
+            raise serializers.ValidationError(f"Content type for app '{app_label}' and model '{model}' does not exist.")
+
+        # Check if permission already exists
+        if Permission.objects.filter(codename=validated_data['codename'], content_type=content_type).exists():
+            raise serializers.ValidationError("A permission with this codename already exists for this content type.")
+
+        return Permission.objects.create(content_type=content_type, **validated_data)
+
+
+class PermissionUpdateSerializer(serializers.ModelSerializer):
+    """Permission serializer for update operations"""
+    app_label = serializers.CharField(read_only=True, source='content_type.app_label')
+    model = serializers.CharField(read_only=True, source='content_type.model')
+
+    class Meta:
+        model = Permission
+        fields = ['id', 'name', 'codename', 'app_label', 'model']
+        read_only_fields = ['codename', 'app_label', 'model']  # Codename and content type cannot be changed
+
+
+class PermissionListSerializer(serializers.ModelSerializer):
+    """Permission serializer for list views"""
+    app_label = serializers.CharField(source='content_type.app_label', read_only=True)
+    model = serializers.CharField(source='content_type.model', read_only=True)
+    content_type_name = serializers.CharField(source='content_type.name', read_only=True)
+
+    class Meta:
+        model = Permission
+        fields = ['id', 'name', 'codename', 'app_label', 'model', 'content_type_name']
+
+
+class UserPermissionUpdateSerializer(serializers.Serializer):
+    """Serializer for updating user permissions"""
+    permissions = serializers.ListField(
+        child=serializers.CharField(),
+        required=True,
+        help_text="List of permission codenames to assign to the user"
+    )
+
+    def validate_permissions(self, value):
+        """Validate that all provided permissions exist"""
+        from django.contrib.auth.models import Permission
+        existing_codenames = set(Permission.objects.values_list('codename', flat=True))
+        invalid_permissions = [perm for perm in value if perm not in existing_codenames]
+        if invalid_permissions:
+            raise serializers.ValidationError(f"Invalid permissions: {', '.join(invalid_permissions)}")
+        return value
+
+
 # User Role Serializers
 class UserRoleListSerializer(serializers.ModelSerializer):
     """User role serializer for list views"""
@@ -154,7 +220,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     profile = serializers.SerializerMethodField()
-    permissions = serializers.SerializerMethodField()
+    permissions = PermissionSerializer(many=True, read_only=True, source='user_permissions')
     role_permissions = serializers.SerializerMethodField()
     phone_number = serializers.SerializerMethodField()
     department = serializers.SerializerMethodField()
@@ -190,17 +256,18 @@ class UserDetailSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'profile'):
             return UserProfileListSerializer(obj.profile).data
         return None
-
-    @extend_schema_field(serializers.ListField)
-    def get_permissions(self, obj) -> list:
-        # This would be implemented to show effective permissions
-        return []
-
-    @extend_schema_field(serializers.ListField)
-    def get_role_permissions(self, obj) -> list:
+    @extend_schema_field(serializers.DictField)
+    def get_role_permissions(self, obj) -> dict:
         if obj.role:
-            return list(obj.role.permissions.values_list('codename', flat=True))
-        return []
+            permissions = obj.role.permissions.select_related('content_type').all()
+            grouped = {}
+            for perm in permissions:
+                app_label = perm.content_type.app_label
+                if app_label not in grouped:
+                    grouped[app_label] = []
+                grouped[app_label].append(perm.codename)
+            return grouped
+        return {}
 
     @extend_schema_field(serializers.CharField(allow_blank=True))
     def get_phone_number(self, obj: User) -> str:
@@ -242,6 +309,14 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_county(self, obj: User) -> str:
         """Get county (not implemented yet)"""
         return ''
+
+
+class UserPermissionResponseSerializer(serializers.Serializer):
+    """Serializer for user permission update response"""
+    message = serializers.CharField()
+    user = UserDetailSerializer()
+    added_permissions = serializers.ListField(child=serializers.CharField())
+    removed_permissions = serializers.ListField(child=serializers.CharField())
 
 
 class UserCreateSerializer(serializers.ModelSerializer):

@@ -22,7 +22,8 @@ from .serializers import (
     UserProfileListSerializer, UserProfileDetailSerializer, UserProfileCreateSerializer, UserProfileUpdateSerializer,
     UserRoleHistorySerializer, UserSessionSerializer, LoginAttemptSerializer,
     UserPermissionsSerializer, UserRoleChangeRequestSerializer, UserRoleChangeResponseSerializer,
-    UserApprovalSerializer, PermissionSerializer,
+    UserApprovalSerializer, PermissionSerializer, PermissionCreateSerializer, PermissionUpdateSerializer, PermissionListSerializer,
+    UserPermissionUpdateSerializer, UserPermissionResponseSerializer,
     TwoFactorSetupSerializer, TwoFactorVerifySerializer, TwoFactorVerifyLoginSerializer,
     TwoFactorStatusSerializer, TwoFactorBackupCodesSerializer
 )
@@ -208,6 +209,113 @@ class UserViewSet(viewsets.ModelViewSet):
             'is_superuser': request.user.is_superuser
         })
         return Response(serializer.data)
+
+    @extend_schema(
+        summary="Update user permissions",
+        description="Update the direct permissions assigned to a user (not through roles).",
+        request=UserPermissionUpdateSerializer,
+        responses={200: UserPermissionResponseSerializer}
+    )
+    @action(detail=True, methods=['post'])
+    def update_permissions(self, request, pk=None):
+        """Update user permissions"""
+        user = self.get_object()
+        serializer = UserPermissionUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        permission_codenames = serializer.validated_data['permissions']
+
+        # Get current user permissions
+        current_permissions = set(user.user_permissions.values_list('codename', flat=True))
+
+        # Update permissions
+        from django.contrib.auth.models import Permission
+        new_permissions = Permission.objects.filter(codename__in=permission_codenames)
+        user.user_permissions.set(new_permissions)
+
+        # Calculate changes
+        new_permission_codenames = set(permission_codenames)
+        added_permissions = list(new_permission_codenames - current_permissions)
+        removed_permissions = list(current_permissions - new_permission_codenames)
+
+        response_serializer = UserPermissionResponseSerializer({
+            'message': f'Permissions updated successfully. Added: {len(added_permissions)}, Removed: {len(removed_permissions)}',
+            'user': UserDetailSerializer(user).data,
+            'added_permissions': added_permissions,
+            'removed_permissions': removed_permissions
+        })
+
+        return Response(response_serializer.data)
+
+    @extend_schema(
+        summary="Add permissions to user",
+        description="Add specific permissions to a user without removing existing ones.",
+        request=UserPermissionUpdateSerializer,
+        responses={200: UserPermissionResponseSerializer}
+    )
+    @action(detail=True, methods=['post'])
+    def add_permissions(self, request, pk=None):
+        """Add permissions to user"""
+        user = self.get_object()
+        serializer = UserPermissionUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        permission_codenames = serializer.validated_data['permissions']
+
+        # Get current user permissions
+        current_permissions = set(user.user_permissions.values_list('codename', flat=True))
+
+        # Add new permissions
+        from django.contrib.auth.models import Permission
+        new_permissions = Permission.objects.filter(codename__in=permission_codenames)
+        user.user_permissions.add(*new_permissions)
+
+        # Calculate changes
+        added_permissions = [perm for perm in permission_codenames if perm not in current_permissions]
+
+        response_serializer = UserPermissionResponseSerializer({
+            'message': f'Permissions added successfully. Added: {len(added_permissions)}',
+            'user': UserDetailSerializer(user).data,
+            'added_permissions': added_permissions,
+            'removed_permissions': []
+        })
+
+        return Response(response_serializer.data)
+
+    @extend_schema(
+        summary="Remove permissions from user",
+        description="Remove specific permissions from a user.",
+        request=UserPermissionUpdateSerializer,
+        responses={200: UserPermissionResponseSerializer}
+    )
+    @action(detail=True, methods=['post'])
+    def remove_permissions(self, request, pk=None):
+        """Remove permissions from user"""
+        user = self.get_object()
+        serializer = UserPermissionUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        permission_codenames = serializer.validated_data['permissions']
+
+        # Get current user permissions
+        current_permissions = set(user.user_permissions.values_list('codename', flat=True))
+
+        # Remove permissions
+        from django.contrib.auth.models import Permission
+        permissions_to_remove = Permission.objects.filter(codename__in=permission_codenames)
+        user.user_permissions.remove(*permissions_to_remove)
+
+        # Calculate changes
+        removed_permissions = [perm for perm in permission_codenames if perm in current_permissions]
+
+        response_serializer = UserPermissionResponseSerializer({
+            'message': f'Permissions removed successfully. Removed: {len(removed_permissions)}',
+            'user': UserDetailSerializer(user).data,
+            'added_permissions': [],
+            'removed_permissions': removed_permissions
+        })
+
+        return Response(response_serializer.data)
 
 
 @extend_schema_view(
@@ -533,20 +641,111 @@ class UserRoleHistoryViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
-@extend_schema(
-    tags=["Permissions"],
-    summary="List permissions",
-    description="List all available permissions in the system.",
-    responses={200: PermissionSerializer(many=True)}
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Permissions"],
+        summary="List permissions",
+        description="List all permissions with filtering and searching.",
+        parameters=[
+            OpenApiParameter(name="search", type=OpenApiTypes.STR, description="Search across name and codename"),
+            OpenApiParameter(name="app_label", type=OpenApiTypes.STR, description="Filter by app label"),
+            OpenApiParameter(name="model", type=OpenApiTypes.STR, description="Filter by model name"),
+            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description="Order by: name, codename, app_label, model"),
+        ]
+    ),
+    create=extend_schema(
+        tags=["Permissions"],
+        summary="Create permission",
+        description="Create a new permission for a specific content type."
+    ),
+    retrieve=extend_schema(
+        tags=["Permissions"],
+        summary="Retrieve permission",
+        description="Retrieve detailed information about a specific permission."
+    ),
+    update=extend_schema(
+        tags=["Permissions"],
+        summary="Update permission",
+        description="Update a permission's information. Note: codename and content type cannot be changed."
+    ),
+    partial_update=extend_schema(
+        tags=["Permissions"],
+        summary="Partial update permission",
+        description="Partially update a permission's information."
+    ),
+    destroy=extend_schema(
+        tags=["Permissions"],
+        summary="Delete permission",
+        description="Delete a permission. Warning: This may affect user access."
+    )
 )
-class PermissionListView(generics.ListAPIView):
-    """List all permissions"""
+class PermissionViewSet(viewsets.ModelViewSet):
+    """Permission management viewset"""
     queryset = Permission.objects.all()
-    serializer_class = PermissionSerializer
     permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'codename']
-    ordering = ['name']
+    ordering_fields = ['name', 'codename', 'content_type__app_label', 'content_type__model']
+    ordering = ['content_type__app_label', 'name']
+
+    def get_serializer_class(self):
+        """Return appropriate serializer based on action"""
+        if self.action == 'list':
+            return PermissionListSerializer
+        elif self.action == 'retrieve':
+            return PermissionSerializer
+        elif self.action == 'create':
+            return PermissionCreateSerializer
+        elif self.action in ['update', 'partial_update']:
+            return PermissionUpdateSerializer
+        return PermissionSerializer
+
+    @extend_schema(
+        summary="Get permissions by app",
+        description="Get all permissions grouped by app label.",
+        responses={200: OpenApiTypes.OBJECT}
+    )
+    @action(detail=False, methods=['get'])
+    def by_app(self, request):
+        """Get permissions grouped by app label"""
+        permissions = self.get_queryset()
+        grouped = {}
+
+        for perm in permissions:
+            app_label = perm.content_type.app_label
+            if app_label not in grouped:
+                grouped[app_label] = []
+            grouped[app_label].append(PermissionSerializer(perm).data)
+
+        return Response(grouped)
+
+    @extend_schema(
+        summary="Get permissions by model",
+        description="Get all permissions for a specific model.",
+        parameters=[
+            OpenApiParameter(name="app_label", type=OpenApiTypes.STR, required=True, description="App label"),
+            OpenApiParameter(name="model", type=OpenApiTypes.STR, required=True, description="Model name"),
+        ],
+        responses={200: PermissionSerializer(many=True)}
+    )
+    @action(detail=False, methods=['get'])
+    def by_model(self, request):
+        """Get permissions for a specific model"""
+        app_label = request.query_params.get('app_label')
+        model = request.query_params.get('model')
+
+        if not app_label or not model:
+            return Response(
+                {'error': 'Both app_label and model parameters are required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        permissions = self.get_queryset().filter(
+            content_type__app_label=app_label,
+            content_type__model=model
+        )
+        serializer = PermissionSerializer(permissions, many=True)
+        return Response(serializer.data)
 
 
 @extend_schema(

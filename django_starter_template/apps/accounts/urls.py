@@ -15,6 +15,7 @@ router.register(r'user-roles', views.UserRoleViewSet, basename='user-role')
 router.register(r'user-role-histories', views.UserRoleHistoryViewSet, basename='user-role-history')
 router.register(r'user-sessions', views.UserSessionViewSet, basename='user-session')
 router.register(r'login-attempts', views.LoginAttemptViewSet, basename='login-attempt')
+router.register(r'permissions', views.PermissionViewSet, basename='permission')
 
 urlpatterns = [
     # Include router URLs
@@ -26,9 +27,6 @@ urlpatterns = [
 
     # User Statistics
     path('statistics/', views.UserStatisticsView.as_view(), name='user-stats'),
-
-    # Permission Management
-    path('permissions/', views.PermissionListView.as_view(), name='permissions-list'),
 
     # Two-Factor Authentication
     path('2fa/setup/', views.TwoFactorSetupView.as_view(), name='2fa-setup'),
