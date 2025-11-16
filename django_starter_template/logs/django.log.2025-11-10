@@ -1,0 +1,167 @@
+INFO 2025-11-10 13:12:44,338 autoreload 19968 18652 Watching for file changes with StatReloader
+ERROR 2025-11-10 13:13:17,401 middleware 19968 13136 Unhandled exception: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\contrib\auth\__init__.py", line 57, in _get_backend_from_user
+    backend = backend or user.backend
+                         ^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'backend'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\debug.py", line 143, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 48, in dispatch
+    return super().dispatch(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\auth_views.py", line 57, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 127, in post
+    self.login()
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 75, in login
+    self.process_login()
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 51, in process_login
+    django_login(self.request, self.user)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\contrib\auth\__init__.py", line 189, in login
+    backend = _get_backend_from_user(user=user, backend=backend)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\contrib\auth\__init__.py", line 63, in _get_backend_from_user
+    raise ValueError(
+ValueError: You have multiple authentication backends configured and therefore must provide the `backend` argument or set the `backend` attribute on the user.
+WARNING 2025-11-10 13:13:18,124 middleware 19968 13136 Slow request detected
+WARNING 2025-11-10 13:13:18,204 services 19968 13136 Failed login attempt for admin@example.com from 127.0.0.1
+WARNING 2025-11-10 13:13:18,205 middleware 19968 13136 Login failed for admin@example.com from 127.0.0.1
+ERROR 2025-11-10 13:13:18,211 log 19968 13136 Internal Server Error: /api/v1/core/auth/login/
+INFO 2025-11-10 13:14:11,537 autoreload 19968 18652 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\auth.py changed, reloading.
+INFO 2025-11-10 13:14:15,620 autoreload 22036 20676 Watching for file changes with StatReloader
+WARNING 2025-11-10 13:14:22,714 middleware 22036 17628 Slow request detected
+INFO 2025-11-10 13:14:22,814 services 22036 17628 Successful login for admin@example.com
+INFO 2025-11-10 13:14:22,815 middleware 22036 17628 Login successful for admin@example.com from 127.0.0.1
+ERROR 2025-11-10 13:54:05,923 middleware 22036 26216 Unhandled exception: 'User' object has no attribute 'is_admin_or_above'
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 497, in dispatch
+    self.initial(request, *args, **kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 415, in initial
+    self.check_permissions(request)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 332, in check_permissions
+    if not permission.has_permission(request, self):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\permissions.py", line 53, in has_permission
+    return request.user and request.user.is_authenticated and request.user.is_admin_or_above
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'is_admin_or_above'
+ERROR 2025-11-10 13:54:05,997 log 22036 26216 Internal Server Error: /api/v1/accounts/users/
+ERROR 2025-11-10 13:54:07,079 middleware 22036 26216 Unhandled exception: 'User' object has no attribute 'is_admin_or_above'
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 497, in dispatch
+    self.initial(request, *args, **kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 415, in initial
+    self.check_permissions(request)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 332, in check_permissions
+    if not permission.has_permission(request, self):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\permissions.py", line 53, in has_permission
+    return request.user and request.user.is_authenticated and request.user.is_admin_or_above
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'is_admin_or_above'
+ERROR 2025-11-10 13:54:07,149 log 22036 26216 Internal Server Error: /api/v1/accounts/users/
+ERROR 2025-11-10 13:54:09,399 middleware 22036 26216 Unhandled exception: 'User' object has no attribute 'is_admin_or_above'
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 497, in dispatch
+    self.initial(request, *args, **kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 415, in initial
+    self.check_permissions(request)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 332, in check_permissions
+    if not permission.has_permission(request, self):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\permissions.py", line 53, in has_permission
+    return request.user and request.user.is_authenticated and request.user.is_admin_or_above
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'User' object has no attribute 'is_admin_or_above'
+ERROR 2025-11-10 13:54:09,459 log 22036 26216 Internal Server Error: /api/v1/accounts/users/
+INFO 2025-11-10 14:05:04,423 autoreload 22036 20676 D:\django-starter-template\django_starter_template\apps\accounts\models.py changed, reloading.
+INFO 2025-11-10 14:05:08,870 autoreload 15100 26140 Watching for file changes with StatReloader
+INFO 2025-11-10 14:08:15,238 autoreload 25052 5384 Watching for file changes with StatReloader
+WARNING 2025-11-10 14:16:53,707 middleware 15100 13496 Slow request detected
+WARNING 2025-11-10 14:20:10,155 log 15100 13496 Bad Request: /api/v1/accounts/users/
+INFO 2025-11-10 14:30:17,827 autoreload 15100 26140 D:\django-starter-template\django_starter_template\apps\accounts\models.py changed, reloading.
+INFO 2025-11-10 14:30:23,212 autoreload 22196 24172 Watching for file changes with StatReloader
+WARNING 2025-11-10 14:30:28,004 middleware 22196 20224 Slow request detected
+WARNING 2025-11-10 14:34:52,543 log 22196 20224 Bad Request: /api/v1/accounts/users/
+WARNING 2025-11-10 14:39:58,868 log 22196 20224 Bad Request: /api/v1/accounts/users/
+WARNING 2025-11-10 15:12:22,913 log 22196 26696 Bad Request: /api/v1/accounts/users/
+WARNING 2025-11-10 15:18:27,997 log 22196 26044 Bad Request: /api/v1/accounts/users/
+WARNING 2025-11-10 15:28:12,318 log 22196 24112 Bad Request: /api/v1/accounts/users/
+WARNING 2025-11-10 15:31:00,431 log 22196 24112 Bad Request: /api/v1/accounts/users/

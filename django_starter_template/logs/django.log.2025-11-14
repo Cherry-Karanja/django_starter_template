@@ -1,0 +1,4 @@
+INFO 2025-11-14 10:14:29,968 autoreload 23676 23636 Watching for file changes with StatReloader
+WARNING 2025-11-14 10:17:45,623 middleware 23676 3292 Slow request detected
+INFO 2025-11-14 10:17:45,757 services 23676 3292 Successful login for admin@example.com
+INFO 2025-11-14 10:17:45,758 middleware 23676 3292 Login successful for admin@example.com from 127.0.0.1
