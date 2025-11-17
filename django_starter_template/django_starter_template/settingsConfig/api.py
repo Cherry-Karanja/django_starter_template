@@ -167,6 +167,10 @@ SPECTACULAR_SETTINGS = {
             'name': 'Permissions',
             'description': 'Permission management and access control'
         },
+        {
+            'name': 'Two-Factor Authentication',
+            'description': 'Endpoints for managing two-factor authentication setup and verification'
+        },
 
         # Core System
         {

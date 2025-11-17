@@ -180,8 +180,8 @@ class Command(BaseCommand):
         # Create admin user
         admin_user = User.objects.create_user(
             username='admin',
-            email='admin@example.com',
-            password='admin123!',
+            email='admin@gmail.com',
+            password='user@12345',
             first_name='Admin',
             last_name='User',
             is_staff=True,
@@ -216,13 +216,13 @@ class Command(BaseCommand):
             first_name = fake.first_name()
             last_name = fake.last_name()
             username = fake.user_name()
-            email = f'{first_name.lower()}.{last_name.lower()}@example.com'
+            email = f'{first_name.lower()}.{last_name.lower()}@gmail.com'
 
             try:
                 user = User.objects.create_user(
                     username=username,
                     email=email,
-                    password='password123!',
+                    password='user@12345!',
                     first_name=first_name,
                     last_name=last_name,
                     is_approved=True,

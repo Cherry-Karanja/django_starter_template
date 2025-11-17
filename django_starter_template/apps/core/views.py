@@ -242,7 +242,7 @@ def dashboard_statistics(request):
     This endpoint provides a template for dashboard statistics.
     Customize this based on your application's specific models and requirements.
     """
-    from django.contrib.auth.models import User
+    from accounts.models import User
     from django.utils import timezone
     from datetime import timedelta
 

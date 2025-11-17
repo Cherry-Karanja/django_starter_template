@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
 from .models import User, UserRole, UserProfile, LoginAttempt, UserSession, UserRoleHistory
+from .services import TwoFactorAuthService
 
 
 @admin.register(User)
@@ -22,7 +23,7 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email', 'first_name', 'last_name', 'employee_id')
     ordering = ('-created_at',)
     actions = ['approve_users', 'reject_users', 'activate_users', 'deactivate_users',
-               'unlock_accounts', 'require_password_change']
+               'unlock_accounts', 'require_password_change', 'enable_2fa', 'disable_2fa']
 
     # Fieldsets for the user detail/edit page
     fieldsets = (
@@ -191,6 +192,30 @@ class UserAdmin(BaseUserAdmin):
         updated = queryset.update(must_change_password=True)
         self.message_user(request, f"{updated} users will be required to change their password on next login.")
     require_password_change.short_description = "Require password change"
+
+    def enable_2fa(self, request, queryset):
+        """Bulk enable 2FA for selected users"""
+        enabled_count = 0
+        for user in queryset:
+            try:
+                TwoFactorAuthService.setup_2fa(user)
+                enabled_count += 1
+            except Exception as e:
+                self.message_user(request, f"Failed to enable 2FA for {user.email}: {str(e)}", level=messages.ERROR)
+        self.message_user(request, f"2FA enabled for {enabled_count} users.")
+    enable_2fa.short_description = "Enable 2FA for selected users"
+
+    def disable_2fa(self, request, queryset):
+        """Bulk disable 2FA for selected users"""
+        disabled_count = 0
+        for user in queryset:
+            try:
+                TwoFactorAuthService.disable_2fa(user)
+                disabled_count += 1
+            except Exception as e:
+                self.message_user(request, f"Failed to disable 2FA for {user.email}: {str(e)}", level=messages.ERROR)
+        self.message_user(request, f"2FA disabled for {disabled_count} users.")
+    disable_2fa.short_description = "Disable 2FA for selected users"
 
 
 @admin.register(UserRole)
