@@ -1,0 +1,1117 @@
+INFO 2025-11-17 12:42:51,716 services 2020 3012 Successful login for admin@example.com
+INFO 2025-11-17 12:42:51,720 middleware 2020 3012 Login successful for admin@example.com from 127.0.0.1
+INFO 2025-11-17 13:18:08,080 autoreload 3528 7580 Watching for file changes with StatReloader
+INFO 2025-11-17 13:18:57,181 services 3528 14324 Successful login for admin@example.com
+INFO 2025-11-17 13:18:57,182 middleware 3528 14324 Login successful for admin@example.com from 127.0.0.1
+INFO 2025-11-17 13:32:45,424 autoreload 13492 16512 Watching for file changes with StatReloader
+INFO 2025-11-17 13:35:09,347 autoreload 13492 16512 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:35:11,727 autoreload 15404 1932 Watching for file changes with StatReloader
+INFO 2025-11-17 13:35:31,483 autoreload 15404 1932 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:35:33,950 autoreload 13740 928 Watching for file changes with StatReloader
+WARNING 2025-11-17 13:35:48,492 middleware 13740 2248 Slow request detected
+INFO 2025-11-17 13:36:34,518 autoreload 13740 928 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:36:36,665 autoreload 3696 6744 Watching for file changes with StatReloader
+INFO 2025-11-17 13:38:21,632 autoreload 3696 6744 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:38:23,442 autoreload 16356 8848 Watching for file changes with StatReloader
+INFO 2025-11-17 13:38:25,782 autoreload 16356 8848 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:38:27,465 autoreload 9520 9288 Watching for file changes with StatReloader
+INFO 2025-11-17 13:40:17,519 autoreload 9520 9288 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:40:19,274 autoreload 10500 1880 Watching for file changes with StatReloader
+INFO 2025-11-17 13:40:22,365 autoreload 10500 1880 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:40:24,065 autoreload 1892 13108 Watching for file changes with StatReloader
+INFO 2025-11-17 13:40:41,735 autoreload 1892 13108 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:40:43,448 autoreload 11044 4440 Watching for file changes with StatReloader
+INFO 2025-11-17 13:40:45,535 autoreload 11044 4440 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 13:40:47,477 autoreload 11812 3212 Watching for file changes with StatReloader
+INFO 2025-11-17 13:44:21,204 autoreload 11812 3212 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:44:23,166 autoreload 6488 11288 Watching for file changes with StatReloader
+INFO 2025-11-17 13:44:32,001 autoreload 6488 11288 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:44:33,921 autoreload 14204 12516 Watching for file changes with StatReloader
+INFO 2025-11-17 13:46:21,744 autoreload 12672 6168 Watching for file changes with StatReloader
+INFO 2025-11-17 13:46:46,095 autoreload 12672 6168 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\admin.py changed, reloading.
+INFO 2025-11-17 13:46:47,716 autoreload 17236 12440 Watching for file changes with StatReloader
+INFO 2025-11-17 13:47:00,005 autoreload 17236 12440 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\admin.py changed, reloading.
+INFO 2025-11-17 13:47:01,758 autoreload 9268 15868 Watching for file changes with StatReloader
+INFO 2025-11-17 13:48:01,758 autoreload 9268 15868 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:48:03,400 autoreload 3864 1868 Watching for file changes with StatReloader
+INFO 2025-11-17 13:48:10,235 autoreload 3864 1868 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:48:11,867 autoreload 2468 4768 Watching for file changes with StatReloader
+INFO 2025-11-17 13:48:18,518 autoreload 2468 4768 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:48:20,341 autoreload 11352 11316 Watching for file changes with StatReloader
+INFO 2025-11-17 13:48:26,616 autoreload 11352 11316 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:48:28,455 autoreload 10724 16912 Watching for file changes with StatReloader
+INFO 2025-11-17 13:48:45,852 autoreload 15584 13708 Watching for file changes with StatReloader
+INFO 2025-11-17 13:48:55,950 autoreload 15584 13708 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-17 13:48:57,636 autoreload 10432 2596 Watching for file changes with StatReloader
+INFO 2025-11-17 13:49:02,059 autoreload 10432 2596 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-17 13:49:03,684 autoreload 4332 14528 Watching for file changes with StatReloader
+INFO 2025-11-17 13:49:10,270 autoreload 4332 14528 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:49:12,186 autoreload 12292 15440 Watching for file changes with StatReloader
+INFO 2025-11-17 13:49:38,855 autoreload 12292 15440 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:49:40,672 autoreload 7144 14332 Watching for file changes with StatReloader
+INFO 2025-11-17 13:49:56,268 autoreload 7144 14332 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:49:58,035 autoreload 4220 3468 Watching for file changes with StatReloader
+INFO 2025-11-17 13:50:08,111 autoreload 4220 3468 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:50:09,967 autoreload 16580 13820 Watching for file changes with StatReloader
+INFO 2025-11-17 13:50:19,842 autoreload 16580 13820 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-17 13:50:21,846 autoreload 10668 8404 Watching for file changes with StatReloader
+INFO 2025-11-17 13:51:04,201 autoreload 10668 8404 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-17 13:51:06,389 autoreload 13636 8476 Watching for file changes with StatReloader
+INFO 2025-11-17 13:51:10,064 autoreload 13636 8476 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:51:12,241 autoreload 3024 8000 Watching for file changes with StatReloader
+INFO 2025-11-17 13:51:15,678 autoreload 3024 8000 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:51:18,289 autoreload 14192 7456 Watching for file changes with StatReloader
+INFO 2025-11-17 13:51:38,603 autoreload 14192 7456 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:51:40,312 autoreload 1684 13092 Watching for file changes with StatReloader
+INFO 2025-11-17 13:55:28,301 autoreload 1684 13092 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:55:30,055 autoreload 16980 9192 Watching for file changes with StatReloader
+INFO 2025-11-17 13:55:33,980 autoreload 16980 9192 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:55:35,743 autoreload 16800 8032 Watching for file changes with StatReloader
+INFO 2025-11-17 13:55:38,637 autoreload 16800 8032 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:55:40,538 autoreload 16548 17316 Watching for file changes with StatReloader
+INFO 2025-11-17 13:56:06,125 autoreload 16548 17316 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:56:07,884 autoreload 15948 10296 Watching for file changes with StatReloader
+INFO 2025-11-17 13:56:13,370 autoreload 15948 10296 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:56:14,897 autoreload 11960 1992 Watching for file changes with StatReloader
+INFO 2025-11-17 13:56:29,135 autoreload 11960 1992 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:56:30,925 autoreload 15136 6164 Watching for file changes with StatReloader
+INFO 2025-11-17 13:56:34,431 autoreload 15136 6164 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:56:36,032 autoreload 5296 14680 Watching for file changes with StatReloader
+INFO 2025-11-17 13:57:00,402 autoreload 5296 14680 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:57:02,175 autoreload 5192 14196 Watching for file changes with StatReloader
+INFO 2025-11-17 13:57:06,771 autoreload 5192 14196 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:57:08,428 autoreload 2488 16984 Watching for file changes with StatReloader
+INFO 2025-11-17 13:57:17,170 autoreload 2488 16984 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:57:18,937 autoreload 13728 5044 Watching for file changes with StatReloader
+INFO 2025-11-17 13:57:30,122 autoreload 13728 5044 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:57:31,825 autoreload 3924 9836 Watching for file changes with StatReloader
+INFO 2025-11-17 13:57:33,985 autoreload 3924 9836 D:\django-starter-template\django_starter_template\apps\accounts\views.py changed, reloading.
+INFO 2025-11-17 13:57:35,661 autoreload 12120 14652 Watching for file changes with StatReloader
+INFO 2025-11-17 13:58:56,743 autoreload 12120 14652 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 13:58:58,322 autoreload 6276 13064 Watching for file changes with StatReloader
+INFO 2025-11-17 13:59:00,469 autoreload 6276 13064 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 13:59:02,246 autoreload 6544 15120 Watching for file changes with StatReloader
+INFO 2025-11-17 13:59:23,318 autoreload 6544 15120 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 13:59:25,001 autoreload 5336 508 Watching for file changes with StatReloader
+INFO 2025-11-17 13:59:28,212 autoreload 5336 508 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 13:59:29,821 autoreload 15940 10504 Watching for file changes with StatReloader
+INFO 2025-11-17 13:59:31,998 autoreload 15940 10504 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 14:00:08,124 autoreload 13052 3236 Watching for file changes with StatReloader
+INFO 2025-11-17 14:02:59,860 autoreload 13052 3236 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 14:03:01,607 autoreload 14884 8684 Watching for file changes with StatReloader
+INFO 2025-11-17 14:03:14,940 autoreload 14884 8684 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-17 14:05:19,867 autoreload 10840 8064 Watching for file changes with StatReloader
+WARNING 2025-11-17 14:06:02,120 log 10840 16304 Not Found: /api/v1/docs/schema/
+WARNING 2025-11-17 14:06:02,253 log 10840 16304 Not Found: /favicon.ico
+WARNING 2025-11-17 14:06:09,705 log 10840 16304 Not Found: /api/v1/docs/schema
+WARNING 2025-11-17 14:07:52,033 log 10840 16760 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 14:08:11,250 middleware 10840 16760 Login failed for ddo0y@vmlrwlukvicowsevulkmrwfd.zin from 127.0.0.1
+WARNING 2025-11-17 14:08:11,250 log 10840 16760 Bad Request: /api/v1/core/auth/login/
+WARNING 2025-11-17 14:08:34,028 middleware 10840 16760 Login failed for user@gmail.com from 127.0.0.1
+WARNING 2025-11-17 14:08:34,028 log 10840 16760 Bad Request: /api/v1/core/auth/login/
+WARNING 2025-11-17 14:08:43,513 middleware 10840 16760 Login failed for admin@gmail.com from 127.0.0.1
+WARNING 2025-11-17 14:08:43,513 log 10840 16760 Bad Request: /api/v1/core/auth/login/
+WARNING 2025-11-17 14:09:05,758 services 10840 16760 Failed login attempt for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:09:05,758 middleware 10840 16760 Login failed for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:09:05,759 log 10840 16760 Bad Request: /api/v1/core/auth/login/
+INFO 2025-11-17 14:09:34,493 services 10840 6640 Successful login for admin@example.com
+INFO 2025-11-17 14:09:34,493 middleware 10840 6640 Login successful for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:09:45,949 services 10840 16760 Failed login attempt for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:09:45,949 middleware 10840 16760 Login failed for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:09:45,949 log 10840 16760 Bad Request: /api/v1/core/auth/login/
+WARNING 2025-11-17 14:10:06,991 services 10840 16760 Failed login attempt for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:10:06,991 middleware 10840 16760 Login failed for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:10:06,992 log 10840 16760 Bad Request: /api/v1/core/auth/login/
+INFO 2025-11-17 14:12:27,420 autoreload 1164 11644 Watching for file changes with StatReloader
+WARNING 2025-11-17 14:12:30,313 services 1164 5988 Failed login attempt for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:12:30,313 middleware 1164 5988 Login failed for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:12:30,314 log 1164 5988 Bad Request: /api/v1/core/auth/login/
+INFO 2025-11-17 14:12:36,711 services 1164 5988 Successful login for admin@example.com
+INFO 2025-11-17 14:12:36,711 middleware 1164 5988 Login successful for admin@example.com from 127.0.0.1
+ERROR 2025-11-17 14:13:05,302 auth_views 1164 5988 Error expiring UserSession on logout: UserSession has no field named 'is_active'
+WARNING 2025-11-17 14:13:05,340 log 1164 5988 Unauthorized: /api/v1/core/auth/logout/
+INFO 2025-11-17 14:13:46,333 services 1164 5988 Successful login for admin@example.com
+INFO 2025-11-17 14:13:46,333 middleware 1164 5988 Login successful for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 14:13:52,350 log 1164 5988 Bad Request: /api/v1/core/auth/history/
+ERROR 2025-11-17 14:14:54,187 middleware 1164 5988 Unhandled exception: Manager isn't available; 'auth.User' has been swapped for 'accounts.User'
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\views.py", line 250, in dashboard_statistics
+    total_users = User.objects.count()
+                  ^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 196, in __get__
+    raise AttributeError(
+AttributeError: Manager isn't available; 'auth.User' has been swapped for 'accounts.User'
+ERROR 2025-11-17 14:14:54,236 log 1164 5988 Internal Server Error: /api/v1/core/dashboard/statistics/
+WARNING 2025-11-17 14:16:02,824 log 1164 5988 Bad Request: /api/v1/accounts/2fa/verify-setup/
+WARNING 2025-11-17 14:16:37,385 log 1164 5988 Bad Request: /api/v1/accounts/2fa/verify-login/
+INFO 2025-11-17 14:17:38,077 autoreload 1164 11644 D:\django-starter-template\django_starter_template\apps\core\views.py changed, reloading.
+INFO 2025-11-17 14:17:39,744 autoreload 9308 1680 Watching for file changes with StatReloader
+INFO 2025-11-17 14:25:04,699 autoreload 9308 1680 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 14:25:07,072 autoreload 14760 9892 Watching for file changes with StatReloader
+INFO 2025-11-17 14:25:10,325 autoreload 14760 9892 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 14:25:12,118 autoreload 6804 7564 Watching for file changes with StatReloader
+INFO 2025-11-17 14:25:25,175 autoreload 6804 7564 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-17 14:25:27,085 autoreload 9892 10648 Watching for file changes with StatReloader
+ERROR 2025-11-17 15:05:22,558 middleware 9892 21396 Unhandled exception: 'DisabledBackend' object has no attribute '_get_task_meta_for'
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\views.py", line 168, in task_status
+    if task_result.state == "PENDING":
+       ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\celery\result.py", line 503, in state
+    return self._get_task_meta()['status']
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\celery\result.py", line 442, in _get_task_meta
+    return self._maybe_set_cache(self.backend.get_task_meta(self.id))
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\celery\backends\base.py", line 608, in get_task_meta
+    meta = self._get_task_meta_for(task_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisabledBackend' object has no attribute '_get_task_meta_for'
+ERROR 2025-11-17 15:05:22,756 log 9892 21396 Internal Server Error: /api/v1/core/tasks/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/status/
+ERROR 2025-11-17 15:05:22,879 middleware 9892 21396 Unhandled exception: No module named 'accounts'
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\views.py", line 245, in dashboard_statistics
+    from accounts.models import User
+ModuleNotFoundError: No module named 'accounts'
+ERROR 2025-11-17 15:05:22,912 log 9892 21396 Internal Server Error: /api/v1/core/dashboard/statistics/
+INFO 2025-11-17 15:05:24,169 services 9892 21396 Successful login for admin@example.com
+INFO 2025-11-17 15:05:24,170 middleware 9892 21396 Login successful for admin@example.com from 127.0.0.1
+ERROR 2025-11-17 15:05:24,318 auth_views 9892 21396 Error expiring UserSession on logout: UserSession has no field named 'is_active'
+WARNING 2025-11-17 15:05:24,369 log 9892 21396 Unauthorized: /api/v1/core/auth/logout/
+WARNING 2025-11-17 15:05:24,483 log 9892 21396 Unauthorized: /api/v1/core/auth/user/
+WARNING 2025-11-17 15:05:24,600 log 9892 21396 Unauthorized: /api/v1/core/auth/user/
+WARNING 2025-11-17 15:05:24,744 log 9892 21396 Unauthorized: /api/v1/core/auth/user/
+WARNING 2025-11-17 15:05:24,882 log 9892 21396 Unauthorized: /api/v1/core/auth/password/change/
+ERROR 2025-11-17 15:05:24,954 middleware 9892 21396 Unhandled exception: `create()` must be implemented.
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\debug.py", line 143, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 273, in dispatch
+    return super().dispatch(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\auth_views.py", line 287, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 278, in post
+    serializer.save()
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\serializers.py", line 177, in create
+    raise NotImplementedError('`create()` must be implemented.')
+NotImplementedError: `create()` must be implemented.
+ERROR 2025-11-17 15:05:25,011 log 9892 21396 Internal Server Error: /api/v1/core/auth/password/reset/confirm/string/string/
+ERROR 2025-11-17 15:05:25,091 middleware 9892 21396 Unhandled exception: `create()` must be implemented.
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\core\auth_views.py", line 233, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\dj_rest_auth\views.py", line 250, in post
+    serializer.save()
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\serializers.py", line 177, in create
+    raise NotImplementedError('`create()` must be implemented.')
+NotImplementedError: `create()` must be implemented.
+ERROR 2025-11-17 15:05:25,133 log 9892 21396 Internal Server Error: /api/v1/core/auth/password/reset/
+WARNING 2025-11-17 15:05:25,260 log 9892 21396 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-17 15:05:25,350 log 9892 21396 Not Found: /api/v1/core/auth/registration/verify-email/
+ERROR 2025-11-17 15:05:25,589 auth_views 9892 21396 Registration error: 'RegisterView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+WARNING 2025-11-17 15:05:25,630 log 9892 21396 Bad Request: /api/v1/core/auth/registration/
+WARNING 2025-11-17 15:05:25,768 log 9892 21396 Unauthorized: /api/v1/core/auth/history/
+WARNING 2025-11-17 15:05:25,908 log 9892 21396 Unauthorized: /api/v1/accounts/users/my_permissions/
+WARNING 2025-11-17 15:05:26,017 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/add_permissions/
+WARNING 2025-11-17 15:05:26,157 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/approve/
+WARNING 2025-11-17 15:05:26,324 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/change_role/
+WARNING 2025-11-17 15:05:26,491 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/remove_permissions/
+WARNING 2025-11-17 15:05:26,618 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/update_permissions/
+WARNING 2025-11-17 15:05:26,753 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:26,888 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:26,995 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:27,134 log 9892 21396 Unauthorized: /api/v1/accounts/users/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:27,323 log 9892 21396 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 15:05:27,460 log 9892 21396 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 15:05:27,602 log 9892 21396 Unauthorized: /api/v1/accounts/user-profiles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:27,732 log 9892 21396 Unauthorized: /api/v1/accounts/user-profiles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:27,833 log 9892 21396 Unauthorized: /api/v1/accounts/user-profiles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:27,962 log 9892 21396 Unauthorized: /api/v1/accounts/user-profiles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:28,101 log 9892 21396 Unauthorized: /api/v1/accounts/user-profiles/
+WARNING 2025-11-17 15:05:28,255 log 9892 21396 Unauthorized: /api/v1/accounts/user-profiles/
+WARNING 2025-11-17 15:05:28,378 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/users/
+WARNING 2025-11-17 15:05:28,496 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:28,635 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:28,792 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:28,955 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:29,292 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/
+WARNING 2025-11-17 15:05:29,442 log 9892 21396 Unauthorized: /api/v1/accounts/user-roles/
+WARNING 2025-11-17 15:05:29,593 log 9892 21396 Unauthorized: /api/v1/accounts/user-role-histories/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:29,705 log 9892 21396 Unauthorized: /api/v1/accounts/user-role-histories/
+WARNING 2025-11-17 15:05:29,840 log 9892 21396 Unauthorized: /api/v1/accounts/user-sessions/active_count/
+WARNING 2025-11-17 15:05:29,963 log 9892 21396 Unauthorized: /api/v1/accounts/user-sessions/bulk_expire/
+WARNING 2025-11-17 15:05:30,070 log 9892 21396 Unauthorized: /api/v1/accounts/user-sessions/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/expire/
+WARNING 2025-11-17 15:05:30,252 log 9892 21396 Unauthorized: /api/v1/accounts/user-sessions/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:30,406 log 9892 21396 Unauthorized: /api/v1/accounts/user-sessions/
+WARNING 2025-11-17 15:05:30,512 log 9892 21396 Unauthorized: /api/v1/accounts/login-attempts/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:30,633 log 9892 21396 Unauthorized: /api/v1/accounts/login-attempts/
+WARNING 2025-11-17 15:05:30,764 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/by_app/
+WARNING 2025-11-17 15:05:31,087 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/by_model/
+WARNING 2025-11-17 15:05:31,219 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/9550/
+WARNING 2025-11-17 15:05:31,374 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/9550/
+WARNING 2025-11-17 15:05:31,532 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/9550/
+WARNING 2025-11-17 15:05:31,644 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/9550/
+WARNING 2025-11-17 15:05:31,795 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/
+WARNING 2025-11-17 15:05:31,895 log 9892 21396 Unauthorized: /api/v1/accounts/permissions/
+WARNING 2025-11-17 15:05:32,101 log 9892 21396 Bad Request: /api/v1/accounts/auth/register/
+WARNING 2025-11-17 15:05:32,928 middleware 9892 21396 Login failed for ddo0y@vmlrwlukvicowsevulkmrwfd.zin from 127.0.0.1
+WARNING 2025-11-17 15:05:32,930 log 9892 21396 Bad Request: /api/v1/accounts/auth/login/
+WARNING 2025-11-17 15:05:33,054 log 9892 21396 Unauthorized: /api/v1/accounts/statistics/
+WARNING 2025-11-17 15:05:33,191 log 9892 21396 Unauthorized: /api/v1/accounts/2fa/setup/
+WARNING 2025-11-17 15:05:33,332 log 9892 21396 Unauthorized: /api/v1/accounts/2fa/verify-setup/
+WARNING 2025-11-17 15:05:33,451 log 9892 21396 Unauthorized: /api/v1/accounts/2fa/verify-login/
+WARNING 2025-11-17 15:05:33,553 log 9892 21396 Unauthorized: /api/v1/accounts/2fa/disable/
+WARNING 2025-11-17 15:05:33,677 log 9892 21396 Unauthorized: /api/v1/accounts/2fa/regenerate-backup-codes/
+WARNING 2025-11-17 15:05:33,839 log 9892 21396 Unauthorized: /api/v1/accounts/2fa/status/
+WARNING 2025-11-17 15:05:33,943 log 9892 21396 Unauthorized: /api/v1/security/audit-logs/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:34,050 log 9892 21396 Unauthorized: /api/v1/security/audit-logs/
+WARNING 2025-11-17 15:05:34,164 log 9892 21396 Unauthorized: /api/v1/security/rate-limits/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/unblock/
+WARNING 2025-11-17 15:05:34,256 log 9892 21396 Unauthorized: /api/v1/security/rate-limits/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:34,354 log 9892 21396 Unauthorized: /api/v1/security/rate-limits/
+WARNING 2025-11-17 15:05:34,454 log 9892 21396 Unauthorized: /api/v1/security/security-events/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/mark_false_positive/
+WARNING 2025-11-17 15:05:34,544 log 9892 21396 Unauthorized: /api/v1/security/security-events/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/resolve/
+WARNING 2025-11-17 15:05:34,653 log 9892 21396 Unauthorized: /api/v1/security/security-events/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:34,752 log 9892 21396 Unauthorized: /api/v1/security/security-events/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:34,867 log 9892 21396 Unauthorized: /api/v1/security/security-events/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:34,967 log 9892 21396 Unauthorized: /api/v1/security/security-events/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:35,048 log 9892 21396 Unauthorized: /api/v1/security/security-events/
+WARNING 2025-11-17 15:05:35,140 log 9892 21396 Unauthorized: /api/v1/security/security-events/
+WARNING 2025-11-17 15:05:35,256 log 9892 21396 Unauthorized: /api/v1/security/security-settings/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:35,354 log 9892 21396 Unauthorized: /api/v1/security/security-settings/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:35,480 log 9892 21396 Unauthorized: /api/v1/security/security-settings/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:35,593 log 9892 21396 Unauthorized: /api/v1/security/security-settings/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:35,709 log 9892 21396 Unauthorized: /api/v1/security/security-settings/
+WARNING 2025-11-17 15:05:35,830 log 9892 21396 Unauthorized: /api/v1/security/security-settings/
+ERROR 2025-11-17 15:05:35,893 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 193, in activate
+    api_key = self.get_object()
+              ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,127 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/activate/
+ERROR 2025-11-17 15:05:36,204 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 185, in deactivate
+    api_key = self.get_object()
+              ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,248 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/deactivate/
+ERROR 2025-11-17 15:05:36,309 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 176, in regenerate
+    api_key = self.get_object()
+              ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,355 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/regenerate/
+ERROR 2025-11-17 15:05:36,417 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 65, in update
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,473 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+ERROR 2025-11-17 15:05:36,523 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 54, in retrieve
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,564 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+ERROR 2025-11-17 15:05:36,622 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 82, in partial_update
+    return self.update(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 65, in update
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,656 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+ERROR 2025-11-17 15:05:36,724 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 90, in destroy
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\generics.py", line 83, in get_object
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:36,762 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+ERROR 2025-11-17 15:05:36,804 middleware 9892 21396 Unhandled exception: Cannot assign "<django.contrib.auth.models.AnonymousUser object at 0x0000021A9F7DCD50>": "APIKey.user" must be a "User" instance.
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 171, in perform_create
+    serializer.save(user=self.request.user)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\serializers.py", line 113, in create
+    return super().create(validated_data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj = self.model(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\base.py", line 545, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 291, in __set__
+    raise ValueError(
+ValueError: Cannot assign "<django.contrib.auth.models.AnonymousUser object at 0x0000021A9F7DCD50>": "APIKey.user" must be a "User" instance.
+ERROR 2025-11-17 15:05:36,889 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/
+ERROR 2025-11-17 15:05:36,976 middleware 9892 21396 Unhandled exception: ['“AnonymousUser” is not a valid UUID.']
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2766, in to_python
+    return uuid.UUID(**{input_form: value})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\karan\AppData\Local\Programs\Python\Python311\Lib\uuid.py", line 175, in __init__
+    hex = hex.replace('urn:', '').replace('uuid:', '')
+          ^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'replace'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\rest_framework\mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\django_starter_template\apps\security\views.py", line 163, in get_queryset
+    return APIKey.objects.filter(user=self.request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1588, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\sql\query.py", line 1415, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\lookups.py", line 38, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\related_lookups.py", line 112, in get_prep_lookup
+    self.rhs = target_field.get_prep_value(self.rhs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2750, in get_prep_value
+    return self.to_python(value)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django-starter-template\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2768, in to_python
+    raise exceptions.ValidationError(
+django.core.exceptions.ValidationError: ['“AnonymousUser” is not a valid UUID.']
+ERROR 2025-11-17 15:05:37,023 log 9892 21396 Internal Server Error: /api/v1/security/api-keys/
+WARNING 2025-11-17 15:05:37,097 log 9892 21396 Unauthorized: /api/v1/security/dashboard/
+WARNING 2025-11-17 15:05:37,172 log 9892 21396 Unauthorized: /api/v1/security/statistics/
+WARNING 2025-11-17 15:05:37,248 log 9892 21396 Unauthorized: /api/v1/security/log-event/
+WARNING 2025-11-17 15:05:37,349 log 9892 21396 Unauthorized: /api/v1/notifications/templates/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:37,437 log 9892 21396 Unauthorized: /api/v1/notifications/templates/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:37,524 log 9892 21396 Unauthorized: /api/v1/notifications/templates/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:37,626 log 9892 21396 Unauthorized: /api/v1/notifications/templates/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:37,705 log 9892 21396 Unauthorized: /api/v1/notifications/templates/
+WARNING 2025-11-17 15:05:37,814 log 9892 21396 Unauthorized: /api/v1/notifications/templates/
+WARNING 2025-11-17 15:05:37,908 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/bulk_action/
+WARNING 2025-11-17 15:05:38,028 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/stats/
+WARNING 2025-11-17 15:05:38,154 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/mark_read/
+WARNING 2025-11-17 15:05:38,257 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/retry/
+WARNING 2025-11-17 15:05:38,384 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+WARNING 2025-11-17 15:05:38,493 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+INFO 2025-11-17 15:05:38,611 autoreload 9892 10648 D:\django-starter-template\django_starter_template\apps\core\views.py changed, reloading.
+WARNING 2025-11-17 15:05:38,612 log 9892 21396 Unauthorized: /api/v1/notifications/notifications/b28bdf6b-6700-8c5c-08e3-edd2cbff289e/
+INFO 2025-11-17 15:05:45,601 autoreload 19948 21356 Watching for file changes with StatReloader
+WARNING 2025-11-17 15:05:51,185 middleware 19948 16928 Slow request detected
+WARNING 2025-11-17 16:23:51,664 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:25:17,971 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:25:18,063 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:27:00,556 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:27:20,743 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:27:55,445 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:27:55,506 log 19948 19056 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:43:22,794 log 19948 18844 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:43:22,916 log 19948 18844 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:49:10,316 log 19948 19880 Not Found: /api/v1/core/auth/csrf-cookie/
+INFO 2025-11-17 16:49:11,999 services 19948 19880 Successful login for admin@example.com
+INFO 2025-11-17 16:49:11,999 middleware 19948 19880 Login successful for admin@example.com from 127.0.0.1
+WARNING 2025-11-17 16:54:25,600 log 19948 15788 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:54:25,675 log 19948 15788 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:56:36,924 log 19948 15788 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 16:56:36,988 log 19948 15788 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:22:13,923 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:22:35,963 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:22:36,007 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:22:37,848 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:22:37,887 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:09,038 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:09,070 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:19,739 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:19,781 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:30,525 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:30,637 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:36,959 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:23:45,834 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:25:03,416 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:25:12,622 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:26:35,731 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:27:22,038 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:28:38,506 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:29:06,234 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:29:07,838 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:29:20,725 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:32:05,336 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:32:45,739 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:33:22,451 log 19948 17944 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:34:45,170 log 19948 21064 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:35:57,080 log 19948 21064 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-17 17:35:58,364 log 19948 21064 Unauthorized: /api/v1/accounts/users/
