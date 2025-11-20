@@ -2,7 +2,7 @@
 Custom authentication URLs with properly tagged views
 """
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenRefreshView
+from dj_rest_auth.views import TokenRefreshView
 from drf_spectacular.utils import extend_schema
 from . import auth_views
 from .serializers import CustomTokenRefreshSerializer
@@ -16,7 +16,7 @@ class CustomTokenRefreshView(TokenRefreshView):
     @extend_schema(
         tags=['Authentication'],
         summary="Refresh JWT token",
-        description="Refresh JWT access token using refresh token.",
+        description="Refresh JWT access token using refresh token from httpOnly cookies. No request body required.",
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)

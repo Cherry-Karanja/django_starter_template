@@ -221,7 +221,7 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'refresh',
     'JWT_AUTH_REFRESH_COOKIE_PATH': '/',
     'JWT_AUTH_SECURE': False,
-    'JWT_AUTH_HTTPONLY': False,  # Changed to False for development to allow frontend cookie access
+    'JWT_AUTH_HTTPONLY': True,  # Changed to True for security - frontend cannot access httpOnly cookies
     'JWT_AUTH_SAMESITE': 'Lax',
     'JWT_AUTH_RETURN_EXPIRATION': False,
     'JWT_AUTH_COOKIE_USE_CSRF': False,
