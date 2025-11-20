@@ -1,0 +1,31 @@
+INFO 2025-11-18 10:39:05,782 autoreload 3380 21972 Watching for file changes with StatReloader
+INFO 2025-11-18 10:46:53,331 services 3380 20876 Successful login for admin@example.com
+INFO 2025-11-18 10:46:53,333 middleware 3380 20876 Login successful for admin@example.com from 127.0.0.1
+ERROR 2025-11-18 10:47:20,418 middleware 3380 20876 Failed to create/reactivate session record for user Admin User (admin@example.com): UNIQUE constraint failed: accounts_usersession.session_key
+INFO 2025-11-18 10:51:55,066 autoreload 15916 18956 Watching for file changes with StatReloader
+INFO 2025-11-18 10:56:47,204 autoreload 22520 13056 Watching for file changes with StatReloader
+INFO 2025-11-18 11:33:49,636 autoreload 22520 13056 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\api.py changed, reloading.
+INFO 2025-11-18 11:33:52,497 autoreload 15012 10140 Watching for file changes with StatReloader
+INFO 2025-11-18 11:34:45,466 autoreload 15012 10140 D:\django-starter-template\django_starter_template\apps\core\pagination.py changed, reloading.
+INFO 2025-11-18 11:34:48,205 autoreload 18060 15988 Watching for file changes with StatReloader
+INFO 2025-11-18 11:34:57,426 autoreload 18060 15988 D:\django-starter-template\django_starter_template\apps\core\pagination.py changed, reloading.
+INFO 2025-11-18 11:35:00,017 autoreload 5992 8136 Watching for file changes with StatReloader
+INFO 2025-11-18 11:35:11,034 autoreload 5992 8136 D:\django-starter-template\django_starter_template\apps\core\pagination.py changed, reloading.
+INFO 2025-11-18 11:35:13,901 autoreload 2112 21688 Watching for file changes with StatReloader
+INFO 2025-11-18 11:35:34,930 autoreload 2112 21688 D:\django-starter-template\django_starter_template\apps\core\pagination.py changed, reloading.
+INFO 2025-11-18 11:35:37,901 autoreload 4696 22224 Watching for file changes with StatReloader
+INFO 2025-11-18 12:55:34,539 autoreload 14688 13096 Watching for file changes with StatReloader
+WARNING 2025-11-18 13:02:07,016 log 4696 21200 Unauthorized: /api/v1/accounts/user-roles/
+INFO 2025-11-18 13:11:30,496 autoreload 4696 22224 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-18 13:11:30,540 autoreload 14688 13096 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-18 13:11:33,042 autoreload 22424 21216 Watching for file changes with StatReloader
+INFO 2025-11-18 13:11:33,049 autoreload 17732 9936 Watching for file changes with StatReloader
+INFO 2025-11-18 13:11:40,134 autoreload 17732 9936 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-18 13:11:40,175 autoreload 22424 21216 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-18 13:11:42,519 autoreload 16984 1684 Watching for file changes with StatReloader
+INFO 2025-11-18 13:11:42,553 autoreload 14088 3280 Watching for file changes with StatReloader
+INFO 2025-11-18 13:39:03,938 autoreload 14088 3280 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-18 13:39:04,409 autoreload 16984 1684 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-18 13:39:07,853 autoreload 8732 12792 Watching for file changes with StatReloader
+INFO 2025-11-18 13:39:07,853 autoreload 5840 1712 Watching for file changes with StatReloader
+INFO 2025-11-18 22:18:08,319 autoreload 22800 17612 Watching for file changes with StatReloader
