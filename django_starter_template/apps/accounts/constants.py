@@ -208,7 +208,7 @@ class APIConstants:
     MAX_PAGE_SIZE = 100
 
     # Ordering options
-    USER_ORDERING_FIELDS = ['created_at', 'last_login', 'email', 'first_name', 'last_name', 'employee_id', 'date_joined']
+    USER_ORDERING_FIELDS = ['created_at', 'last_login', 'email', 'first_name', 'last_name', 'employee_id']
     ROLE_ORDERING_FIELDS = ['name', 'created_at', 'is_active']
     PROFILE_ORDERING_FIELDS = ['created_at', 'updated_at', 'user__email']
     SESSION_ORDERING_FIELDS = ['created_at', 'last_activity', 'user__email']

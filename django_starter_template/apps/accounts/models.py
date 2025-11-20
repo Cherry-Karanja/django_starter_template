@@ -157,12 +157,12 @@ class User(AbstractUser, BaseModel):
 
     class Meta:
         app_label = 'accounts'
-        ordering = ['-date_joined']
+        ordering = ['-created_at']
         indexes = [
             models.Index(fields=['email']),
             models.Index(fields=['employee_id']),
             models.Index(fields=['is_active']),
-            models.Index(fields=['date_joined']),
+            models.Index(fields=['created_at']),
             models.Index(fields=['role']),
         ]
 

@@ -190,7 +190,7 @@ class UserListSerializer(serializers.ModelSerializer):
             'id', 'email', 'first_name', 'last_name', 'username', 'full_name',
             'department', 'role_display', 'is_active', 'is_approved', 'is_verified',
             'is_staff', 'location', 'is_staff_member',
-            'date_joined', 'last_login', 'created_at'
+            'last_login', 'created_at'
         )
 
     @extend_schema_field(serializers.CharField)
@@ -240,7 +240,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             'is_active', 'is_approved', 'is_verified', 'is_staff',
             'failed_login_attempts', 'account_locked_until', 'last_login_ip',
             'profile', 'permissions', 'role_permissions',
-            'date_joined', 'last_login', 'created_at', 'updated_at'
+            'created_at', 'last_login', 'updated_at'
         ]
 
     @extend_schema_field(serializers.CharField)
@@ -809,7 +809,7 @@ class UserManagementSerializer(serializers.ModelSerializer):
             'id', 'email', 'first_name', 'last_name', 'full_name',
             'employee_id', 'department', 'phone_number',
             'role', 'role_name', 'is_active', 'is_approved', 'is_verified',
-            'created_at', 'date_joined', 'last_login', 'failed_login_attempts',
+            'created_at', 'last_login', 'failed_login_attempts',
             'account_locked_until', 'password_changed_at', 'must_change_password'
         ]
         read_only_fields = ['id', 'email', 'created_at', 'last_login', 'failed_login_attempts',

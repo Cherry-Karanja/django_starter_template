@@ -38,7 +38,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         (_('Important dates'), {
-            'fields': ('last_login', 'date_joined', 'password_changed_at'),
+            'fields': ('last_login', 'created_at', 'password_changed_at'),
         }),
     )
 
@@ -51,7 +51,7 @@ class UserAdmin(BaseUserAdmin):
     )
 
     # Make some fields readonly
-    readonly_fields = ('date_joined', 'last_login', 'password_changed_at')
+    readonly_fields = ('created_at', 'last_login', 'password_changed_at')
 
     # Filter horizontal for many-to-many fields
     filter_horizontal = ('groups', 'user_permissions')
@@ -142,17 +142,16 @@ class UserAdmin(BaseUserAdmin):
 
     def created_at_display(self, obj):
         """Display created timestamp in configured timezone"""
-        if obj.date_joined:
+        if obj.created_at:
             # Convert to configured timezone
             from django.conf import settings
             import pytz
             tz = pytz.timezone(settings.TIME_ZONE)
-            local_time = obj.date_joined.astimezone(tz)
+            local_time = obj.created_at.astimezone(tz)
             return local_time.strftime('%Y-%m-%d %H:%M:%S %Z')
         return '-'
     created_at_display.short_description = 'Created'
-    created_at_display.admin_order_field = 'date_joined'
-
+    created_at_display.admin_order_field = 'created_at'
     # Bulk Actions
     def approve_users(self, request, queryset):
         """Bulk approve selected users"""
