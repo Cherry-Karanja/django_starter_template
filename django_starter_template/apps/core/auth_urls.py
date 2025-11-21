@@ -25,6 +25,15 @@ urlpatterns = [
     path('registration/', auth_views.RegisterView.as_view(), name='rest_register'),
     path('registration/verify-email/', auth_views.VerifyEmailView.as_view(), name='rest_verify_email'),
     path('registration/resend-email/', auth_views.ResendEmailVerificationView.as_view(), name='rest_resend_email'),
+
+    
+    # Two-Factor Authentication
+    path('2fa/setup/', auth_views.TwoFactorSetupView.as_view(), name='2fa-setup'),
+    path('2fa/verify-setup/', auth_views.TwoFactorVerifySetupView.as_view(), name='2fa-verify-setup'),
+    path('2fa/verify-login/', auth_views.TwoFactorVerifyLoginView.as_view(), name='2fa-verify-login'),
+    path('2fa/disable/', auth_views.TwoFactorDisableView.as_view(), name='2fa-disable'),
+    path('2fa/regenerate-backup-codes/', auth_views.TwoFactorRegenerateBackupCodesView.as_view(), name='2fa-regenerate-backup-codes'),
+    path('2fa/status/', auth_views.TwoFactorStatusView.as_view(), name='2fa-status'),
 ]
 
 urlpatterns += [

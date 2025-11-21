@@ -1,0 +1,290 @@
+INFO 2025-11-20 08:39:39,857 autoreload 20332 20376 Watching for file changes with StatReloader
+INFO 2025-11-20 08:40:16,204 services 20332 20128 Successful login for admin@example.com
+INFO 2025-11-20 08:40:16,204 middleware 20332 20128 Login successful for admin@example.com from 127.0.0.1
+INFO 2025-11-20 09:24:32,461 autoreload 20408 16864 Watching for file changes with StatReloader
+WARNING 2025-11-20 09:24:35,397 middleware 20408 13624 Slow request detected
+INFO 2025-11-20 09:30:16,190 autoreload 20408 16864 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\core.py changed, reloading.
+INFO 2025-11-20 09:30:17,557 autoreload 3816 9512 Watching for file changes with StatReloader
+INFO 2025-11-20 09:30:20,265 autoreload 3816 9512 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\core.py changed, reloading.
+DEBUG 2025-11-20 09:30:54,339 factory 10744 17260 Not in REPL -> leaving logger event level as is.
+DEBUG 2025-11-20 09:30:54,781 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.address`.
+DEBUG 2025-11-20 09:30:54,791 factory 10744 17260 Provider `faker.providers.address` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,799 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.automotive`.
+DEBUG 2025-11-20 09:30:54,805 factory 10744 17260 Provider `faker.providers.automotive` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,807 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.bank`.
+DEBUG 2025-11-20 09:30:54,810 factory 10744 17260 Specified locale `en_US` is not available for provider `faker.providers.bank`. Locale reset to `en_GB` for this provider.
+DEBUG 2025-11-20 09:30:54,812 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.barcode`.
+DEBUG 2025-11-20 09:30:54,813 factory 10744 17260 Provider `faker.providers.barcode` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,815 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.color`.
+DEBUG 2025-11-20 09:30:54,818 factory 10744 17260 Provider `faker.providers.color` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,819 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.company`.
+DEBUG 2025-11-20 09:30:54,823 factory 10744 17260 Provider `faker.providers.company` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,825 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.credit_card`.
+DEBUG 2025-11-20 09:30:54,826 factory 10744 17260 Provider `faker.providers.credit_card` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,827 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.currency`.
+DEBUG 2025-11-20 09:30:54,828 factory 10744 17260 Provider `faker.providers.currency` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,828 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.date_time`.
+DEBUG 2025-11-20 09:30:54,834 factory 10744 17260 Provider `faker.providers.date_time` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,835 factory 10744 17260 Provider `faker.providers.doi` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:30:54,835 factory 10744 17260 Provider `faker.providers.emoji` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:30:54,837 factory 10744 17260 Provider `faker.providers.file` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:30:54,837 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.geo`.
+DEBUG 2025-11-20 09:30:54,839 factory 10744 17260 Provider `faker.providers.geo` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,840 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.internet`.
+DEBUG 2025-11-20 09:30:54,841 factory 10744 17260 Provider `faker.providers.internet` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,845 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.isbn`.
+DEBUG 2025-11-20 09:30:54,845 factory 10744 17260 Provider `faker.providers.isbn` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,846 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.job`.
+DEBUG 2025-11-20 09:30:54,849 factory 10744 17260 Provider `faker.providers.job` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,851 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.lorem`.
+DEBUG 2025-11-20 09:30:54,853 factory 10744 17260 Provider `faker.providers.lorem` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,853 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.misc`.
+DEBUG 2025-11-20 09:30:54,855 factory 10744 17260 Provider `faker.providers.misc` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,856 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.passport`.
+DEBUG 2025-11-20 09:30:54,858 factory 10744 17260 Provider `faker.providers.passport` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,858 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.person`.
+DEBUG 2025-11-20 09:30:54,864 factory 10744 17260 Provider `faker.providers.person` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,866 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.phone_number`.
+DEBUG 2025-11-20 09:30:54,873 factory 10744 17260 Provider `faker.providers.phone_number` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,875 factory 10744 17260 Provider `faker.providers.profile` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:30:54,875 factory 10744 17260 Provider `faker.providers.python` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:30:54,875 factory 10744 17260 Provider `faker.providers.sbn` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:30:54,875 factory 10744 17260 Looking for locale `en_US` in provider `faker.providers.ssn`.
+DEBUG 2025-11-20 09:30:54,878 factory 10744 17260 Provider `faker.providers.ssn` has been localized to `en_US`.
+DEBUG 2025-11-20 09:30:54,878 factory 10744 17260 Provider `faker.providers.user_agent` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:15,299 factory 13532 3776 Not in REPL -> leaving logger event level as is.
+DEBUG 2025-11-20 09:34:16,267 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.address`.
+DEBUG 2025-11-20 09:34:16,277 factory 13532 3776 Provider `faker.providers.address` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,280 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.automotive`.
+DEBUG 2025-11-20 09:34:16,289 factory 13532 3776 Provider `faker.providers.automotive` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,292 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.bank`.
+DEBUG 2025-11-20 09:34:16,296 factory 13532 3776 Specified locale `en_US` is not available for provider `faker.providers.bank`. Locale reset to `en_GB` for this provider.
+DEBUG 2025-11-20 09:34:16,300 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.barcode`.
+DEBUG 2025-11-20 09:34:16,301 factory 13532 3776 Provider `faker.providers.barcode` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,303 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.color`.
+DEBUG 2025-11-20 09:34:16,309 factory 13532 3776 Provider `faker.providers.color` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,311 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.company`.
+DEBUG 2025-11-20 09:34:16,316 factory 13532 3776 Provider `faker.providers.company` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,318 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.credit_card`.
+DEBUG 2025-11-20 09:34:16,318 factory 13532 3776 Provider `faker.providers.credit_card` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,320 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.currency`.
+DEBUG 2025-11-20 09:34:16,327 factory 13532 3776 Provider `faker.providers.currency` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,329 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.date_time`.
+DEBUG 2025-11-20 09:34:16,332 factory 13532 3776 Provider `faker.providers.date_time` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,336 factory 13532 3776 Provider `faker.providers.doi` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:16,336 factory 13532 3776 Provider `faker.providers.emoji` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:16,337 factory 13532 3776 Provider `faker.providers.file` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:16,337 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.geo`.
+DEBUG 2025-11-20 09:34:16,340 factory 13532 3776 Provider `faker.providers.geo` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,343 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.internet`.
+DEBUG 2025-11-20 09:34:16,349 factory 13532 3776 Provider `faker.providers.internet` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,353 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.isbn`.
+DEBUG 2025-11-20 09:34:16,353 factory 13532 3776 Provider `faker.providers.isbn` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,356 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.job`.
+DEBUG 2025-11-20 09:34:16,363 factory 13532 3776 Provider `faker.providers.job` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,366 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.lorem`.
+DEBUG 2025-11-20 09:34:16,369 factory 13532 3776 Provider `faker.providers.lorem` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,370 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.misc`.
+DEBUG 2025-11-20 09:34:16,373 factory 13532 3776 Provider `faker.providers.misc` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,377 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.passport`.
+DEBUG 2025-11-20 09:34:16,378 factory 13532 3776 Provider `faker.providers.passport` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,378 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.person`.
+DEBUG 2025-11-20 09:34:16,388 factory 13532 3776 Provider `faker.providers.person` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,393 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.phone_number`.
+DEBUG 2025-11-20 09:34:16,401 factory 13532 3776 Provider `faker.providers.phone_number` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,402 factory 13532 3776 Provider `faker.providers.profile` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:16,403 factory 13532 3776 Provider `faker.providers.python` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:16,403 factory 13532 3776 Provider `faker.providers.sbn` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 09:34:16,403 factory 13532 3776 Looking for locale `en_US` in provider `faker.providers.ssn`.
+DEBUG 2025-11-20 09:34:16,410 factory 13532 3776 Provider `faker.providers.ssn` has been localized to `en_US`.
+DEBUG 2025-11-20 09:34:16,413 factory 13532 3776 Provider `faker.providers.user_agent` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:09,148 factory 19092 2716 Not in REPL -> leaving logger event level as is.
+DEBUG 2025-11-20 10:01:10,210 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.address`.
+DEBUG 2025-11-20 10:01:10,212 factory 19092 2716 Provider `faker.providers.address` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,218 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.automotive`.
+DEBUG 2025-11-20 10:01:10,221 factory 19092 2716 Provider `faker.providers.automotive` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,222 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.bank`.
+DEBUG 2025-11-20 10:01:10,227 factory 19092 2716 Specified locale `en_US` is not available for provider `faker.providers.bank`. Locale reset to `en_GB` for this provider.
+DEBUG 2025-11-20 10:01:10,230 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.barcode`.
+DEBUG 2025-11-20 10:01:10,230 factory 19092 2716 Provider `faker.providers.barcode` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,232 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.color`.
+DEBUG 2025-11-20 10:01:10,235 factory 19092 2716 Provider `faker.providers.color` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,236 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.company`.
+DEBUG 2025-11-20 10:01:10,239 factory 19092 2716 Provider `faker.providers.company` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,242 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.credit_card`.
+DEBUG 2025-11-20 10:01:10,244 factory 19092 2716 Provider `faker.providers.credit_card` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,246 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.currency`.
+DEBUG 2025-11-20 10:01:10,248 factory 19092 2716 Provider `faker.providers.currency` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,251 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.date_time`.
+DEBUG 2025-11-20 10:01:10,254 factory 19092 2716 Provider `faker.providers.date_time` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,255 factory 19092 2716 Provider `faker.providers.doi` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:10,256 factory 19092 2716 Provider `faker.providers.emoji` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:10,256 factory 19092 2716 Provider `faker.providers.file` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:10,256 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.geo`.
+DEBUG 2025-11-20 10:01:10,258 factory 19092 2716 Provider `faker.providers.geo` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,261 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.internet`.
+DEBUG 2025-11-20 10:01:10,266 factory 19092 2716 Provider `faker.providers.internet` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,269 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.isbn`.
+DEBUG 2025-11-20 10:01:10,270 factory 19092 2716 Provider `faker.providers.isbn` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,270 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.job`.
+DEBUG 2025-11-20 10:01:10,273 factory 19092 2716 Provider `faker.providers.job` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,273 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.lorem`.
+DEBUG 2025-11-20 10:01:10,279 factory 19092 2716 Provider `faker.providers.lorem` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,280 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.misc`.
+DEBUG 2025-11-20 10:01:10,280 factory 19092 2716 Provider `faker.providers.misc` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,283 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.passport`.
+DEBUG 2025-11-20 10:01:10,283 factory 19092 2716 Provider `faker.providers.passport` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,284 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.person`.
+DEBUG 2025-11-20 10:01:10,291 factory 19092 2716 Provider `faker.providers.person` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,295 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.phone_number`.
+DEBUG 2025-11-20 10:01:10,301 factory 19092 2716 Provider `faker.providers.phone_number` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,303 factory 19092 2716 Provider `faker.providers.profile` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:10,303 factory 19092 2716 Provider `faker.providers.python` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:10,303 factory 19092 2716 Provider `faker.providers.sbn` does not feature localization. Specified locale `en_US` is not used for this provider.
+DEBUG 2025-11-20 10:01:10,303 factory 19092 2716 Looking for locale `en_US` in provider `faker.providers.ssn`.
+DEBUG 2025-11-20 10:01:10,308 factory 19092 2716 Provider `faker.providers.ssn` has been localized to `en_US`.
+DEBUG 2025-11-20 10:01:10,309 factory 19092 2716 Provider `faker.providers.user_agent` does not feature localization. Specified locale `en_US` is not used for this provider.
+INFO 2025-11-20 10:02:10,939 autoreload 17260 15692 Watching for file changes with StatReloader
+WARNING 2025-11-20 10:08:39,093 log 17260 14056 Not Found: /favicon.ico
+WARNING 2025-11-20 10:09:03,452 log 17260 14056 Not Found: /api/v1/admin/
+WARNING 2025-11-20 10:20:32,415 log 17260 17372 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:20:32,767 log 17260 15992 Bad Request: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:21:52,342 log 17260 17372 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:21:52,533 log 17260 15992 Bad Request: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:22:16,887 log 17260 17372 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:22:17,143 log 17260 15992 Bad Request: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:29:00,882 log 17260 1680 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:29:01,245 log 17260 5188 Bad Request: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:30:14,737 log 17260 1680 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:30:15,019 log 17260 1680 Bad Request: /api/v1/core/auth/token/refresh/
+INFO 2025-11-20 10:32:00,949 autoreload 17260 15692 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\auth.py changed, reloading.
+INFO 2025-11-20 10:32:03,968 autoreload 20344 14444 Watching for file changes with StatReloader
+WARNING 2025-11-20 10:32:04,874 log 20344 12084 Not Found: /api/v1/admin/
+WARNING 2025-11-20 10:34:11,331 log 20344 13684 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:34:11,404 log 20344 13684 Bad Request: /api/v1/core/auth/token/refresh/
+INFO 2025-11-20 10:35:06,781 autoreload 20344 14444 D:\django-starter-template\django_starter_template\apps\core\serializers.py changed, reloading.
+INFO 2025-11-20 10:35:09,382 autoreload 9344 13912 Watching for file changes with StatReloader
+WARNING 2025-11-20 10:35:10,227 log 9344 20440 Not Found: /api/v1/admin/
+WARNING 2025-11-20 10:35:17,006 log 9344 19600 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 10:35:17,286 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:17,387 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:17,462 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:17,570 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:17,676 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:17,809 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:17,912 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,001 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,095 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,180 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,267 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,351 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,510 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,601 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,691 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,779 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,864 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:18,962 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,054 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,152 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,250 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,350 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,439 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,544 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,642 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,742 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:19,943 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:20,055 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:20,151 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:20,250 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 10:35:20,346 log 9344 19600 Unauthorized: /api/v1/core/auth/token/refresh/
+INFO 2025-11-20 10:35:20,364 autoreload 9344 13912 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:35:23,651 autoreload 14092 10544 Watching for file changes with StatReloader
+INFO 2025-11-20 10:36:54,993 autoreload 14092 10544 D:\django-starter-template\django_starter_template\django_starter_template\settingsConfig\auth.py changed, reloading.
+INFO 2025-11-20 10:36:58,427 autoreload 17808 9512 Watching for file changes with StatReloader
+INFO 2025-11-20 10:37:03,116 autoreload 17808 9512 D:\django-starter-template\django_starter_template\apps\core\serializers.py changed, reloading.
+INFO 2025-11-20 10:37:06,491 autoreload 20440 19448 Watching for file changes with StatReloader
+INFO 2025-11-20 10:37:23,479 autoreload 20440 19448 D:\django-starter-template\django_starter_template\apps\core\serializers.py changed, reloading.
+INFO 2025-11-20 10:37:26,308 autoreload 100 1656 Watching for file changes with StatReloader
+INFO 2025-11-20 10:38:29,867 autoreload 100 1656 D:\django-starter-template\django_starter_template\apps\core\serializers.py changed, reloading.
+INFO 2025-11-20 10:38:35,291 autoreload 14048 13700 Watching for file changes with StatReloader
+INFO 2025-11-20 10:57:20,579 autoreload 14048 13700 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:57:28,311 autoreload 21216 2312 Watching for file changes with StatReloader
+INFO 2025-11-20 10:58:00,506 autoreload 21216 2312 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:58:02,962 autoreload 2956 20908 Watching for file changes with StatReloader
+INFO 2025-11-20 10:58:10,136 autoreload 2956 20908 D:\django-starter-template\django_starter_template\apps\core\auth_views.py changed, reloading.
+INFO 2025-11-20 10:58:12,691 autoreload 15760 12444 Watching for file changes with StatReloader
+INFO 2025-11-20 10:58:19,563 autoreload 15760 12444 D:\django-starter-template\django_starter_template\apps\core\auth_views.py changed, reloading.
+INFO 2025-11-20 10:58:22,421 autoreload 16164 21268 Watching for file changes with StatReloader
+INFO 2025-11-20 10:58:35,889 autoreload 16164 21268 D:\django-starter-template\django_starter_template\apps\core\auth_views.py changed, reloading.
+INFO 2025-11-20 10:58:38,604 autoreload 19512 6668 Watching for file changes with StatReloader
+INFO 2025-11-20 10:58:44,510 autoreload 19512 6668 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:58:47,509 autoreload 20380 20992 Watching for file changes with StatReloader
+INFO 2025-11-20 10:58:55,048 autoreload 20380 20992 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:58:57,366 autoreload 20996 21196 Watching for file changes with StatReloader
+INFO 2025-11-20 10:59:42,794 autoreload 20996 21196 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:59:45,458 autoreload 17796 18648 Watching for file changes with StatReloader
+INFO 2025-11-20 10:59:55,269 autoreload 17796 18648 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 10:59:58,160 autoreload 16320 7680 Watching for file changes with StatReloader
+INFO 2025-11-20 11:00:01,663 autoreload 16320 7680 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 11:00:04,067 autoreload 20704 4396 Watching for file changes with StatReloader
+INFO 2025-11-20 11:00:44,243 autoreload 20704 4396 D:\django-starter-template\django_starter_template\apps\core\auth_views.py changed, reloading.
+INFO 2025-11-20 11:00:47,172 autoreload 15732 8144 Watching for file changes with StatReloader
+INFO 2025-11-20 11:00:52,326 autoreload 15732 8144 D:\django-starter-template\django_starter_template\apps\core\auth_views.py changed, reloading.
+INFO 2025-11-20 11:00:54,847 autoreload 20000 17528 Watching for file changes with StatReloader
+INFO 2025-11-20 11:01:04,208 autoreload 20000 17528 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 11:01:06,983 autoreload 17812 11316 Watching for file changes with StatReloader
+INFO 2025-11-20 11:02:01,109 autoreload 17812 11316 D:\django-starter-template\django_starter_template\apps\core\auth_views.py changed, reloading.
+INFO 2025-11-20 11:02:03,595 autoreload 12084 3808 Watching for file changes with StatReloader
+INFO 2025-11-20 11:02:17,401 autoreload 12084 3808 D:\django-starter-template\django_starter_template\apps\core\auth_urls.py changed, reloading.
+INFO 2025-11-20 11:02:20,424 autoreload 2248 17964 Watching for file changes with StatReloader
+WARNING 2025-11-20 11:07:00,147 log 2248 12708 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 11:07:00,401 log 2248 12708 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 11:07:18,134 log 2248 12708 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 11:07:18,452 log 2248 12708 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 11:14:55,527 log 2248 6076 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 11:14:55,622 log 2248 6076 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 11:19:29,137 log 2248 6076 Unauthorized: /api/v1/accounts/users/
+WARNING 2025-11-20 11:19:29,391 log 2248 6076 Unauthorized: /api/v1/core/auth/token/refresh/
+WARNING 2025-11-20 11:40:41,373 middleware 2248 9392 Login failed for admin@example.com from 127.0.0.1
+WARNING 2025-11-20 11:40:41,373 log 2248 9392 Bad Request: /api/v1/core/auth/login/
+INFO 2025-11-20 11:40:52,410 services 2248 9392 Successful login for admin@gmail.com
+INFO 2025-11-20 11:40:52,411 middleware 2248 9392 Login successful for admin@gmail.com from 127.0.0.1
+INFO 2025-11-20 11:56:23,003 autoreload 2248 17964 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-20 11:56:25,902 autoreload 5560 20488 Watching for file changes with StatReloader
+INFO 2025-11-20 11:56:35,165 autoreload 5560 20488 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-20 11:56:37,806 autoreload 14320 19112 Watching for file changes with StatReloader
+INFO 2025-11-20 11:56:45,818 autoreload 14320 19112 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-20 11:56:49,091 autoreload 6436 20496 Watching for file changes with StatReloader
+INFO 2025-11-20 11:56:57,609 autoreload 6436 20496 D:\django-starter-template\django_starter_template\apps\accounts\admin.py changed, reloading.
+INFO 2025-11-20 11:57:00,997 autoreload 2372 21236 Watching for file changes with StatReloader
+INFO 2025-11-20 11:57:17,347 autoreload 2372 21236 D:\django-starter-template\django_starter_template\apps\accounts\constants.py changed, reloading.
+INFO 2025-11-20 11:57:20,189 autoreload 18980 2816 Watching for file changes with StatReloader
+INFO 2025-11-20 11:57:28,314 autoreload 18980 2816 D:\django-starter-template\django_starter_template\apps\accounts\constants.py changed, reloading.
+INFO 2025-11-20 11:57:31,472 autoreload 15708 2496 Watching for file changes with StatReloader
+INFO 2025-11-20 11:57:34,888 autoreload 15708 2496 D:\django-starter-template\django_starter_template\apps\accounts\models.py changed, reloading.
+INFO 2025-11-20 11:57:38,158 autoreload 13196 15164 Watching for file changes with StatReloader
+INFO 2025-11-20 11:59:01,192 autoreload 13196 15164 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-20 11:59:03,864 autoreload 13800 1892 Watching for file changes with StatReloader
+INFO 2025-11-20 11:59:14,219 autoreload 13800 1892 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-20 11:59:16,809 autoreload 21440 14088 Watching for file changes with StatReloader
+INFO 2025-11-20 11:59:21,459 autoreload 21440 14088 D:\django-starter-template\django_starter_template\apps\accounts\serializers.py changed, reloading.
+INFO 2025-11-20 11:59:23,680 autoreload 21360 1068 Watching for file changes with StatReloader
+INFO 2025-11-20 12:01:01,170 autoreload 15832 12436 Watching for file changes with StatReloader
+WARNING 2025-11-20 13:12:28,296 log 15832 18124 Not Found: /api/v1/dashboard/stats/
+WARNING 2025-11-20 13:12:28,894 log 15832 18124 Not Found: /api/v1/dashboard/recent-activities/
+WARNING 2025-11-20 13:12:29,393 log 15832 10492 Not Found: /api/v1/dashboard/stats/
+WARNING 2025-11-20 13:12:29,393 log 15832 14532 Not Found: /api/v1/dashboard/system-status/
+WARNING 2025-11-20 13:12:29,471 log 15832 332 Not Found: /api/v1/notifications/notifications/unread_count/
+WARNING 2025-11-20 13:12:29,655 log 15832 14848 Not Found: /api/v1/dashboard/recent-activities/
+WARNING 2025-11-20 13:12:29,961 log 15832 332 Not Found: /api/v1/notifications/notifications/unread_count/
+WARNING 2025-11-20 13:12:29,970 log 15832 10492 Not Found: /api/v1/dashboard/system-status/
+WARNING 2025-11-20 13:16:32,918 log 15832 332 Not Found: /api/v1/dashboard/recent-activities/
+WARNING 2025-11-20 13:16:32,957 log 15832 14848 Not Found: /api/v1/dashboard/system-status/
+WARNING 2025-11-20 13:16:33,007 log 15832 10492 Not Found: /api/v1/dashboard/stats/
+WARNING 2025-11-20 13:16:33,097 log 15832 10492 Not Found: /api/v1/notifications/notifications/unread_count/
+WARNING 2025-11-20 13:53:22,460 log 15832 20160 Not Found: /api/v1/dashboard/stats/
+WARNING 2025-11-20 13:53:22,463 log 15832 15004 Not Found: /api/v1/dashboard/system-status/
+WARNING 2025-11-20 13:53:22,473 log 15832 332 Not Found: /api/v1/dashboard/recent-activities/
+WARNING 2025-11-20 13:53:22,583 log 15832 332 Not Found: /api/v1/notifications/notifications/unread_count/
+INFO 2025-11-20 14:34:17,538 autoreload 9512 14888 Watching for file changes with StatReloader
+WARNING 2025-11-20 14:35:00,471 log 9512 21960 Not Found: /api/accounts/roles

@@ -16,7 +16,7 @@ from dj_rest_auth.registration.views import (
     VerifyEmailView as BaseVerifyEmailView,
     ResendEmailVerificationView as BaseResendEmailVerificationView,
 )
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
 from drf_spectacular.types import OpenApiTypes
 from .serializers import (
     PasswordResetConfirmSerializer,
@@ -25,7 +25,17 @@ from .serializers import (
 )
 from .serializers import CustomTokenRefreshSerializer
 from dj_rest_auth.jwt_auth import get_refresh_view
+from .services import AuthenticationService, TwoFactorAuthService
+from .serializers import (
+    CustomRegisterSerializer, CustomLoginSerializer,
+    TwoFactorSetupSerializer, TwoFactorVerifySerializer, TwoFactorVerifyLoginSerializer,
+    TwoFactorStatusSerializer, TwoFactorBackupCodesSerializer
+)
 
+from apps.core.utils import get_client_ip
+from django.utils import timezone
+from rest_framework import status, permissions, views, filters, generics
+from rest_framework.response import Response
 
 # Create a custom TokenRefreshView with proper tags
 class CustomTokenRefreshView(get_refresh_view()):
@@ -53,23 +63,34 @@ class MessageResponseSerializer(serializers.Serializer):
 
 
 @extend_schema(
-    tags=['Authentication'],
-    summary="User authentication",
-    description="User login with email and password authentication."
+    tags=["Authentication"],
+    summary="Custom user login",
+    description="Login with email and password.",
+    request=CustomLoginSerializer,
+    responses={200: OpenApiTypes.OBJECT, 400: OpenApiResponse(description="Invalid credentials")}
 )
 class LoginView(BaseLoginView):
-    """
-    Custom login view with proper API documentation
-    """
-    authentication_classes = []  # Allow unauthenticated access
+    """Custom login view with 2FA support"""
+    serializer_class = CustomLoginSerializer
 
-    @extend_schema(
-        auth=[],
-        summary="User login",
-        description="Authenticate user with email and password. Returns JWT tokens for API access.",
-    )
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        """Handle login with 2FA support"""
+        # First, perform normal login
+        response = super().post(request, *args, **kwargs)
+
+        if response.status_code == 200:
+            # Login successful, check if 2FA is required
+            user = request.user
+            if user.is_otp_enabled() and user.otp_device.confirmed:
+                # 2FA is enabled, return special response indicating 2FA required
+                # Don't return the normal JWT tokens
+                return Response({
+                    'detail': '2FA verification required',
+                    'requires_2fa': True,
+                    'user_id': user.id
+                }, status=status.HTTP_200_OK)
+
+        return response
 
 
 @extend_schema(
@@ -87,7 +108,7 @@ class LogoutView(BaseLogoutView):
     @extend_schema(
         tags=['Authentication'],
         summary="User logout",
-        description="Logout user and invalidate JWT tokens.",
+        description="Logout user and blacklist JWT refresh token. Reads refresh token from httpOnly cookies. No request body required.",
         responses={200: LogoutResponseSerializer}
     )
     def post(self, request, *args, **kwargs):
@@ -117,13 +138,14 @@ class LogoutView(BaseLogoutView):
 @extend_schema(
     tags=['Authentication'],
     summary="User registration",
-    description="Register new user accounts with email verification."
+    description="Register new user accounts with email verification.",
+    request=CustomRegisterSerializer
 )
 class RegisterView(BaseRegisterView):
     """
     Custom registration view with proper API documentation
     """
-    serializer_class = None  # Will be determined by dj-rest-auth
+    serializer_class = CustomRegisterSerializer
 
     @extend_schema(
         tags=['Authentication'],
@@ -340,3 +362,174 @@ class ResendEmailVerificationView(BaseResendEmailVerificationView):
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+    
+    
+# Two-Factor Authentication Views
+@extend_schema(
+    tags=["Two-Factor Authentication"],
+    summary="Setup 2FA",
+    description="Initialize two-factor authentication setup for the current user.",
+    responses={200: TwoFactorSetupSerializer}
+)
+class TwoFactorSetupView(views.APIView):
+    """Setup 2FA for the current user"""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = TwoFactorSetupSerializer
+
+    def post(self, request):
+        """Setup 2FA and return QR code"""
+        try:
+            result = TwoFactorAuthService.setup_2fa(request.user)
+            serializer = TwoFactorSetupSerializer(result)
+            return Response(serializer.data)
+        except ValueError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    tags=["Two-Factor Authentication"],
+    summary="Verify 2FA setup",
+    description="Verify the 2FA setup with a token to confirm the device.",
+    request=TwoFactorVerifySerializer,
+    responses={200: TwoFactorBackupCodesSerializer}
+)
+class TwoFactorVerifySetupView(views.APIView):
+    """Verify 2FA setup with token"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        """Verify 2FA setup token"""
+        serializer = TwoFactorVerifySerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        result = TwoFactorAuthService.verify_2fa_setup(request.user, serializer.validated_data['token'])
+
+        if result['success']:
+            response_serializer = TwoFactorBackupCodesSerializer({'backup_codes': result['backup_codes']})
+            return Response(response_serializer.data)
+        else:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    tags=["Two-Factor Authentication"],
+    summary="Verify 2FA login",
+    description="Verify a 2FA token during login process.",
+    request=TwoFactorVerifyLoginSerializer,
+    responses={200: OpenApiTypes.OBJECT}
+)
+class TwoFactorVerifyLoginView(views.APIView):
+    """Verify 2FA token during login"""
+    permission_classes = [permissions.IsAuthenticated]  # User must be authenticated
+
+    def post(self, request):
+        """Verify 2FA token for login"""
+        serializer = TwoFactorVerifyLoginSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        token = serializer.validated_data.get('token')
+        backup_code = serializer.validated_data.get('backup_code')
+
+        # Try token first, then backup code
+        if token and TwoFactorAuthService.verify_2fa_token(request.user, token):
+            # Generate JWT tokens for successful 2FA verification
+            from rest_framework_simplejwt.tokens import RefreshToken
+
+            refresh = RefreshToken.for_user(request.user)
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+
+            return Response({
+                'verified': True,
+                'method': 'token',
+                'access': access_token,
+                'refresh': refresh_token,
+                'user': {
+                    'id': request.user.id,
+                    'email': request.user.email,
+                    'first_name': request.user.first_name,
+                    'last_name': request.user.last_name,
+                }
+            })
+        elif backup_code and request.user.verify_backup_code(backup_code):
+            # Generate JWT tokens for successful backup code verification
+            from rest_framework_simplejwt.tokens import RefreshToken
+
+            refresh = RefreshToken.for_user(request.user)
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+
+            return Response({
+                'verified': True,
+                'method': 'backup_code',
+                'access': access_token,
+                'refresh': refresh_token,
+                'user': {
+                    'id': request.user.id,
+                    'email': request.user.email,
+                    'first_name': request.user.first_name,
+                    'last_name': request.user.last_name,
+                }
+            })
+        else:
+            return Response({'error': 'Invalid token or backup code'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    tags=["Two-Factor Authentication"],
+    summary="Disable 2FA",
+    description="Disable two-factor authentication for the current user.",
+    responses={200: OpenApiTypes.OBJECT}
+)
+class TwoFactorDisableView(views.APIView):
+    """Disable 2FA for the current user"""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = None
+
+    def post(self, request):
+        """Disable 2FA"""
+        try:
+            TwoFactorAuthService.disable_2fa(request.user)
+            return Response({'message': '2FA disabled successfully'})
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    tags=["Two-Factor Authentication"],
+    summary="Regenerate backup codes",
+    description="Generate new backup codes for 2FA recovery.",
+    responses={200: TwoFactorBackupCodesSerializer}
+)
+class TwoFactorRegenerateBackupCodesView(views.APIView):
+    """Regenerate backup codes"""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = TwoFactorBackupCodesSerializer
+
+    def post(self, request):
+        """Regenerate backup codes"""
+        try:
+            backup_codes = TwoFactorAuthService.regenerate_backup_codes(request.user)
+            serializer = TwoFactorBackupCodesSerializer({'backup_codes': backup_codes})
+            return Response(serializer.data)
+        except ValueError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    tags=["Two-Factor Authentication"],
+    summary="Get 2FA status",
+    description="Get the current two-factor authentication status for the user.",
+    responses={200: TwoFactorStatusSerializer}
+)
+class TwoFactorStatusView(views.APIView):
+    """Get 2FA status for the current user"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        """Get 2FA status"""
+        status_data = TwoFactorAuthService.get_2fa_status(request.user)
+        serializer = TwoFactorStatusSerializer(status_data)
+        return Response(serializer.data)

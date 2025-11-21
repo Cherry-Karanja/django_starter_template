@@ -21,18 +21,6 @@ urlpatterns = [
     # Include router URLs
     path('', include(router.urls)),
 
-    # Authentication endpoints
-    path('auth/register/', views.CustomRegisterView.as_view(), name='custom-register'),
-    path('auth/login/', views.CustomLoginView.as_view(), name='custom-login'),
-
     # User Statistics
     path('statistics/', views.UserStatisticsView.as_view(), name='user-stats'),
-
-    # Two-Factor Authentication
-    path('2fa/setup/', views.TwoFactorSetupView.as_view(), name='2fa-setup'),
-    path('2fa/verify-setup/', views.TwoFactorVerifySetupView.as_view(), name='2fa-verify-setup'),
-    path('2fa/verify-login/', views.TwoFactorVerifyLoginView.as_view(), name='2fa-verify-login'),
-    path('2fa/disable/', views.TwoFactorDisableView.as_view(), name='2fa-disable'),
-    path('2fa/regenerate-backup-codes/', views.TwoFactorRegenerateBackupCodesView.as_view(), name='2fa-regenerate-backup-codes'),
-    path('2fa/status/', views.TwoFactorStatusView.as_view(), name='2fa-status'),
 ]

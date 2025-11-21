@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
 from .models import User, UserRole, UserProfile, LoginAttempt, UserSession, UserRoleHistory
-from .services import TwoFactorAuthService
+from apps.core.services import TwoFactorAuthService
 
 
 @admin.register(User)
