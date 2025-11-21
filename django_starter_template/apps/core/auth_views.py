@@ -460,6 +460,9 @@ class TwoFactorVerifySetupView(views.APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        # Refresh user from database to get updated relationships
+        request.user.refresh_from_db()
+
         result = TwoFactorAuthService.verify_2fa_setup(request.user, serializer.validated_data['token'])
 
         if result['success']:
@@ -587,6 +590,9 @@ class TwoFactorStatusView(views.APIView):
 
     def get(self, request):
         """Get 2FA status"""
+        # Refresh user from database to get updated relationships
+        request.user.refresh_from_db()
+        
         status_data = TwoFactorAuthService.get_2fa_status(request.user)
         serializer = TwoFactorStatusSerializer(status_data)
         return Response(serializer.data)

@@ -712,10 +712,11 @@ class TwoFactorAuthService:
     def verify_2fa_setup(user, token):
         """Verify 2FA setup with a token and confirm the device"""
         if not user.otp_device or user.otp_device.confirmed:
-            return False
+            return {'success': False}
 
         # Verify the token
-        if user.otp_device.verify_token(token):
+        verify_result = user.otp_device.verify_token(token)
+        if verify_result:
             # Confirm the device
             user.otp_device.confirmed = True
             user.otp_device.save()
