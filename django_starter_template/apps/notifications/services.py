@@ -132,27 +132,27 @@ class NotificationService:
         channels = []
 
         if template_type == NotificationTemplate.TYPE_EMAIL and preferences.email_enabled:
-            channels.append('email')
+            channels.append(NotificationDelivery.DELIVERY_EMAIL)
         elif template_type == NotificationTemplate.TYPE_SMS and preferences.sms_enabled:
-            channels.append('sms')
+            channels.append(NotificationDelivery.DELIVERY_SMS)
         elif template_type == NotificationTemplate.TYPE_PUSH and preferences.push_enabled:
-            channels.append('push')
+            channels.append(NotificationDelivery.DELIVERY_PUSH)
         elif template_type == NotificationTemplate.TYPE_IN_APP and preferences.in_app_enabled:
-            channels.append('in_app')
+            channels.append(NotificationDelivery.DELIVERY_IN_APP)
 
         return channels
 
     @staticmethod
     def _get_recipient_address(user: User, channel: str, preferences: NotificationPreference) -> str:
         """Get the recipient address for a delivery channel"""
-        if channel == 'email':
+        if channel == NotificationDelivery.DELIVERY_EMAIL:
             return preferences.email_address or user.email
-        elif channel == 'sms':
+        elif channel == NotificationDelivery.DELIVERY_SMS:
             return preferences.phone_number or ''
-        elif channel == 'push':
+        elif channel == NotificationDelivery.DELIVERY_PUSH:
             # Return device tokens as JSON string
             return str(preferences.device_tokens)
-        elif channel == 'in_app':
+        elif channel == NotificationDelivery.DELIVERY_IN_APP:
             return str(user.id)
         return ''
 
@@ -160,13 +160,13 @@ class NotificationService:
     def _deliver_to_channel(delivery: NotificationDelivery) -> bool:
         """Deliver notification to a specific channel"""
         try:
-            if delivery.delivery_method == 'email':
+            if delivery.delivery_method == NotificationDelivery.DELIVERY_EMAIL:
                 return NotificationService._send_email(delivery)
-            elif delivery.delivery_method == 'sms':
+            elif delivery.delivery_method == NotificationDelivery.DELIVERY_SMS:
                 return NotificationService._send_sms(delivery)
-            elif delivery.delivery_method == 'push':
+            elif delivery.delivery_method == NotificationDelivery.DELIVERY_PUSH:
                 return NotificationService._send_push(delivery)
-            elif delivery.delivery_method == 'in_app':
+            elif delivery.delivery_method == NotificationDelivery.DELIVERY_IN_APP:
                 return NotificationService._send_in_app(delivery)
             return False
         except Exception as e:

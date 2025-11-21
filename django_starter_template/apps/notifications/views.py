@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import transaction, models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes
 from .models import (
     NotificationTemplate,
     Notification,
@@ -30,15 +30,79 @@ from .permissions import (
     CanViewAnalytics,
     NotificationPreferencesPermission
 )
+from .schema import (
+    common_responses,
+    notification_responses,
+    template_parameters,
+    notification_parameters,
+    delivery_parameters,
+    statistics_responses,
+    bulk_operation_request,
+    send_notification_request,
+    mark_read_request
+)
 
 User = get_user_model()
 
 
-@extend_schema(
-    tags=["Notifications"],
-    summary="Notification template management",
-    description="Complete CRUD operations for notification templates and message formatting."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Notifications"],
+        summary="List notification templates",
+        description="Retrieve a list of notification templates with optional filtering by type.",
+        parameters=template_parameters,
+        responses={
+            200: NotificationTemplateSerializer(many=True),
+            **common_responses
+        }
+    ),
+    create=extend_schema(
+        tags=["Notifications"],
+        summary="Create notification template",
+        description="Create a new notification template for sending notifications.",
+        responses={
+            201: NotificationTemplateSerializer,
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Notifications"],
+        summary="Retrieve notification template",
+        description="Retrieve detailed information about a specific notification template.",
+        responses={
+            200: NotificationTemplateSerializer,
+            **common_responses
+        }
+    ),
+    update=extend_schema(
+        tags=["Notifications"],
+        summary="Update notification template",
+        description="Update an existing notification template.",
+        responses={
+            200: NotificationTemplateSerializer,
+            **common_responses
+        }
+    ),
+    partial_update=extend_schema(
+        tags=["Notifications"],
+        summary="Partial update notification template",
+        description="Partially update a notification template.",
+        responses={
+            200: NotificationTemplateSerializer,
+            **common_responses
+        }
+    ),
+    destroy=extend_schema(
+        tags=["Notifications"],
+        summary="Delete notification template",
+        description="Delete a notification template.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Notifications"])
 class NotificationTemplateViewSet(viewsets.ModelViewSet):
     """ViewSet for managing notification templates"""
 
@@ -67,11 +131,64 @@ class NotificationTemplateViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
-@extend_schema(
-    tags=["Notifications"],
-    summary="Notification management",
-    description="Complete CRUD operations for notifications including sending, status updates, and delivery tracking."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Notifications"],
+        summary="List notifications",
+        description="Retrieve a list of notifications with optional filtering by status, priority, and template type.",
+        parameters=notification_parameters,
+        responses={
+            200: NotificationSerializer(many=True),
+            **common_responses
+        }
+    ),
+    create=extend_schema(
+        tags=["Notifications"],
+        summary="Create notification",
+        description="Create a new notification manually.",
+        responses={
+            201: NotificationSerializer,
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Notifications"],
+        summary="Retrieve notification",
+        description="Retrieve detailed information about a specific notification.",
+        responses={
+            200: NotificationSerializer,
+            **common_responses
+        }
+    ),
+    update=extend_schema(
+        tags=["Notifications"],
+        summary="Update notification",
+        description="Update an existing notification.",
+        responses={
+            200: NotificationSerializer,
+            **common_responses
+        }
+    ),
+    partial_update=extend_schema(
+        tags=["Notifications"],
+        summary="Partial update notification",
+        description="Partially update a notification.",
+        responses={
+            200: NotificationSerializer,
+            **common_responses
+        }
+    ),
+    destroy=extend_schema(
+        tags=["Notifications"],
+        summary="Delete notification",
+        description="Delete a notification.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Notifications"])
 class NotificationViewSet(viewsets.ModelViewSet):
     """ViewSet for managing notifications"""
 
@@ -101,15 +218,13 @@ class NotificationViewSet(viewsets.ModelViewSet):
         return queryset.order_by('-created_at')
 
     @extend_schema(
-        parameters=[
-            OpenApiParameter(name='status', type=str, required=False),
-            OpenApiParameter(name='priority', type=str, required=False),
-            OpenApiParameter(name='template_type', type=str, required=False),
-        ]
+        summary="Mark notification as read",
+        description="Mark a specific notification as read and update its delivery status.",
+        responses={
+            200: NotificationSerializer,
+            **common_responses
+        }
     )
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-
     @action(detail=True, methods=['post'])
     def mark_read(self, request, pk=None):
         """Mark a notification as read"""
@@ -120,6 +235,15 @@ class NotificationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(notification)
         return Response(serializer.data)
 
+    @extend_schema(
+        summary="Retry failed notification",
+        description="Retry sending a notification that previously failed.",
+        responses={
+            200: NotificationSerializer,
+            400: OpenApiTypes.OBJECT,
+            **common_responses
+        }
+    )
     @action(detail=True, methods=['post'])
     def retry(self, request, pk=None):
         """Retry sending a failed notification"""
@@ -144,6 +268,15 @@ class NotificationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(notification)
         return Response(serializer.data)
 
+    @extend_schema(
+        summary="Bulk notification actions",
+        description="Perform bulk operations on multiple notifications (cancel, retry, mark as delivered).",
+        request=bulk_operation_request,
+        responses={
+            200: OpenApiTypes.OBJECT,
+            **common_responses
+        }
+    )
     @action(detail=False, methods=['post'])
     def bulk_action(self, request):
         """Perform bulk actions on notifications"""
@@ -174,6 +307,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
         return Response({'message': _(f'Bulk {action} completed')})
 
+    @extend_schema(
+        summary="Notification statistics",
+        description="Get comprehensive notification statistics including totals and status breakdowns.",
+        responses=statistics_responses
+    )
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def stats(self, request):
         """Get notification statistics for the current user"""
@@ -195,11 +333,28 @@ class NotificationViewSet(viewsets.ModelViewSet):
         })
 
 
-@extend_schema(
-    tags=["Notifications"],
-    summary="Notification delivery management",
-    description="Read-only operations for viewing notification delivery records and tracking status."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Notifications"],
+        summary="List notification deliveries",
+        description="Retrieve a list of notification delivery records with optional filtering.",
+        parameters=delivery_parameters,
+        responses={
+            200: NotificationDeliverySerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Notifications"],
+        summary="Retrieve notification delivery",
+        description="Retrieve detailed information about a specific notification delivery record.",
+        responses={
+            200: NotificationDeliverySerializer,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Notifications"])
 class NotificationDeliveryViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet for viewing notification delivery records"""
 
@@ -223,11 +378,36 @@ class NotificationDeliveryViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset.order_by('-created_at')
 
 
-@extend_schema(
-    tags=["Notifications"],
-    summary="Notification preference management",
-    description="Operations for managing user notification preferences and delivery settings."
+@extend_schema_view(
+    retrieve=extend_schema(
+        tags=["Notifications"],
+        summary="Retrieve notification preferences",
+        description="Retrieve the current user's notification preferences.",
+        responses={
+            200: NotificationPreferenceSerializer,
+            **common_responses
+        }
+    ),
+    update=extend_schema(
+        tags=["Notifications"],
+        summary="Update notification preferences",
+        description="Update the current user's notification preferences.",
+        responses={
+            200: NotificationPreferenceSerializer,
+            **common_responses
+        }
+    ),
+    partial_update=extend_schema(
+        tags=["Notifications"],
+        summary="Partial update notification preferences",
+        description="Partially update the current user's notification preferences.",
+        responses={
+            200: NotificationPreferenceSerializer,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Notifications"])
 class NotificationPreferenceViewSet(mixins.RetrieveModelMixin,
                                    mixins.UpdateModelMixin,
                                    viewsets.GenericViewSet):
@@ -258,11 +438,27 @@ class NotificationPreferenceViewSet(mixins.RetrieveModelMixin,
         return obj
 
 
-@extend_schema(
-    tags=["Notifications"],
-    summary="Notification event management",
-    description="Read-only operations for viewing notification events and system activity logs."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Notifications"],
+        summary="List notification events",
+        description="Retrieve a list of notification events and system activity logs.",
+        responses={
+            200: NotificationEventSerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Notifications"],
+        summary="Retrieve notification event",
+        description="Retrieve detailed information about a specific notification event.",
+        responses={
+            200: NotificationEventSerializer,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Notifications"])
 class NotificationEventViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet for viewing notification events"""
 
@@ -275,8 +471,11 @@ class NotificationEventViewSet(viewsets.ReadOnlyModelViewSet):
     tags=["Notifications"],
     summary="Send notification",
     description="Send notifications to multiple recipients using a notification template.",
-    request=SendNotificationSerializer,
-    responses={201: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT}
+    request=send_notification_request,
+    responses={
+        201: OpenApiTypes.OBJECT,
+        **common_responses
+    }
 )
 @api_view(['POST'])
 @permission_classes([CanManageNotifications])
@@ -323,7 +522,10 @@ def send_notification(request):
         OpenApiParameter(name='page', type=int, location=OpenApiParameter.QUERY, description='Page number'),
         OpenApiParameter(name='page_size', type=int, location=OpenApiParameter.QUERY, description='Items per page (max 100)')
     ],
-    responses={200: OpenApiTypes.OBJECT}
+    responses={
+        200: OpenApiTypes.OBJECT,
+        **common_responses
+    }
 )
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -359,8 +561,8 @@ def user_notifications(request):
 @extend_schema(
     tags=["Notifications"],
     summary="Get notification statistics",
-    description="Returns statistics about notifications including totals and recent activity.",
-    responses={200: OpenApiTypes.OBJECT}
+    description="Returns comprehensive statistics about notifications including totals and recent activity.",
+    responses=statistics_responses
 )
 @api_view(['GET'])
 @permission_classes([CanViewAnalytics])
@@ -399,8 +601,11 @@ def notification_stats(request):
     tags=["Notifications"],
     summary="Mark notifications as read",
     description="Mark multiple notifications as read for the current user.",
-    request=OpenApiTypes.OBJECT,
-    responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT}
+    request=mark_read_request,
+    responses={
+        200: OpenApiTypes.OBJECT,
+        **common_responses
+    }
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

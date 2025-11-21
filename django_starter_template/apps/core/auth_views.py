@@ -25,7 +25,7 @@ from .serializers import (
 )
 from .serializers import CustomTokenRefreshSerializer
 from dj_rest_auth.jwt_auth import get_refresh_view
-from .services import AuthenticationService, TwoFactorAuthService
+from .services import TwoFactorAuthService
 from .serializers import (
     CustomRegisterSerializer, CustomLoginSerializer,
     TwoFactorSetupSerializer, TwoFactorVerifySerializer, TwoFactorVerifyLoginSerializer,
@@ -67,7 +67,7 @@ class MessageResponseSerializer(serializers.Serializer):
     summary="Custom user login",
     description="Login with email and password.",
     request=CustomLoginSerializer,
-    responses={200: OpenApiTypes.OBJECT, 400: OpenApiResponse(description="Invalid credentials")}
+    responses={200: OpenApiTypes.OBJECT, 400: {"description": "Invalid credentials"}}
 )
 class LoginView(BaseLoginView):
     """Custom login view with 2FA support"""

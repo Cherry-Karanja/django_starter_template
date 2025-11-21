@@ -37,15 +37,22 @@ class NotificationTemplate(BaseModel):
     )
 
     # Priority levels
+    PRIORITY_LOW = 'low'
+    PRIORITY_MEDIUM = 'medium'
+    PRIORITY_HIGH = 'high'
+    PRIORITY_URGENT = 'urgent'
+
+    PRIORITY_CHOICES = [
+        (PRIORITY_LOW, _('Low')),
+        (PRIORITY_MEDIUM, _('Medium')),
+        (PRIORITY_HIGH, _('High')),
+        (PRIORITY_URGENT, _('Urgent')),
+    ]
+
     priority = models.CharField(
         max_length=10,
-        choices=[
-            ('low', _('Low')),
-            ('medium', _('Medium')),
-            ('high', _('High')),
-            ('urgent', _('Urgent')),
-        ],
-        default='medium'
+        choices=PRIORITY_CHOICES,
+        default=PRIORITY_MEDIUM
     )
 
     class Meta:
@@ -144,6 +151,34 @@ class Notification(BaseModel):
 class NotificationDelivery(BaseModel):
     """Tracks delivery attempts for notifications"""
 
+    # Delivery methods
+    DELIVERY_EMAIL = 'email'
+    DELIVERY_SMS = 'sms'
+    DELIVERY_PUSH = 'push'
+    DELIVERY_IN_APP = 'in_app'
+
+    DELIVERY_METHOD_CHOICES = [
+        (DELIVERY_EMAIL, _('Email')),
+        (DELIVERY_SMS, _('SMS')),
+        (DELIVERY_PUSH, _('Push')),
+        (DELIVERY_IN_APP, _('In-App')),
+    ]
+
+    # Delivery status
+    STATUS_PENDING = 'pending'
+    STATUS_SENT = 'sent'
+    STATUS_DELIVERED = 'delivered'
+    STATUS_FAILED = 'failed'
+    STATUS_BOUNCED = 'bounced'
+
+    STATUS_CHOICES = [
+        (STATUS_PENDING, _('Pending')),
+        (STATUS_SENT, _('Sent')),
+        (STATUS_DELIVERED, _('Delivered')),
+        (STATUS_FAILED, _('Failed')),
+        (STATUS_BOUNCED, _('Bounced')),
+    ]
+
     notification = models.ForeignKey(
         Notification,
         on_delete=models.CASCADE,
@@ -153,24 +188,13 @@ class NotificationDelivery(BaseModel):
     # Delivery method and status
     delivery_method = models.CharField(
         max_length=20,
-        choices=[
-            ('email', _('Email')),
-            ('sms', _('SMS')),
-            ('push', _('Push')),
-            ('in_app', _('In-App')),
-        ]
+        choices=DELIVERY_METHOD_CHOICES
     )
 
     status = models.CharField(
         max_length=20,
-        choices=[
-            ('pending', _('Pending')),
-            ('sent', _('Sent')),
-            ('delivered', _('Delivered')),
-            ('failed', _('Failed')),
-            ('bounced', _('Bounced')),
-        ],
-        default='pending'
+        choices=STATUS_CHOICES,
+        default=STATUS_PENDING
     )
 
     # Delivery details

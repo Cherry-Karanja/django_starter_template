@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from apps.core.models import TimestampedModel, AuditMixin, SoftDeleteMixin, BaseModel
+from .constants import UserStatusConstants
 from django_otp.plugins.otp_totp.models import TOTPDevice
 import uuid
 import pytz
@@ -347,13 +348,8 @@ class UserProfile(TimestampedModel, AuditMixin, SoftDeleteMixin):
     # Status and approval
     status = models.CharField(
         max_length=20,
-        choices=[
-            ('pending', _('Pending Approval')),
-            ('approved', _('Approved')),
-            ('rejected', _('Rejected')),
-            ('suspended', _('Suspended')),
-        ],
-        default='pending',
+        choices=UserStatusConstants.STATUS_CHOICES,
+        default=UserStatusConstants.PENDING,
         help_text=_("User approval status")
     )
 
@@ -572,7 +568,7 @@ class UserSession(TimestampedModel, AuditMixin):
             created_via: How this session was created (login, middleware_recovery, etc.)
         """
         from apps.core.utils import get_client_ip
-        from .services import DeviceDetectionService, GeoIPService
+        from apps.core.services import DeviceDetectionService, GeoIPService
         from django.contrib.sessions.models import Session
         
         session_key = request.session.session_key

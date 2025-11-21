@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db.models import Count, Q
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
-from drf_spectacular.utils import extend_schema, OpenApiTypes
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes
 from .models import AuditLog, RateLimit, SecurityEvent, SecuritySettings, APIKey
 from .serializers import (
     AuditLogSerializer, RateLimitSerializer, SecurityEventSerializer,
@@ -19,12 +19,42 @@ from .permissions import (
 )
 from apps.accounts.models import User, UserSession, LoginAttempt
 
-
-@extend_schema(
-    tags=["Security"],
-    summary="Audit log management",
-    description="Read-only operations for viewing audit logs and security events."
+from .schema import (
+    common_responses,
+    security_responses,
+    audit_log_parameters,
+    rate_limit_parameters,
+    security_event_parameters,
+    security_settings_parameters,
+    api_key_parameters,
+    dashboard_response,
+    log_security_event_request,
+    resolve_event_request
 )
+
+
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Security"],
+        summary="List audit logs",
+        description="Retrieve a list of audit logs with optional filtering by event type, severity, user, and date range.",
+        parameters=audit_log_parameters,
+        responses={
+            200: AuditLogSerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Security"],
+        summary="Retrieve audit log",
+        description="Retrieve detailed information about a specific audit log entry.",
+        responses={
+            200: AuditLogSerializer,
+            **common_responses
+        }
+    )
+)
+@extend_schema(tags=["Security"])
 class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet for audit logs"""
 
@@ -55,11 +85,58 @@ class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
-@extend_schema(
-    tags=["Security"],
-    summary="Rate limit management",
-    description="Read-only operations for viewing rate limits and blocking abusive requests."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Security"],
+        summary="List rate limits",
+        description="Retrieve a list of active rate limits with optional filtering by limit type, endpoint, and block status.",
+        parameters=[
+            OpenApiParameter(
+                name="limit_type",
+                type=OpenApiTypes.STR,
+                enum=['user', 'ip', 'endpoint'],
+                description="Filter by rate limit type",
+                required=False
+            ),
+            OpenApiParameter(
+                name="is_blocked",
+                type=OpenApiTypes.BOOL,
+                description="Filter by blocked status",
+                required=False
+            ),
+            OpenApiParameter(
+                name="endpoint",
+                type=OpenApiTypes.STR,
+                description="Filter by endpoint path",
+                required=False
+            ),
+        ],
+        responses={
+            200: RateLimitSerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Security"],
+        summary="Retrieve rate limit",
+        description="Retrieve detailed information about a specific rate limit entry.",
+        responses={
+            200: RateLimitSerializer,
+            **common_responses
+        }
+    ),
+    unblock=extend_schema(
+        tags=["Security"],
+        summary="Unblock rate limit",
+        description="Remove the block status from a rate limit entry.",
+        request=None,
+        responses={
+            200: OpenApiTypes.OBJECT,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Security"])
 class RateLimitViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet for rate limits"""
 
@@ -84,11 +161,87 @@ class RateLimitViewSet(viewsets.ReadOnlyModelViewSet):
         return Response({'status': 'unblocked'})
 
 
-@extend_schema(
-    tags=["Security"],
-    summary="Security event management",
-    description="Complete CRUD operations for security events including incident tracking and resolution."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Security"],
+        summary="List security events",
+        description="Retrieve a list of security events with optional filtering by event type, status, severity, and user.",
+        parameters=security_event_parameters,
+        responses={
+            200: SecurityEventSerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Security"],
+        summary="Retrieve security event",
+        description="Retrieve detailed information about a specific security event.",
+        responses={
+            200: SecurityEventSerializer,
+            **common_responses
+        }
+    ),
+    create=extend_schema(
+        tags=["Security"],
+        summary="Create security event",
+        description="Create a new security event for incident tracking.",
+        request=SecurityEventSerializer,
+        responses={
+            201: SecurityEventSerializer,
+            **common_responses
+        }
+    ),
+    update=extend_schema(
+        tags=["Security"],
+        summary="Update security event",
+        description="Update an existing security event.",
+        request=SecurityEventSerializer,
+        responses={
+            200: SecurityEventSerializer,
+            **common_responses
+        }
+    ),
+    partial_update=extend_schema(
+        tags=["Security"],
+        summary="Partial update security event",
+        description="Partially update an existing security event.",
+        request=SecurityEventSerializer,
+        responses={
+            200: SecurityEventSerializer,
+            **common_responses
+        }
+    ),
+    destroy=extend_schema(
+        tags=["Security"],
+        summary="Delete security event",
+        description="Delete a security event.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    ),
+    resolve=extend_schema(
+        tags=["Security"],
+        summary="Resolve security event",
+        description="Mark a security event as resolved with optional notes.",
+        request=resolve_event_request,
+        responses={
+            200: SecurityEventSerializer,
+            **common_responses
+        }
+    ),
+    mark_false_positive=extend_schema(
+        tags=["Security"],
+        summary="Mark as false positive",
+        description="Mark a security event as a false positive.",
+        request=None,
+        responses={
+            200: SecurityEventSerializer,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Security"])
 class SecurityEventViewSet(viewsets.ModelViewSet):
     """ViewSet for security events"""
 
@@ -121,11 +274,67 @@ class SecurityEventViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-@extend_schema(
-    tags=["Security"],
-    summary="Security settings management",
-    description="Complete CRUD operations for security configuration and policy settings."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Security"],
+        summary="List security settings",
+        description="Retrieve a list of security settings with optional filtering by setting type and enabled status.",
+        parameters=security_settings_parameters,
+        responses={
+            200: SecuritySettingsSerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Security"],
+        summary="Retrieve security setting",
+        description="Retrieve detailed information about a specific security setting.",
+        responses={
+            200: SecuritySettingsSerializer,
+            **common_responses
+        }
+    ),
+    create=extend_schema(
+        tags=["Security"],
+        summary="Create security setting",
+        description="Create a new security setting for system configuration.",
+        request=SecuritySettingsSerializer,
+        responses={
+            201: SecuritySettingsSerializer,
+            **common_responses
+        }
+    ),
+    update=extend_schema(
+        tags=["Security"],
+        summary="Update security setting",
+        description="Update an existing security setting.",
+        request=SecuritySettingsSerializer,
+        responses={
+            200: SecuritySettingsSerializer,
+            **common_responses
+        }
+    ),
+    partial_update=extend_schema(
+        tags=["Security"],
+        summary="Partial update security setting",
+        description="Partially update an existing security setting.",
+        request=SecuritySettingsSerializer,
+        responses={
+            200: SecuritySettingsSerializer,
+            **common_responses
+        }
+    ),
+    destroy=extend_schema(
+        tags=["Security"],
+        summary="Delete security setting",
+        description="Delete a security setting.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Security"])
 class SecuritySettingsViewSet(viewsets.ModelViewSet):
     """ViewSet for security settings"""
 
@@ -140,11 +349,67 @@ class SecuritySettingsViewSet(viewsets.ModelViewSet):
         return SecuritySettings.objects.all()
 
 
-@extend_schema(
-    tags=["Security"],
-    summary="API key management",
-    description="Complete CRUD operations for API key management and access control."
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Security"],
+        summary="List API keys",
+        description="Retrieve a list of API keys with optional filtering by key type and active status. Users can only see their own keys unless they have security admin permissions.",
+        parameters=api_key_parameters,
+        responses={
+            200: APIKeySerializer(many=True),
+            **common_responses
+        }
+    ),
+    retrieve=extend_schema(
+        tags=["Security"],
+        summary="Retrieve API key",
+        description="Retrieve detailed information about a specific API key.",
+        responses={
+            200: APIKeySerializer,
+            **common_responses
+        }
+    ),
+    create=extend_schema(
+        tags=["Security"],
+        summary="Create API key",
+        description="Create a new API key for programmatic access.",
+        request=APIKeyCreateSerializer,
+        responses={
+            201: APIKeySerializer,
+            **common_responses
+        }
+    ),
+    update=extend_schema(
+        tags=["Security"],
+        summary="Update API key",
+        description="Update an existing API key.",
+        request=APIKeySerializer,
+        responses={
+            200: APIKeySerializer,
+            **common_responses
+        }
+    ),
+    partial_update=extend_schema(
+        tags=["Security"],
+        summary="Partial update API key",
+        description="Partially update an existing API key.",
+        request=APIKeySerializer,
+        responses={
+            200: APIKeySerializer,
+            **common_responses
+        }
+    ),
+    destroy=extend_schema(
+        tags=["Security"],
+        summary="Delete API key",
+        description="Delete an API key.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    )
 )
+@extend_schema(tags=["Security"])
 class APIKeyViewSet(viewsets.ModelViewSet):
     """ViewSet for API keys"""
 
@@ -171,6 +436,16 @@ class APIKeyViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     @action(detail=True, methods=['post'])
+    @extend_schema(
+        tags=["Security"],
+        summary="Regenerate API key",
+        description="Generate a new API key value for an existing API key entry.",
+        request=None,
+        responses={
+            200: APIKeySerializer,
+            **common_responses
+        }
+    )
     def regenerate(self, request, pk=None):
         """Regenerate API key"""
         api_key = self.get_object()
@@ -180,6 +455,16 @@ class APIKeyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
+    @extend_schema(
+        tags=["Security"],
+        summary="Deactivate API key",
+        description="Deactivate an API key to prevent its use.",
+        request=None,
+        responses={
+            200: OpenApiTypes.OBJECT,
+            **common_responses
+        }
+    )
     def deactivate(self, request, pk=None):
         """Deactivate API key"""
         api_key = self.get_object()
@@ -188,6 +473,16 @@ class APIKeyViewSet(viewsets.ModelViewSet):
         return Response({'status': 'deactivated'})
 
     @action(detail=True, methods=['post'])
+    @extend_schema(
+        tags=["Security"],
+        summary="Activate API key",
+        description="Activate a previously deactivated API key.",
+        request=None,
+        responses={
+            200: OpenApiTypes.OBJECT,
+            **common_responses
+        }
+    )
     def activate(self, request, pk=None):
         """Activate API key"""
         api_key = self.get_object()
@@ -200,7 +495,10 @@ class APIKeyViewSet(viewsets.ModelViewSet):
     tags=["Security"],
     summary="Get security dashboard",
     description="Returns comprehensive security dashboard data including audit logs, security events, rate limiting, 2FA statistics, session data, and threat intelligence.",
-    responses={200: SecurityDashboardSerializer}
+    responses={
+        200: dashboard_response,
+        **common_responses
+    }
 )
 @api_view(['GET'])
 @permission_classes([IsSecurityAdmin])
@@ -378,9 +676,13 @@ def security_dashboard(request):
 @extend_schema(
     tags=["Security"],
     summary="Log security event",
-    description="Log a security event with the specified details.",
-    request=OpenApiTypes.OBJECT,
-    responses={201: SecurityEventSerializer, 400: OpenApiTypes.OBJECT}
+    description="Log a security event with the specified details for incident tracking and monitoring.",
+    request=log_security_event_request,
+    responses={
+        201: SecurityEventSerializer,
+        400: OpenApiTypes.OBJECT,
+        **common_responses
+    }
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

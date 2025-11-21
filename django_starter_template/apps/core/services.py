@@ -5,7 +5,6 @@ from geoip2.errors import AddressNotFoundError
 from apps.security.models import AuditLog
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from apps.accounts.models import  UserSession, LoginAttempt
-from apps.accounts.constants import LoginAttemptConstants
 from datetime import timedelta
 from django.utils import timezone
 from django.core.cache import cache
@@ -384,7 +383,7 @@ class RiskScoringService:
             score += 20
         
         # Check for recent login failures
-        from .models import LoginAttempt
+        from apps.accounts.models import LoginAttempt
         recent_failures = LoginAttempt.objects.filter(
             email=session.user.email,
             success=False,

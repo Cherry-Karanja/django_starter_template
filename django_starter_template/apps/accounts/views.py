@@ -23,6 +23,19 @@ from .serializers import (
 from apps.core.permissions import IsAdminOrReadOnly
 from .constants import APIConstants
 from .services import UserService
+from .schema import (
+    common_responses,
+    user_parameters,
+    role_parameters,
+    permission_parameters,
+    session_parameters,
+    login_attempt_parameters,
+    user_approval_request,
+    role_change_request,
+    permission_update_request,
+    user_stats_response,
+    session_stats_response
+)
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -31,38 +44,99 @@ logger = logging.getLogger(__name__)
     list=extend_schema(
         tags=["Users"],
         summary="List users",
-        description="List all users with filtering and searching.",
-        parameters=[
-            OpenApiParameter(name="search", type=OpenApiTypes.STR, description="Search across email, name, employee_id"),
-            OpenApiParameter(name="role_name", type=OpenApiTypes.STR, description="Filter by role name"),
-            OpenApiParameter(name="is_active", type=OpenApiTypes.BOOL, description="Filter by active status"),
-            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description=f"Order by: {', '.join(APIConstants.USER_ORDERING_FIELDS)}"),
-        ]
+        description="Retrieve a list of users with optional filtering by role, status, and search capabilities.",
+        parameters=user_parameters,
+        responses={
+            200: UserListSerializer(many=True),
+            **common_responses
+        }
     ),
     create=extend_schema(
         tags=["Users"],
         summary="Create user",
-        description="Create a new user with role assignment."
+        description="Create a new user account with role assignment and profile information.",
+        request=UserCreateSerializer,
+        responses={
+            201: UserDetailSerializer,
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
         tags=["Users"],
         summary="Retrieve user",
-        description="Retrieve detailed information about a specific user."
+        description="Retrieve detailed information about a specific user including profile and permissions.",
+        responses={
+            200: UserDetailSerializer,
+            **common_responses
+        }
     ),
     update=extend_schema(
         tags=["Users"],
         summary="Update user",
-        description="Update a user's information including role changes."
+        description="Update a user's information including role changes and profile updates.",
+        request=UserUpdateSerializer,
+        responses={
+            200: UserDetailSerializer,
+            **common_responses
+        }
     ),
     partial_update=extend_schema(
         tags=["Users"],
         summary="Partial update user",
-        description="Partially update a user's information."
+        description="Partially update a user's information without requiring all fields.",
+        request=UserUpdateSerializer,
+        responses={
+            200: UserDetailSerializer,
+            **common_responses
+        }
     ),
     destroy=extend_schema(
         tags=["Users"],
         summary="Delete user",
-        description="Delete a user account."
+        description="Delete a user account and all associated data.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    ),
+    approve=extend_schema(
+        tags=["Users"],
+        summary="Approve user",
+        description="Approve a user account for access after registration or role change.",
+        request=user_approval_request,
+        responses={
+            200: UserApprovalSerializer,
+            **common_responses
+        }
+    ),
+    change_role=extend_schema(
+        tags=["Users"],
+        summary="Change user role",
+        description="Change the role assignment for a specific user.",
+        request=role_change_request,
+        responses={
+            200: UserRoleChangeResponseSerializer,
+            **common_responses
+        }
+    ),
+    my_permissions=extend_schema(
+        tags=["Users"],
+        summary="Get current user permissions",
+        description="Retrieve all permissions assigned to the currently authenticated user.",
+        responses={
+            200: UserPermissionsSerializer,
+            **common_responses
+        }
+    ),
+    update_permissions=extend_schema(
+        tags=["Users"],
+        summary="Update user permissions",
+        description="Grant or revoke specific permissions for a user.",
+        request=permission_update_request,
+        responses={
+            200: UserPermissionResponseSerializer,
+            **common_responses
+        }
     )
 )
 @extend_schema(tags=["Users"])
@@ -103,10 +177,14 @@ class UserViewSet(viewsets.ModelViewSet):
         instance.delete()
 
     @extend_schema(
+        tags=["Users"],
         summary="Approve user",
-        description="Approve a user account for access.",
-        request=None,
-        responses={200: UserApprovalSerializer}
+        description="Approve a user account for access after registration or role change.",
+        request=user_approval_request,
+        responses={
+            200: UserApprovalSerializer,
+            **common_responses
+        }
     )
     @action(detail=True, methods=['post'])
     def approve(self, request, pk=None):
@@ -119,10 +197,14 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({'error': 'Failed to approve user'}, status=400)
 
     @extend_schema(
+        tags=["Users"],
         summary="Change user role",
-        description="Change the role of a specific user.",
-        request=UserRoleChangeRequestSerializer,
-        responses={200: UserRoleChangeResponseSerializer}
+        description="Change the role assignment for a specific user.",
+        request=role_change_request,
+        responses={
+            200: UserRoleChangeResponseSerializer,
+            **common_responses
+        }
     )
     @action(detail=True, methods=['post'])
     def change_role(self, request, pk=None):
@@ -143,9 +225,13 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({'error': 'Failed to change role'}, status=400)
 
     @extend_schema(
-        summary="Get user permissions",
-        description="Get all permissions for the current user.",
-        responses={200: UserPermissionsSerializer}
+        tags=["Users"],
+        summary="Get current user permissions",
+        description="Retrieve all permissions assigned to the currently authenticated user.",
+        responses={
+            200: UserPermissionsSerializer,
+            **common_responses
+        }
     )
     @action(detail=False, methods=['get'])
     def my_permissions(self, request):
@@ -165,6 +251,16 @@ class UserViewSet(viewsets.ModelViewSet):
         description="Update the direct permissions assigned to a user (not through roles).",
         request=UserPermissionUpdateSerializer,
         responses={200: UserPermissionResponseSerializer}
+    )
+    @extend_schema(
+        tags=["Users"],
+        summary="Update user permissions",
+        description="Grant or revoke specific permissions for a user.",
+        request=permission_update_request,
+        responses={
+            200: UserPermissionResponseSerializer,
+            **common_responses
+        }
     )
     @action(detail=True, methods=['post'])
     def update_permissions(self, request, pk=None):
@@ -272,37 +368,69 @@ class UserViewSet(viewsets.ModelViewSet):
     list=extend_schema(
         tags=["Roles"],
         summary="List roles",
-        description="List all roles with filtering and searching.",
-        parameters=[
-            OpenApiParameter(name="search", type=OpenApiTypes.STR, description="Search across name and description"),
-            OpenApiParameter(name="is_active", type=OpenApiTypes.BOOL, description="Filter by active status"),
-            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description=f"Order by: {', '.join(APIConstants.ROLE_ORDERING_FIELDS)}"),
-        ]
+        description="Retrieve a list of user roles with optional filtering by status and search capabilities.",
+        parameters=role_parameters,
+        responses={
+            200: UserRoleListSerializer(many=True),
+            **common_responses
+        }
     ),
     create=extend_schema(
         tags=["Roles"],
         summary="Create role",
-        description="Create a new role with permissions."
+        description="Create a new user role with associated permissions.",
+        request=UserRoleCreateSerializer,
+        responses={
+            201: UserRoleDetailSerializer,
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
         tags=["Roles"],
         summary="Retrieve role",
-        description="Retrieve detailed information about a specific role."
+        description="Retrieve detailed information about a specific user role including permissions.",
+        responses={
+            200: UserRoleDetailSerializer,
+            **common_responses
+        }
     ),
     update=extend_schema(
         tags=["Roles"],
         summary="Update role",
-        description="Update a role's information and permissions."
+        description="Update a user role's information and associated permissions.",
+        request=UserRoleUpdateSerializer,
+        responses={
+            200: UserRoleDetailSerializer,
+            **common_responses
+        }
     ),
     partial_update=extend_schema(
         tags=["Roles"],
         summary="Partial update role",
-        description="Partially update a role's information."
+        description="Partially update a user role's information without requiring all fields.",
+        request=UserRoleUpdateSerializer,
+        responses={
+            200: UserRoleDetailSerializer,
+            **common_responses
+        }
     ),
     destroy=extend_schema(
         tags=["Roles"],
         summary="Delete role",
-        description="Delete a role."
+        description="Delete a user role. This will fail if users are still assigned to this role.",
+        responses={
+            204: None,
+            **common_responses
+        }
+    ),
+    users=extend_schema(
+        tags=["Roles"],
+        summary="Get role users",
+        description="Retrieve all active users assigned to a specific role.",
+        responses={
+            200: UserListSerializer(many=True),
+            **common_responses
+        }
     )
 )
 @extend_schema(tags=["Roles"])
@@ -328,9 +456,13 @@ class UserRoleViewSet(viewsets.ModelViewSet):
         return UserRoleDetailSerializer
 
     @extend_schema(
+        tags=["Roles"],
         summary="Get role users",
-        description="Get all users with this role.",
-        responses={200: UserListSerializer(many=True)}
+        description="Retrieve all active users assigned to a specific role.",
+        responses={
+            200: UserListSerializer(many=True),
+            **common_responses
+        }
     )
     @action(detail=True, methods=['get'])
     def users(self, request, pk=None):
@@ -343,34 +475,75 @@ class UserRoleViewSet(viewsets.ModelViewSet):
 
 @extend_schema_view(
     list=extend_schema(
-        tags=['User Profiles'],
+        tags=["User Profiles"],
         summary="List user profiles",
-        description="List user profiles. Regular users can only see their own profile."
+        description="Retrieve a list of user profiles. Regular users can only see their own profile.",
+        parameters=[
+            OpenApiParameter(
+                name="search",
+                type=OpenApiTypes.STR,
+                description="Search across user information and profile data",
+                required=False
+            ),
+            OpenApiParameter(
+                name="ordering",
+                type=OpenApiTypes.STR,
+                description="Order by field (prefix with - for descending)",
+                required=False
+            ),
+        ],
+        responses={
+            200: UserProfileListSerializer(many=True),
+            **common_responses
+        }
     ),
     create=extend_schema(
-        tags=['User Profiles'],
+        tags=["User Profiles"],
         summary="Create user profile",
-        description="Create a new user profile."
+        description="Create a new user profile with extended information.",
+        request=UserProfileCreateSerializer,
+        responses={
+            201: UserProfileDetailSerializer,
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
-        tags=['User Profiles'],
+        tags=["User Profiles"],
         summary="Retrieve user profile",
-        description="Retrieve detailed information about a specific user profile."
+        description="Retrieve detailed information about a specific user profile.",
+        responses={
+            200: UserProfileDetailSerializer,
+            **common_responses
+        }
     ),
     update=extend_schema(
-        tags=['User Profiles'],
+        tags=["User Profiles"],
         summary="Update user profile",
-        description="Update a user profile's information."
+        description="Update a user profile's information and preferences.",
+        request=UserProfileUpdateSerializer,
+        responses={
+            200: UserProfileDetailSerializer,
+            **common_responses
+        }
     ),
     partial_update=extend_schema(
-        tags=['User Profiles'],
+        tags=["User Profiles"],
         summary="Partial update user profile",
-        description="Partially update a user profile's information."
+        description="Partially update a user profile's information without requiring all fields.",
+        request=UserProfileUpdateSerializer,
+        responses={
+            200: UserProfileDetailSerializer,
+            **common_responses
+        }
     ),
     destroy=extend_schema(
-        tags=['User Profiles'],
+        tags=["User Profiles"],
         summary="Delete user profile",
-        description="Delete a user profile."
+        description="Delete a user profile and associated data.",
+        responses={
+            204: None,
+            **common_responses
+        }
     )
 )
 @extend_schema(tags=["User Profiles"])
@@ -421,17 +594,21 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     list=extend_schema(
         tags=["User Sessions"],
         summary="List user sessions",
-        description="List user sessions with filtering.",
-        parameters=[
-            OpenApiParameter(name="is_active", type=OpenApiTypes.BOOL, description="Filter by active status"),
-            OpenApiParameter(name="user", type=OpenApiTypes.INT, description="Filter by user ID"),
-            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description=f"Order by: {', '.join(APIConstants.SESSION_ORDERING_FIELDS)}"),
-        ]
+        description="Retrieve a list of user sessions with optional filtering by status, user, and risk score.",
+        parameters=session_parameters,
+        responses={
+            200: UserSessionSerializer(many=True),
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
         tags=["User Sessions"],
         summary="Retrieve user session",
-        description="Retrieve detailed information about a specific user session."
+        description="Retrieve detailed information about a specific user session including device and location data.",
+        responses={
+            200: UserSessionSerializer,
+            **common_responses
+        }
     )
 )
 @extend_schema(tags=["User Sessions"])
@@ -517,17 +694,21 @@ class UserSessionViewSet(viewsets.ReadOnlyModelViewSet):
     list=extend_schema(
         tags=["Login Attempts"],
         summary="List login attempts",
-        description="List login attempts with filtering.",
-        parameters=[
-            OpenApiParameter(name="success", type=OpenApiTypes.BOOL, description="Filter by success status"),
-            OpenApiParameter(name="user", type=OpenApiTypes.INT, description="Filter by user ID"),
-            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description=f"Order by: {', '.join(APIConstants.LOGIN_ATTEMPT_ORDERING_FIELDS)}"),
-        ]
+        description="Retrieve a list of login attempts with optional filtering by success status, user, and failure reasons.",
+        parameters=login_attempt_parameters,
+        responses={
+            200: LoginAttemptSerializer(many=True),
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
         tags=["Login Attempts"],
         summary="Retrieve login attempt",
-        description="Retrieve detailed information about a specific login attempt."
+        description="Retrieve detailed information about a specific login attempt including IP address and failure details.",
+        responses={
+            200: LoginAttemptSerializer,
+            **common_responses
+        }
     )
 )
 @extend_schema(tags=["Login Attempts"])
@@ -556,17 +737,40 @@ class LoginAttemptViewSet(viewsets.ReadOnlyModelViewSet):
     list=extend_schema(
         tags=["User Role History"],
         summary="List role changes",
-        description="List user role change history.",
+        description="Retrieve a list of user role change history with optional filtering by user and change author.",
         parameters=[
-            OpenApiParameter(name="user", type=OpenApiTypes.INT, description="Filter by user ID"),
-            OpenApiParameter(name="changed_by", type=OpenApiTypes.INT, description="Filter by who made the change"),
-            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description=f"Order by: {', '.join(APIConstants.ROLE_ORDERING_FIELDS)}"),
-        ]
+            OpenApiParameter(
+                name="user",
+                type=OpenApiTypes.INT,
+                description="Filter by user ID",
+                required=False
+            ),
+            OpenApiParameter(
+                name="changed_by",
+                type=OpenApiTypes.INT,
+                description="Filter by who made the change",
+                required=False
+            ),
+            OpenApiParameter(
+                name="ordering",
+                type=OpenApiTypes.STR,
+                description="Order by field (prefix with - for descending)",
+                required=False
+            ),
+        ],
+        responses={
+            200: UserRoleHistorySerializer(many=True),
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
         tags=["User Role History"],
         summary="Retrieve role change",
-        description="Retrieve detailed information about a specific role change."
+        description="Retrieve detailed information about a specific role change including old and new roles.",
+        responses={
+            200: UserRoleHistorySerializer,
+            **common_responses
+        }
     )
 )
 @extend_schema(tags=["User Role History"])
@@ -592,45 +796,64 @@ class UserRoleHistoryViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
+
+@extend_schema(tags=["Permissions"])
 @extend_schema_view(
     list=extend_schema(
-        tags=["Permissions"],
         summary="List permissions",
-        description="List all permissions with filtering and searching.",
-        parameters=[
-            OpenApiParameter(name="search", type=OpenApiTypes.STR, description="Search across name and codename"),
-            OpenApiParameter(name="app_label", type=OpenApiTypes.STR, description="Filter by app label"),
-            OpenApiParameter(name="model", type=OpenApiTypes.STR, description="Filter by model name"),
-            OpenApiParameter(name="ordering", type=OpenApiTypes.STR, description="Order by: name, codename, app_label, model"),
-        ]
-    ),
-    create=extend_schema(
-        tags=["Permissions"],
-        summary="Create permission",
-        description="Create a new permission for a specific content type."
+        description="Retrieve a paginated list of all permissions in the system.",
+        parameters=permission_parameters,
+        responses={
+            200: PermissionSerializer(many=True),
+            **common_responses
+        }
     ),
     retrieve=extend_schema(
-        tags=["Permissions"],
-        summary="Retrieve permission",
-        description="Retrieve detailed information about a specific permission."
+        summary="Get permission details",
+        description="Retrieve detailed information about a specific permission.",
+        parameters=permission_parameters,
+        responses={
+            200: PermissionSerializer,
+            **common_responses
+        }
+    ),
+    create=extend_schema(
+        summary="Create permission",
+        description="Create a new permission in the system.",
+        parameters=permission_parameters,
+        responses={
+            201: PermissionSerializer,
+            **common_responses
+        }
     ),
     update=extend_schema(
-        tags=["Permissions"],
         summary="Update permission",
-        description="Update a permission's information. Note: codename and content type cannot be changed."
+        description="Update an existing permission's information.",
+        parameters=permission_parameters,
+        responses={
+            200: PermissionSerializer,
+            **common_responses
+        }
     ),
     partial_update=extend_schema(
-        tags=["Permissions"],
         summary="Partial update permission",
-        description="Partially update a permission's information."
+        description="Partially update an existing permission's information.",
+        parameters=permission_parameters,
+        responses={
+            200: PermissionSerializer,
+            **common_responses
+        }
     ),
     destroy=extend_schema(
-        tags=["Permissions"],
         summary="Delete permission",
-        description="Delete a permission. Warning: This may affect user access."
+        description="Delete a permission from the system.",
+        parameters=permission_parameters,
+        responses={
+            204: {"description": "Permission deleted successfully"},
+            **common_responses
+        }
     )
 )
-@extend_schema(tags=["Permissions"])
 class PermissionViewSet(viewsets.ModelViewSet):
     """Permission management viewset"""
     queryset = Permission.objects.all()

@@ -70,7 +70,7 @@ class SessionActivityMiddleware:
                 
             # Populate device_info if not set
             if not session.device_info:
-                from .services import DeviceDetectionService
+                from apps.core.services import DeviceDetectionService
                 user_agent = request.META.get('HTTP_USER_AGENT', '')
                 session.device_info = DeviceDetectionService.parse_user_agent(user_agent)
                 session.save(update_fields=['device_info'])
@@ -78,7 +78,7 @@ class SessionActivityMiddleware:
             # Populate location_info if not set
             if not session.location_info:
                 from apps.core.utils import get_client_ip
-                from .services import GeoIPService
+                from apps.core.services import GeoIPService
                 ip_address = get_client_ip(request)
                 session.location_info = GeoIPService.get_location_info(ip_address)
                 session.save(update_fields=['location_info'])
@@ -227,7 +227,7 @@ class LoginSecurityMiddleware:
         """Track the result of a login attempt"""
         from apps.core.utils import get_client_ip
         from .models import LoginAttempt, User
-        from .services import AuthenticationService
+        from apps.core.services import AuthenticationService
         
         ip_address = get_client_ip(request)
         user_agent = request.META.get('HTTP_USER_AGENT', '')
