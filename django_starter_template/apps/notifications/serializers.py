@@ -213,3 +213,28 @@ class BulkNotificationSerializer(serializers.Serializer):
         except (ValueError, TypeError):
             raise serializers.ValidationError(_("Invalid notification ID format"))
         return value
+
+
+class SendNotificationSerializer(serializers.Serializer):
+    """Serializer for sending notifications"""
+    template_id = serializers.IntegerField(help_text="ID of the notification template to use")
+    recipient_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        help_text="List of user IDs to send notifications to"
+    )
+    subject = serializers.CharField(required=False, allow_blank=True, help_text="Custom subject (optional, overrides template)")
+    data = serializers.DictField(required=False, help_text="Template variables data")
+    scheduled_at = serializers.DateTimeField(required=False, help_text="Schedule notification for later (ISO 8601 format)")
+    priority = serializers.ChoiceField(
+        choices=['low', 'medium', 'high', 'urgent'],
+        required=False,
+        help_text="Notification priority"
+    )
+
+
+class MarkNotificationsReadSerializer(serializers.Serializer):
+    """Serializer for marking notifications as read"""
+    notification_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        help_text="List of notification IDs to mark as read"
+    )

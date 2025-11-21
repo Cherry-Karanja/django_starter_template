@@ -23,20 +23,16 @@ from .schema import common_responses, pagination_parameters
     summary="Health check endpoint",
     description="Simple health check to verify the API is running",
     responses={
-        200: {
-            "description": "API is healthy",
-            "content": {
-                "application/json": {
-                    "schema": {
-                        'type': 'object',
-                        'properties': {
-                            'status': {'type': 'string', 'example': 'healthy'},
-                            'message': {'type': 'string', 'example': 'API is running'},
-                        }
-                    }
+        200: OpenApiResponse(
+            description="API is healthy",
+            response={
+                'type': 'object',
+                'properties': {
+                    'status': {'type': 'string', 'example': 'healthy'},
+                    'message': {'type': 'string', 'example': 'API is running'},
                 }
             }
-        },
+        ),
         **common_responses
     },
     tags=['Core']
@@ -57,19 +53,15 @@ def health_check(request):
     summary="Get CSRF token",
     description="Get CSRF token for frontend applications that need session-based authentication",
     responses={
-        200: {
-            "description": "CSRF token",
-            "content": {
-                "application/json": {
-                    "schema": {
-                        'type': 'object',
-                        'properties': {
-                            'csrfToken': {'type': 'string', 'description': 'CSRF token for session authentication'},
-                        }
-                    }
+        200: OpenApiResponse(
+            description="CSRF token",
+            response={
+                'type': 'object',
+                'properties': {
+                    'csrfToken': {'type': 'string', 'description': 'CSRF token for session authentication'},
                 }
             }
-        },
+        ),
         **common_responses
     },
     tags=['Core']
@@ -145,24 +137,20 @@ class HistoryListView(generics.ListAPIView):
         )
     ],
     responses={
-        200: {
-            "description": "Task status information",
-            "content": {
-                "application/json": {
-                    "schema": {
-                        'type': 'object',
-                        'properties': {
-                            'task_id': {'type': 'string', 'format': 'uuid', 'description': 'The task ID'},
-                            'status': {'type': 'string', 'enum': ['PENDING', 'PROGRESS', 'SUCCESS', 'FAILURE', 'RETRY', 'REVOKED'], 'description': 'Current task status'},
-                            'result': {'type': 'object', 'description': 'Task result (only present when status is SUCCESS)'},
-                            'error': {'type': 'string', 'description': 'Error message (only present when status is FAILURE)'},
-                            'traceback': {'type': 'string', 'description': 'Error traceback (only present when status is FAILURE)'},
-                            'date_done': {'type': 'string', 'format': 'date-time', 'description': 'When the task completed (only present when task is done)'},
-                        }
-                    }
+        200: OpenApiResponse(
+            description="Task status information",
+            response={
+                'type': 'object',
+                'properties': {
+                    'task_id': {'type': 'string', 'format': 'uuid', 'description': 'The task ID'},
+                    'status': {'type': 'string', 'enum': ['PENDING', 'PROGRESS', 'SUCCESS', 'FAILURE', 'RETRY', 'REVOKED'], 'description': 'Current task status'},
+                    'result': {'type': 'object', 'description': 'Task result (only present when status is SUCCESS)'},
+                    'error': {'type': 'string', 'description': 'Error message (only present when status is FAILURE)'},
+                    'traceback': {'type': 'string', 'description': 'Error traceback (only present when status is FAILURE)'},
+                    'date_done': {'type': 'string', 'format': 'date-time', 'description': 'When the task completed (only present when task is done)'},
                 }
             }
-        },
+        ),
         **common_responses
     },
     tags=['Core']
@@ -235,22 +223,18 @@ def task_status(request, task_id):
     Currently returns basic system statistics that can be extended.
     """,
     responses={
-        200: {
-            "description": "Dashboard statistics",
-            "content": {
-                "application/json": {
-                    "schema": {
-                        'type': 'object',
-                        'properties': {
-                            'total_users': {'type': 'integer', 'description': 'Total number of users'},
-                            'active_users': {'type': 'integer', 'description': 'Number of active users'},
-                            'total_log_entries': {'type': 'integer', 'description': 'Total number of audit log entries'},
-                            'recent_log_entries': {'type': 'integer', 'description': 'Number of log entries in last 24 hours'},
-                        }
-                    }
+        200: OpenApiResponse(
+            description="Dashboard statistics",
+            response={
+                'type': 'object',
+                'properties': {
+                    'total_users': {'type': 'integer', 'description': 'Total number of users'},
+                    'active_users': {'type': 'integer', 'description': 'Number of active users'},
+                    'total_log_entries': {'type': 'integer', 'description': 'Total number of audit log entries'},
+                    'recent_log_entries': {'type': 'integer', 'description': 'Number of log entries in last 24 hours'},
                 }
             }
-        },
+        ),
         **common_responses
     },
     tags=['Core']

@@ -18,7 +18,8 @@ from .serializers import (
     UserRoleHistorySerializer, UserSessionSerializer, LoginAttemptSerializer,
     UserPermissionsSerializer, UserRoleChangeRequestSerializer, UserRoleChangeResponseSerializer,
     UserApprovalSerializer, PermissionSerializer, PermissionCreateSerializer, PermissionUpdateSerializer, PermissionListSerializer,
-    UserPermissionUpdateSerializer, UserPermissionResponseSerializer,
+    UserPermissionUpdateSerializer, UserPermissionResponseSerializer, PermissionUpdateRequestSerializer,
+    UserApprovalRequestSerializer, RoleChangeRequestSerializer,
 )
 from apps.core.permissions import IsAdminOrReadOnly
 from .constants import APIConstants
@@ -30,9 +31,6 @@ from .schema import (
     permission_parameters,
     session_parameters,
     login_attempt_parameters,
-    user_approval_request,
-    role_change_request,
-    permission_update_request,
     user_stats_response,
     session_stats_response
 )
@@ -103,7 +101,7 @@ logger = logging.getLogger(__name__)
         tags=["Users"],
         summary="Approve user",
         description="Approve a user account for access after registration or role change.",
-        request=user_approval_request,
+        request=UserApprovalRequestSerializer,
         responses={
             200: UserApprovalSerializer,
             **common_responses
@@ -113,7 +111,7 @@ logger = logging.getLogger(__name__)
         tags=["Users"],
         summary="Change user role",
         description="Change the role assignment for a specific user.",
-        request=role_change_request,
+        request=RoleChangeRequestSerializer,
         responses={
             200: UserRoleChangeResponseSerializer,
             **common_responses
@@ -132,7 +130,7 @@ logger = logging.getLogger(__name__)
         tags=["Users"],
         summary="Update user permissions",
         description="Grant or revoke specific permissions for a user.",
-        request=permission_update_request,
+        request=PermissionUpdateRequestSerializer,
         responses={
             200: UserPermissionResponseSerializer,
             **common_responses
@@ -180,7 +178,7 @@ class UserViewSet(viewsets.ModelViewSet):
         tags=["Users"],
         summary="Approve user",
         description="Approve a user account for access after registration or role change.",
-        request=user_approval_request,
+        request=UserApprovalRequestSerializer,
         responses={
             200: UserApprovalSerializer,
             **common_responses
@@ -200,7 +198,7 @@ class UserViewSet(viewsets.ModelViewSet):
         tags=["Users"],
         summary="Change user role",
         description="Change the role assignment for a specific user.",
-        request=role_change_request,
+        request=RoleChangeRequestSerializer,
         responses={
             200: UserRoleChangeResponseSerializer,
             **common_responses
@@ -256,7 +254,7 @@ class UserViewSet(viewsets.ModelViewSet):
         tags=["Users"],
         summary="Update user permissions",
         description="Grant or revoke specific permissions for a user.",
-        request=permission_update_request,
+        request=PermissionUpdateRequestSerializer,
         responses={
             200: UserPermissionResponseSerializer,
             **common_responses

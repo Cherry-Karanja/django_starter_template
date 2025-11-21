@@ -150,40 +150,6 @@ class CustomLoginSerializer(LoginSerializer):
         return super().validate(attrs)
 
 
-class CustomTokenRefreshSerializer(TokenRefreshSerializer):
-    """
-    Custom token refresh serializer that reads refresh token from cookies
-    instead of request body, since frontend cannot access httpOnly cookies.
-    """
-    refresh = serializers.CharField(required=False, write_only=True)
-
-    def validate(self, attrs):
-        # Get refresh token from cookies if not provided in request body
-        request = self.context.get('request')
-        if not request:
-            raise InvalidToken('No request context available.')
-
-        refresh_token = attrs.get('refresh') or request.COOKIES.get('refresh')
-        if not refresh_token:
-            raise InvalidToken('No refresh token found in request body or cookies.')
-
-        # Set the refresh token for parent validation
-        attrs['refresh'] = refresh_token
-
-        try:
-            return super().validate(attrs)
-        except Exception as e:
-            error_msg = str(e)
-            if 'User matching query does not exist' in error_msg:
-                raise InvalidToken('Token contains invalid user.')
-            elif 'Token is invalid or expired' in error_msg:
-                raise InvalidToken('Token is invalid or expired.')
-            elif 'Signature has expired' in error_msg:
-                raise InvalidToken('Token has expired.')
-            else:
-                # Re-raise the original exception for other errors
-                raise
-
 class CustomLogoutSerializer(TokenBlacklistSerializer):
     """
     Custom logout serializer that reads refresh token from cookies

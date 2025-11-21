@@ -9,84 +9,103 @@ from drf_spectacular.types import OpenApiTypes
 
 # Common response definitions for security
 common_responses = {
-    400: {
-        "description": "Bad request - invalid input",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "validation_error": {
-                        "summary": "Validation Error",
-                        "value": {
-                            "type": "validation_error",
-                            "errors": {
-                                "field": ["Error message"]
-                            }
-                        }
-                    }
+    400: OpenApiResponse(
+        description="Bad request - invalid input",
+        response={
+            "type": "object",
+            "properties": {
+                "type": {"type": "string", "example": "validation_error"},
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {"type": "array", "items": {"type": "string"}}
                 }
             }
-        }
-    },
-    401: {
-        "description": "Authentication required",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "auth_required": {
-                        "summary": "Authentication Required",
-                        "value": {
-                            "detail": "Authentication credentials were not provided."
-                        }
+        },
+        examples=[
+            OpenApiExample(
+                name="validation_error",
+                summary="Validation Error",
+                value={
+                    "type": "validation_error",
+                    "errors": {
+                        "field": ["Error message"]
                     }
                 }
+            )
+        ]
+    ),
+    401: OpenApiResponse(
+        description="Authentication required",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    },
-    403: {
-        "description": "Permission denied",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "permission_denied": {
-                        "summary": "Permission Denied",
-                        "value": {
-                            "detail": "You do not have permission to perform this action."
-                        }
-                    }
+        },
+        examples=[
+            OpenApiExample(
+                name="auth_required",
+                summary="Authentication Required",
+                value={
+                    "detail": "Authentication credentials were not provided."
                 }
+            )
+        ]
+    ),
+    403: OpenApiResponse(
+        description="Permission denied",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    },
-    404: {
-        "description": "Resource not found",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "not_found": {
-                        "summary": "Not Found",
-                        "value": {
-                            "detail": "Not found."
-                        }
-                    }
+        },
+        examples=[
+            OpenApiExample(
+                name="permission_denied",
+                summary="Permission Denied",
+                value={
+                    "detail": "You do not have permission to perform this action."
                 }
+            )
+        ]
+    ),
+    404: OpenApiResponse(
+        description="Resource not found",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    },
-    500: {
-        "description": "Server error",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "server_error": {
-                        "summary": "Server Error",
-                        "value": {
-                            "detail": "A server error occurred."
-                        }
-                    }
+        },
+        examples=[
+            OpenApiExample(
+                name="not_found",
+                summary="Not Found",
+                value={
+                    "detail": "Not found."
                 }
+            )
+        ]
+    ),
+    500: OpenApiResponse(
+        description="Server error",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    }
+        },
+        examples=[
+            OpenApiExample(
+                name="server_error",
+                summary="Server Error",
+                value={
+                    "detail": "A server error occurred."
+                }
+            )
+        ]
+    )
 }
 
 # Security-specific responses
@@ -275,59 +294,57 @@ api_key_parameters = [
 ]
 
 # Security dashboard response
-dashboard_response = {
-    200: {
-        'description': "Security dashboard data",
-        'content': {
-            'application/json': {
-                'schema': {
-                    'type': 'object',
-                    'properties': {
-                        'total_audit_logs': {'type': 'integer'},
-                        'audit_logs_today': {'type': 'integer'},
-                        'total_security_events': {'type': 'integer'},
-                        'active_security_events': {'type': 'integer'},
-                        'critical_events': {'type': 'integer'},
-                        'active_rate_limits': {'type': 'integer'},
-                        'total_users': {'type': 'integer'},
-                        'active_users': {'type': 'integer'},
-                        'security_health_score': {'type': 'integer'},
-                        'recent_security_events': {'type': 'array'},
-                        'recent_audit_logs': {'type': 'array'},
-                        'failed_login_trend': {
-                            'type': 'object',
-                            'properties': {
-                                'previous_7d': {'type': 'integer'},
-                                'current_7d': {'type': 'integer'},
-                                'change_percent': {'type': 'number'}
-                            }
-                        }
-                    }
-                },
-                'examples': {
-                    'default': {
-                        'total_audit_logs': 1000,
-                        'audit_logs_today': 50,
-                        'total_security_events': 25,
-                        'active_security_events': 5,
-                        'critical_events': 1,
-                        'active_rate_limits': 3,
-                        'total_users': 500,
-                        'active_users': 450,
-                        'security_health_score': 85,
-                        'recent_security_events': [],
-                        'recent_audit_logs': [],
-                        'failed_login_trend': {
-                            'previous_7d': 20,
-                            'current_7d': 15,
-                            'change_percent': -25.0
-                        }
-                    }
+dashboard_response = OpenApiResponse(
+    description="Security dashboard data",
+    response={
+        'type': 'object',
+        'properties': {
+            'total_audit_logs': {'type': 'integer'},
+            'audit_logs_today': {'type': 'integer'},
+            'total_security_events': {'type': 'integer'},
+            'active_security_events': {'type': 'integer'},
+            'critical_events': {'type': 'integer'},
+            'active_rate_limits': {'type': 'integer'},
+            'total_users': {'type': 'integer'},
+            'active_users': {'type': 'integer'},
+            'security_health_score': {'type': 'integer'},
+            'recent_security_events': {'type': 'array'},
+            'recent_audit_logs': {'type': 'array'},
+            'failed_login_trend': {
+                'type': 'object',
+                'properties': {
+                    'previous_7d': {'type': 'integer'},
+                    'current_7d': {'type': 'integer'},
+                    'change_percent': {'type': 'number'}
                 }
             }
         }
-    }
-}
+    },
+    examples=[
+        OpenApiExample(
+            name="default",
+            summary="Security Dashboard Data",
+            value={
+                'total_audit_logs': 1000,
+                'audit_logs_today': 50,
+                'total_security_events': 25,
+                'active_security_events': 5,
+                'critical_events': 1,
+                'active_rate_limits': 3,
+                'total_users': 500,
+                'active_users': 450,
+                'security_health_score': 85,
+                'recent_security_events': [],
+                'recent_audit_logs': [],
+                'failed_login_trend': {
+                    'previous_7d': 20,
+                    'current_7d': 15,
+                    'change_percent': -25.0
+                }
+            }
+        )
+    ]
+)
 
 # Log security event request schema
 log_security_event_request = {
@@ -366,5 +383,6 @@ resolve_event_request = {
             'type': 'string',
             'description': 'Resolution notes'
         }
-    }
+    },
+    'required': []
 }

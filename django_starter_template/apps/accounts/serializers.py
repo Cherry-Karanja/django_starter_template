@@ -823,11 +823,44 @@ class PermissionDetailSerializer(serializers.ModelSerializer):
     app_label = serializers.CharField(source='content_type.app_label', read_only=True)
     model = serializers.CharField(source='content_type.model', read_only=True)
     content_type_name = serializers.CharField(source='content_type.name', read_only=True)
-    
+
     class Meta:
         model = Permission
         fields = [
             'id', 'name', 'codename', 'app_label', 'model', 'content_type_name'
         ]
         read_only_fields = ['id']
+
+
+class PermissionUpdateRequestSerializer(serializers.Serializer):
+    """Serializer for updating user permissions"""
+    permissions = serializers.ListField(
+        child=serializers.DictField(),
+        help_text="List of permissions to grant or revoke"
+    )
+    notes = serializers.CharField(required=False, allow_blank=True, max_length=500, help_text="Optional notes for the permission change")
+
+    def validate_permissions(self, value):
+        """Validate permissions format"""
+        for perm in value:
+            if not isinstance(perm, dict):
+                raise serializers.ValidationError("Each permission must be a dictionary")
+            if 'permission_id' not in perm:
+                raise serializers.ValidationError("Each permission must have a 'permission_id' field")
+            if 'granted' not in perm:
+                raise serializers.ValidationError("Each permission must have a 'granted' field")
+            if not isinstance(perm['granted'], bool):
+                raise serializers.ValidationError("'granted' field must be a boolean")
+        return value
+
+
+class UserApprovalRequestSerializer(serializers.Serializer):
+    """Serializer for user approval requests"""
+    notes = serializers.CharField(required=False, allow_blank=True, max_length=500, help_text="Optional notes for the approval")
+
+
+class RoleChangeRequestSerializer(serializers.Serializer):
+    """Serializer for role change requests"""
+    role_name = serializers.CharField(max_length=100, help_text="Name of the role to assign")
+    notes = serializers.CharField(required=False, allow_blank=True, max_length=500, help_text="Optional notes for the role change")
 

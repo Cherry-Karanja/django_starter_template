@@ -177,3 +177,20 @@ class SecurityDashboardSerializer(serializers.Serializer):
 
     # Trends
     failed_login_trend = serializers.DictField()
+
+
+class ResolveEventSerializer(serializers.Serializer):
+    """Serializer for resolving security events"""
+    notes = serializers.CharField(required=False, allow_blank=True, help_text="Resolution notes")
+
+
+class LogSecurityEventSerializer(serializers.Serializer):
+    """Serializer for logging security events"""
+    event_type = serializers.CharField(help_text="Type of security event")
+    title = serializers.CharField(help_text="Event title")
+    description = serializers.CharField(help_text="Detailed event description")
+    severity = serializers.ChoiceField(
+        choices=['low', 'medium', 'high', 'critical'],
+        help_text="Event severity level"
+    )
+    detection_data = serializers.DictField(required=False, help_text="Additional detection data")

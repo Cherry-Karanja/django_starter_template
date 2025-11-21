@@ -9,84 +9,103 @@ from drf_spectacular.types import OpenApiTypes
 
 # Common response definitions for notifications
 common_responses = {
-    400: {
-        "description": "Bad request - invalid input",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "validation_error": {
-                        "summary": "Validation Error",
-                        "value": {
-                            "type": "validation_error",
-                            "errors": {
-                                "field": ["Error message"]
-                            }
-                        }
-                    }
+    400: OpenApiResponse(
+        description="Bad request - invalid input",
+        response={
+            "type": "object",
+            "properties": {
+                "type": {"type": "string", "example": "validation_error"},
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {"type": "array", "items": {"type": "string"}}
                 }
             }
-        }
-    },
-    401: {
-        "description": "Authentication required",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "auth_required": {
-                        "summary": "Authentication Required",
-                        "value": {
-                            "detail": "Authentication credentials were not provided."
-                        }
+        },
+        examples=[
+            OpenApiExample(
+                name="validation_error",
+                summary="Validation Error",
+                value={
+                    "type": "validation_error",
+                    "errors": {
+                        "field": ["Error message"]
                     }
                 }
+            )
+        ]
+    ),
+    401: OpenApiResponse(
+        description="Authentication required",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    },
-    403: {
-        "description": "Permission denied",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "permission_denied": {
-                        "summary": "Permission Denied",
-                        "value": {
-                            "detail": "You do not have permission to perform this action."
-                        }
-                    }
+        },
+        examples=[
+            OpenApiExample(
+                name="auth_required",
+                summary="Authentication Required",
+                value={
+                    "detail": "Authentication credentials were not provided."
                 }
+            )
+        ]
+    ),
+    403: OpenApiResponse(
+        description="Permission denied",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    },
-    404: {
-        "description": "Resource not found",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "not_found": {
-                        "summary": "Not Found",
-                        "value": {
-                            "detail": "Not found."
-                        }
-                    }
+        },
+        examples=[
+            OpenApiExample(
+                name="permission_denied",
+                summary="Permission Denied",
+                value={
+                    "detail": "You do not have permission to perform this action."
                 }
+            )
+        ]
+    ),
+    404: OpenApiResponse(
+        description="Resource not found",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    },
-    500: {
-        "description": "Server error",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "server_error": {
-                        "summary": "Server Error",
-                        "value": {
-                            "detail": "A server error occurred."
-                        }
-                    }
+        },
+        examples=[
+            OpenApiExample(
+                name="not_found",
+                summary="Not Found",
+                value={
+                    "detail": "Not found."
                 }
+            )
+        ]
+    ),
+    500: OpenApiResponse(
+        description="Server error",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
-        }
-    }
+        },
+        examples=[
+            OpenApiExample(
+                name="server_error",
+                summary="Server Error",
+                value={
+                    "detail": "A server error occurred."
+                }
+            )
+        ]
+    )
 }
 
 # Notification-specific responses
@@ -199,26 +218,34 @@ delivery_parameters = [
 
 # Statistics responses
 statistics_responses = {
-    200: {
-        "description": "Notification statistics",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "statistics": {
-                        "summary": "Notification Statistics",
-                        "value": {
-                            'total': 1000,
-                            'sent': 850,
-                            'delivered': 800,
-                            'failed': 50,
-                            'pending': 100,
-                            'unread': 200
-                        }
-                    }
-                }
+    200: OpenApiResponse(
+        description="Notification statistics",
+        response={
+            'type': 'object',
+            'properties': {
+                'total': {'type': 'integer'},
+                'sent': {'type': 'integer'},
+                'delivered': {'type': 'integer'},
+                'failed': {'type': 'integer'},
+                'pending': {'type': 'integer'},
+                'unread': {'type': 'integer'}
             }
-        }
-    }
+        },
+        examples=[
+            OpenApiExample(
+                name="statistics",
+                summary="Notification Statistics",
+                value={
+                    'total': 1000,
+                    'sent': 850,
+                    'delivered': 800,
+                    'failed': 50,
+                    'pending': 100,
+                    'unread': 200
+                }
+            )
+        ]
+    )
 }
 
 # Bulk operation request schema

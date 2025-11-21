@@ -9,84 +9,52 @@ from drf_spectacular.types import OpenApiTypes
 
 # Common response definitions
 common_responses = {
-    400: {
-        "description": "Bad request - invalid input",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "validation_error": {
-                        "summary": "Validation Error",
-                        "value": {
-                            "type": "validation_error",
-                            "errors": {
-                                "field": ["Error message"]
-                            }
-                        }
-                    }
-                }
+    400: OpenApiResponse(
+        description="Bad request - invalid input",
+        response={
+            "type": "object",
+            "properties": {
+                "type": {"type": "string"},
+                "errors": {"type": "object"}
             }
         }
-    },
-    401: {
-        "description": "Authentication required",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "auth_required": {
-                        "summary": "Authentication Required",
-                        "value": {
-                            "detail": "Authentication credentials were not provided."
-                        }
-                    }
-                }
+    ),
+    401: OpenApiResponse(
+        description="Authentication required",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
         }
-    },
-    403: {
-        "description": "Permission denied",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "permission_denied": {
-                        "summary": "Permission Denied",
-                        "value": {
-                            "detail": "You do not have permission to perform this action."
-                        }
-                    }
-                }
+    ),
+    403: OpenApiResponse(
+        description="Permission denied",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
         }
-    },
-    404: {
-        "description": "Resource not found",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "not_found": {
-                        "summary": "Not Found",
-                        "value": {
-                            "detail": "Not found."
-                        }
-                    }
-                }
+    ),
+    404: OpenApiResponse(
+        description="Resource not found",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
         }
-    },
-    500: {
-        "description": "Server error",
-        "content": {
-            "application/json": {
-                "examples": {
-                    "server_error": {
-                        "summary": "Server Error",
-                        "value": {
-                            "detail": "A server error occurred."
-                        }
-                    }
-                }
+    ),
+    500: OpenApiResponse(
+        description="Server error",
+        response={
+            "type": "object",
+            "properties": {
+                "detail": {"type": "string"}
             }
         }
-    }
+    )
 }
 
 # User management parameters

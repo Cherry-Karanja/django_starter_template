@@ -22,7 +22,8 @@ from .serializers import (
     NotificationPreferenceSerializer,
     NotificationEventSerializer,
     SendNotificationSerializer,
-    BulkNotificationSerializer
+    BulkNotificationSerializer,
+    MarkNotificationsReadSerializer
 )
 from .permissions import (
     CanManageNotifications,
@@ -36,10 +37,7 @@ from .schema import (
     template_parameters,
     notification_parameters,
     delivery_parameters,
-    statistics_responses,
-    bulk_operation_request,
-    send_notification_request,
-    mark_read_request
+    statistics_responses
 )
 
 User = get_user_model()
@@ -271,7 +269,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="Bulk notification actions",
         description="Perform bulk operations on multiple notifications (cancel, retry, mark as delivered).",
-        request=bulk_operation_request,
+        request=BulkNotificationSerializer,
         responses={
             200: OpenApiTypes.OBJECT,
             **common_responses
@@ -471,7 +469,7 @@ class NotificationEventViewSet(viewsets.ReadOnlyModelViewSet):
     tags=["Notifications"],
     summary="Send notification",
     description="Send notifications to multiple recipients using a notification template.",
-    request=send_notification_request,
+    request=SendNotificationSerializer,
     responses={
         201: OpenApiTypes.OBJECT,
         **common_responses
@@ -601,7 +599,7 @@ def notification_stats(request):
     tags=["Notifications"],
     summary="Mark notifications as read",
     description="Mark multiple notifications as read for the current user.",
-    request=mark_read_request,
+    request=MarkNotificationsReadSerializer,
     responses={
         200: OpenApiTypes.OBJECT,
         **common_responses
@@ -611,12 +609,11 @@ def notification_stats(request):
 @permission_classes([IsAuthenticated])
 def mark_notifications_read(request):
     """Mark multiple notifications as read"""
-    notification_ids = request.data.get('notification_ids', [])
-    if not notification_ids:
-        return Response(
-            {'error': _('notification_ids is required')},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    serializer = MarkNotificationsReadSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    notification_ids = serializer.validated_data['notification_ids']
 
     # Only allow users to mark their own notifications as read
     updated_count = Notification.objects.filter(

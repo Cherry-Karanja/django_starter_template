@@ -11,7 +11,7 @@ from .models import AuditLog, RateLimit, SecurityEvent, SecuritySettings, APIKey
 from .serializers import (
     AuditLogSerializer, RateLimitSerializer, SecurityEventSerializer,
     SecuritySettingsSerializer, APIKeySerializer, APIKeyCreateSerializer,
-    SecurityDashboardSerializer
+    SecurityDashboardSerializer, ResolveEventSerializer, LogSecurityEventSerializer
 )
 from .permissions import (
     IsSecurityAdmin, CanViewAuditLogs, CanManageSecurityEvents,
@@ -27,9 +27,7 @@ from .schema import (
     security_event_parameters,
     security_settings_parameters,
     api_key_parameters,
-    dashboard_response,
-    log_security_event_request,
-    resolve_event_request
+    dashboard_response
 )
 
 
@@ -224,7 +222,7 @@ class RateLimitViewSet(viewsets.ReadOnlyModelViewSet):
         tags=["Security"],
         summary="Resolve security event",
         description="Mark a security event as resolved with optional notes.",
-        request=resolve_event_request,
+        request=ResolveEventSerializer,
         responses={
             200: SecurityEventSerializer,
             **common_responses
@@ -677,7 +675,7 @@ def security_dashboard(request):
     tags=["Security"],
     summary="Log security event",
     description="Log a security event with the specified details for incident tracking and monitoring.",
-    request=log_security_event_request,
+    request=LogSecurityEventSerializer,
     responses={
         201: SecurityEventSerializer,
         400: OpenApiTypes.OBJECT,

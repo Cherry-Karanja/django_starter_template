@@ -1,8 +1,14 @@
 """
 Custom authentication views with proper API documentation tags
 """
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.response import Response
 from django.utils import timezone
+from django.contrib.auth import logout as django_logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from dj_rest_auth.app_settings import api_settings
 from dj_rest_auth.views import (
     LoginView as BaseLoginView,
     LogoutView as BaseLogoutView,
@@ -23,7 +29,6 @@ from .serializers import (
     PasswordResetConfirmResponseSerializer,
     PasswordResetSerializer
 )
-from .serializers import CustomTokenRefreshSerializer
 from dj_rest_auth.jwt_auth import get_refresh_view
 from .services import TwoFactorAuthService
 from .serializers import (
@@ -39,7 +44,8 @@ from rest_framework.response import Response
 
 # Create a custom TokenRefreshView with proper tags
 class CustomTokenRefreshView(get_refresh_view()):
-    serializer_class = CustomTokenRefreshSerializer
+    # Use the built-in CookieTokenRefreshSerializer from dj-rest-auth
+    # serializer_class = CustomTokenRefreshSerializer
 
     @extend_schema(
         tags=['Authentication'],
@@ -96,7 +102,11 @@ class LoginView(BaseLoginView):
 @extend_schema(
     tags=['Authentication'],
     summary="User logout",
-    description="Logout user and invalidate authentication tokens."
+    description="Logout user and blacklist JWT refresh token. Reads refresh token from httpOnly cookies automatically. No request body required.",
+    responses={
+        200: LogoutResponseSerializer,
+        401: {"description": "Refresh token was not found in cookies or is invalid."}
+    }
 )
 class LogoutView(BaseLogoutView):
     """
@@ -105,33 +115,70 @@ class LogoutView(BaseLogoutView):
     serializer_class = LogoutResponseSerializer
     allowed_methods = ['POST']
 
-    @extend_schema(
-        tags=['Authentication'],
-        summary="User logout",
-        description="Logout user and blacklist JWT refresh token. Reads refresh token from httpOnly cookies. No request body required.",
-        responses={200: LogoutResponseSerializer}
-    )
-    def post(self, request, *args, **kwargs):
-        # Get the session key before logout
-        session_key = getattr(request.session, 'session_key', None)
-        
-        # Call the parent logout
-        response = super().post(request, *args, **kwargs)
-        
-        # After logout, expire the UserSession
-        if session_key:
-            try:
-                from apps.accounts.models import UserSession
-                UserSession.objects.filter(session_key=session_key).update(
-                    expires_at=timezone.now(),
-                    is_active=False
+    def logout(self, request):
+        """
+        Override the logout method to read refresh token from cookies
+        instead of request data, since httpOnly cookies cannot be accessed by frontend.
+        """
+        try:
+            request.user.auth_token.delete()
+        except (AttributeError, ObjectDoesNotExist):
+            pass
+
+        if api_settings.SESSION_LOGIN:
+            django_logout(request)
+
+        response = Response(
+            {'detail': _('Successfully logged out.')},
+            status=status.HTTP_200_OK,
+        )
+
+        if api_settings.USE_JWT:
+            # NOTE: this import occurs here rather than at the top level
+            # because JWT support is optional, and if `USE_JWT` isn't
+            # True we shouldn't need the dependency
+            from rest_framework_simplejwt.exceptions import TokenError
+            from rest_framework_simplejwt.tokens import RefreshToken
+
+            from dj_rest_auth.jwt_auth import unset_jwt_cookies
+            cookie_name = api_settings.JWT_AUTH_COOKIE
+
+            unset_jwt_cookies(response)
+
+            if 'rest_framework_simplejwt.token_blacklist' in settings.INSTALLED_APPS:
+                # add refresh token to blacklist - read from cookies instead of request.data
+                try:
+                    refresh_token = request.COOKIES.get('refresh')
+                    if not refresh_token:
+                        response.data = {'detail': _('Refresh token was not found in cookies.')}
+                        response.status_code = status.HTTP_401_UNAUTHORIZED
+                        return response
+                    
+                    token = RefreshToken(refresh_token)
+                    token.blacklist()
+                except KeyError:
+                    response.data = {'detail': _('Refresh token was not included in request data.')}
+                    response.status_code = status.HTTP_401_UNAUTHORIZED
+                except (TokenError, AttributeError, TypeError) as error:
+                    if hasattr(error, 'args'):
+                        if 'Token is blacklisted' in error.args or 'Token is invalid or expired' in error.args:
+                            response.data = {'detail': _(error.args[0])}
+                            response.status_code = status.HTTP_401_UNAUTHORIZED
+                        else:
+                            response.data = {'detail': _('An error has occurred.')}
+                            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+                    else:
+                        response.data = {'detail': _('An error has occurred.')}
+                        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+            elif not cookie_name:
+                message = _(
+                    'Neither cookies or blacklist are enabled, so the token '
+                    'has not been deleted server side. Please make sure the token is deleted client side.',
                 )
-            except Exception as e:
-                # Log error but don't fail the logout
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(f"Error expiring UserSession on logout: {e}")
-        
+                response.data = {'detail': message}
+                response.status_code = status.HTTP_200_OK
         return response
 
 

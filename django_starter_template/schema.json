@@ -824,7 +824,7 @@
         "/api/v1/core/auth/logout/": {
             "post": {
                 "operationId": "v1_core_auth_logout_create",
-                "description": "Logout user and blacklist JWT refresh token. Reads refresh token from httpOnly cookies. No request body required.",
+                "description": "Logout user and blacklist JWT refresh token. Reads refresh token from httpOnly cookies automatically. No request body required.",
                 "summary": "User logout",
                 "tags": [
                     "Authentication"
@@ -870,6 +870,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/LogoutResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Refresh token was not found in cookies or is invalid."
                                 }
                             }
                         },
@@ -2022,28 +2032,65 @@
             }
         },
         "/api/v1/accounts/users/": {
-            "post": {
-                "operationId": "v1_accounts_users_create",
-                "description": "Create a new user account with role assignment and profile information.",
-                "summary": "Create user",
+            "get": {
+                "operationId": "v1_accounts_users_list",
+                "description": "Retrieve a list of users with optional filtering by role, status, and search capabilities.",
+                "summary": "List users",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "is_active",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Filter by active status"
+                    },
+                    {
+                        "in": "query",
+                        "name": "ordering",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Order by field (prefix with - for descending)"
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "role_name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter by role name"
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Search across email, name, employee_id"
+                    }
+                ],
                 "tags": [
                     "Users"
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserCreateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserCreateRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -2065,11 +2112,11 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserDetail"
+                                    "$ref": "#/components/schemas/PaginatedUserListList"
                                 }
                             }
                         },
@@ -2192,65 +2239,28 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_accounts_users_list",
-                "description": "Retrieve a list of users with optional filtering by role, status, and search capabilities.",
-                "summary": "List users",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "is_active",
-                        "schema": {
-                            "type": "boolean"
-                        },
-                        "description": "Filter by active status"
-                    },
-                    {
-                        "in": "query",
-                        "name": "ordering",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Order by field (prefix with - for descending)"
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "role_name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Filter by role name"
-                    },
-                    {
-                        "in": "query",
-                        "name": "search",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Search across email, name, employee_id"
-                    }
-                ],
+            "post": {
+                "operationId": "v1_accounts_users_create",
+                "description": "Create a new user account with role assignment and profile information.",
+                "summary": "Create user",
                 "tags": [
                     "Users"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -2272,11 +2282,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedUserListList"
+                                    "$ref": "#/components/schemas/UserDetail"
                                 }
                             }
                         },
@@ -2885,10 +2895,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_accounts_users_update",
-                "description": "Update a user's information including role changes and profile updates.",
-                "summary": "Update user",
+            "patch": {
+                "operationId": "v1_accounts_users_partial_update",
+                "description": "Partially update a user's information without requiring all fields.",
+                "summary": "Partial update user",
                 "parameters": [
                     {
                         "in": "path",
@@ -2908,12 +2918,12 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserUpdateRequest"
+                                "$ref": "#/components/schemas/PatchedUserUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserUpdateRequest"
+                                "$ref": "#/components/schemas/PatchedUserUpdateRequest"
                             }
                         }
                     }
@@ -3066,10 +3076,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_accounts_users_partial_update",
-                "description": "Partially update a user's information without requiring all fields.",
-                "summary": "Partial update user",
+            "put": {
+                "operationId": "v1_accounts_users_update",
+                "description": "Update a user's information including role changes and profile updates.",
+                "summary": "Update user",
                 "parameters": [
                     {
                         "in": "path",
@@ -3089,12 +3099,12 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedUserUpdateRequest"
+                                "$ref": "#/components/schemas/UserUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedUserUpdateRequest"
+                                "$ref": "#/components/schemas/UserUpdateRequest"
                             }
                         }
                     }
@@ -3999,27 +4009,49 @@
             }
         },
         "/api/v1/accounts/user-profiles/": {
-            "post": {
-                "operationId": "v1_accounts_user_profiles_create",
-                "description": "Create a new user profile with extended information.",
-                "summary": "Create user profile",
+            "get": {
+                "operationId": "v1_accounts_user_profiles_list",
+                "description": "Retrieve a list of user profiles. Regular users can only see their own profile.",
+                "summary": "List user profiles",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "ordering",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Order by field (prefix with - for descending)"
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Search across user information and profile data"
+                    }
+                ],
                 "tags": [
                     "User Profiles"
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserProfileCreateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserProfileCreateRequest"
-                            }
-                        }
-                    }
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -4041,11 +4073,11 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserProfileDetail"
+                                    "$ref": "#/components/schemas/PaginatedUserProfileListList"
                                 }
                             }
                         },
@@ -4168,49 +4200,27 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_accounts_user_profiles_list",
-                "description": "Retrieve a list of user profiles. Regular users can only see their own profile.",
-                "summary": "List user profiles",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "ordering",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Order by field (prefix with - for descending)"
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "search",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Search across user information and profile data"
-                    }
-                ],
+            "post": {
+                "operationId": "v1_accounts_user_profiles_create",
+                "description": "Create a new user profile with extended information.",
+                "summary": "Create user profile",
                 "tags": [
                     "User Profiles"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserProfileCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserProfileCreateRequest"
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -4232,11 +4242,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedUserProfileListList"
+                                    "$ref": "#/components/schemas/UserProfileDetail"
                                 }
                             }
                         },
@@ -4688,187 +4698,6 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_accounts_user_profiles_update",
-                "description": "Update a user profile's information and preferences.",
-                "summary": "Update user profile",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "description": "A UUID string identifying this user profile.",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "User Profiles"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserProfileUpdateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserProfileUpdateRequest"
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "jwtHeaderAuth": []
-                    },
-                    {
-                        "jwtCookieAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    },
-                    {
-                        "JWTAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UserProfileDetail"
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "400": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Bad request - invalid input",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "validation_error": {
-                                                    "summary": "Validation Error",
-                                                    "value": {
-                                                        "type": "validation_error",
-                                                        "errors": {
-                                                            "field": [
-                                                                "Error message"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "401": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Authentication required",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "auth_required": {
-                                                    "summary": "Authentication Required",
-                                                    "value": {
-                                                        "detail": "Authentication credentials were not provided."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "403": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Permission denied",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "permission_denied": {
-                                                    "summary": "Permission Denied",
-                                                    "value": {
-                                                        "detail": "You do not have permission to perform this action."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "404": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Resource not found",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "not_found": {
-                                                    "summary": "Not Found",
-                                                    "value": {
-                                                        "detail": "Not found."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "500": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Server error",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "server_error": {
-                                                    "summary": "Server Error",
-                                                    "value": {
-                                                        "detail": "A server error occurred."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
             "patch": {
                 "operationId": "v1_accounts_user_profiles_partial_update",
                 "description": "Partially update a user profile's information without requiring all fields.",
@@ -5049,30 +4878,39 @@
                         "description": ""
                     }
                 }
-            }
-        },
-        "/api/v1/accounts/user-roles/": {
-            "post": {
-                "operationId": "v1_accounts_user_roles_create",
-                "description": "Create a new user role with associated permissions.",
-                "summary": "Create role",
+            },
+            "put": {
+                "operationId": "v1_accounts_user_profiles_update",
+                "description": "Update a user profile's information and preferences.",
+                "summary": "Update user profile",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this user profile.",
+                        "required": true
+                    }
+                ],
                 "tags": [
-                    "Roles"
+                    "User Profiles"
                 ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserRoleCreateRequest"
+                                "$ref": "#/components/schemas/UserProfileUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserRoleCreateRequest"
+                                "$ref": "#/components/schemas/UserProfileUpdateRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -5095,11 +4933,212 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserRoleDetail"
+                                    "$ref": "#/components/schemas/UserProfileDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad request - invalid input",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "validation_error": {
+                                                    "summary": "Validation Error",
+                                                    "value": {
+                                                        "type": "validation_error",
+                                                        "errors": {
+                                                            "field": [
+                                                                "Error message"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Authentication required",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "auth_required": {
+                                                    "summary": "Authentication Required",
+                                                    "value": {
+                                                        "detail": "Authentication credentials were not provided."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Permission denied",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "permission_denied": {
+                                                    "summary": "Permission Denied",
+                                                    "value": {
+                                                        "detail": "You do not have permission to perform this action."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Resource not found",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "not_found": {
+                                                    "summary": "Not Found",
+                                                    "value": {
+                                                        "detail": "Not found."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Server error",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "server_error": {
+                                                    "summary": "Server Error",
+                                                    "value": {
+                                                        "detail": "A server error occurred."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/accounts/user-roles/": {
+            "get": {
+                "operationId": "v1_accounts_user_roles_list",
+                "description": "Retrieve a list of user roles with optional filtering by status and search capabilities.",
+                "summary": "List roles",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "is_active",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Filter by active status"
+                    },
+                    {
+                        "in": "query",
+                        "name": "ordering",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Order by field (prefix with - for descending)"
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "search",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Search across role name and description"
+                    }
+                ],
+                "tags": [
+                    "Roles"
+                ],
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "jwtHeaderAuth": []
+                    },
+                    {
+                        "jwtCookieAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    },
+                    {
+                        "JWTAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedUserRoleListList"
                                 }
                             }
                         },
@@ -5222,57 +5261,28 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_accounts_user_roles_list",
-                "description": "Retrieve a list of user roles with optional filtering by status and search capabilities.",
-                "summary": "List roles",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "is_active",
-                        "schema": {
-                            "type": "boolean"
-                        },
-                        "description": "Filter by active status"
-                    },
-                    {
-                        "in": "query",
-                        "name": "ordering",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Order by field (prefix with - for descending)"
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "search",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Search across role name and description"
-                    }
-                ],
+            "post": {
+                "operationId": "v1_accounts_user_roles_create",
+                "description": "Create a new user role with associated permissions.",
+                "summary": "Create role",
                 "tags": [
                     "Roles"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRoleCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRoleCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -5294,11 +5304,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedUserRoleListList"
+                                    "$ref": "#/components/schemas/UserRoleDetail"
                                 }
                             }
                         },
@@ -5750,10 +5760,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_accounts_user_roles_update",
-                "description": "Update a user role's information and associated permissions.",
-                "summary": "Update role",
+            "patch": {
+                "operationId": "v1_accounts_user_roles_partial_update",
+                "description": "Partially update a user role's information without requiring all fields.",
+                "summary": "Partial update role",
                 "parameters": [
                     {
                         "in": "path",
@@ -5773,16 +5783,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserRoleUpdateRequest"
+                                "$ref": "#/components/schemas/PatchedUserRoleUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserRoleUpdateRequest"
+                                "$ref": "#/components/schemas/PatchedUserRoleUpdateRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -5932,10 +5941,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_accounts_user_roles_partial_update",
-                "description": "Partially update a user role's information without requiring all fields.",
-                "summary": "Partial update role",
+            "put": {
+                "operationId": "v1_accounts_user_roles_update",
+                "description": "Update a user role's information and associated permissions.",
+                "summary": "Update role",
                 "parameters": [
                     {
                         "in": "path",
@@ -5955,15 +5964,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedUserRoleUpdateRequest"
+                                "$ref": "#/components/schemas/UserRoleUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedUserRoleUpdateRequest"
+                                "$ref": "#/components/schemas/UserRoleUpdateRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
@@ -7634,10 +7644,10 @@
             }
         },
         "/api/v1/accounts/permissions/": {
-            "post": {
-                "operationId": "v1_accounts_permissions_create",
-                "description": "Create a new permission in the system.",
-                "summary": "Create permission",
+            "get": {
+                "operationId": "v1_accounts_permissions_list",
+                "description": "Retrieve a paginated list of all permissions in the system.",
+                "summary": "List permissions",
                 "parameters": [
                     {
                         "in": "query",
@@ -7656,6 +7666,24 @@
                         "description": "Order by field (prefix with - for descending)"
                     },
                     {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "in": "query",
                         "name": "search",
                         "schema": {
@@ -7667,21 +7695,6 @@
                 "tags": [
                     "Permissions"
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PermissionCreateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PermissionCreateRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -7703,11 +7716,11 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Permission"
+                                    "$ref": "#/components/schemas/PaginatedPermissionList"
                                 }
                             }
                         },
@@ -7830,10 +7843,10 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_accounts_permissions_list",
-                "description": "Retrieve a paginated list of all permissions in the system.",
-                "summary": "List permissions",
+            "post": {
+                "operationId": "v1_accounts_permissions_create",
+                "description": "Create a new permission in the system.",
+                "summary": "Create permission",
                 "parameters": [
                     {
                         "in": "query",
@@ -7852,24 +7865,6 @@
                         "description": "Order by field (prefix with - for descending)"
                     },
                     {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
                         "in": "query",
                         "name": "search",
                         "schema": {
@@ -7881,6 +7876,21 @@
                 "tags": [
                     "Permissions"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PermissionCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PermissionCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -7902,11 +7912,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedPermissionList"
+                                    "$ref": "#/components/schemas/Permission"
                                 }
                             }
                         },
@@ -8552,10 +8562,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_accounts_permissions_update",
-                "description": "Update an existing permission's information.",
-                "summary": "Update permission",
+            "patch": {
+                "operationId": "v1_accounts_permissions_partial_update",
+                "description": "Partially update an existing permission's information.",
+                "summary": "Partial update permission",
                 "parameters": [
                     {
                         "in": "query",
@@ -8598,16 +8608,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PermissionUpdateRequest"
+                                "$ref": "#/components/schemas/PatchedPermissionUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PermissionUpdateRequest"
+                                "$ref": "#/components/schemas/PatchedPermissionUpdateRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -8757,10 +8766,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_accounts_permissions_partial_update",
-                "description": "Partially update an existing permission's information.",
-                "summary": "Partial update permission",
+            "put": {
+                "operationId": "v1_accounts_permissions_update",
+                "description": "Update an existing permission's information.",
+                "summary": "Update permission",
                 "parameters": [
                     {
                         "in": "query",
@@ -8803,15 +8812,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedPermissionUpdateRequest"
+                                "$ref": "#/components/schemas/PermissionUpdateRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedPermissionUpdateRequest"
+                                "$ref": "#/components/schemas/PermissionUpdateRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
@@ -9989,28 +9999,94 @@
             }
         },
         "/api/v1/security/security-events/": {
-            "post": {
-                "operationId": "v1_security_security_events_create",
-                "description": "Create a new security event for incident tracking.",
-                "summary": "Create security event",
+            "get": {
+                "operationId": "v1_security_security_events_list",
+                "description": "Retrieve a list of security events with optional filtering by event type, status, severity, and user.",
+                "summary": "List security events",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "event_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter by event type"
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "severity",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "critical",
+                                "high",
+                                "low",
+                                "medium"
+                            ]
+                        },
+                        "description": "Filter by severity (low, medium, high, critical)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "false_positive",
+                                "resolved"
+                            ]
+                        },
+                        "description": "Filter by status (active, resolved, false_positive)"
+                    },
+                    {
+                        "in": "query",
+                        "name": "user",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Filter by user ID"
+                    }
+                ],
                 "tags": [
                     "Security"
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SecurityEventRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SecurityEventRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -10032,11 +10108,11 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SecurityEvent"
+                                    "$ref": "#/components/schemas/PaginatedSecurityEventList"
                                 }
                             }
                         },
@@ -10159,94 +10235,28 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_security_security_events_list",
-                "description": "Retrieve a list of security events with optional filtering by event type, status, severity, and user.",
-                "summary": "List security events",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "event_type",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Filter by event type"
-                    },
-                    {
-                        "name": "ordering",
-                        "required": false,
-                        "in": "query",
-                        "description": "Which field to use when ordering the results.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "required": false,
-                        "in": "query",
-                        "description": "A search term.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "severity",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "critical",
-                                "high",
-                                "low",
-                                "medium"
-                            ]
-                        },
-                        "description": "Filter by severity (low, medium, high, critical)"
-                    },
-                    {
-                        "in": "query",
-                        "name": "status",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "active",
-                                "false_positive",
-                                "resolved"
-                            ]
-                        },
-                        "description": "Filter by status (active, resolved, false_positive)"
-                    },
-                    {
-                        "in": "query",
-                        "name": "user",
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "Filter by user ID"
-                    }
-                ],
+            "post": {
+                "operationId": "v1_security_security_events_create",
+                "description": "Create a new security event for incident tracking.",
+                "summary": "Create security event",
                 "tags": [
                     "Security"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SecurityEventRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SecurityEventRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -10268,11 +10278,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedSecurityEventList"
+                                    "$ref": "#/components/schemas/SecurityEvent"
                                 }
                             }
                         },
@@ -10724,10 +10734,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_security_security_events_update",
-                "description": "Update an existing security event.",
-                "summary": "Update security event",
+            "patch": {
+                "operationId": "v1_security_security_events_partial_update",
+                "description": "Partially update an existing security event.",
+                "summary": "Partial update security event",
                 "parameters": [
                     {
                         "in": "path",
@@ -10747,16 +10757,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/SecurityEventRequest"
+                                "$ref": "#/components/schemas/PatchedSecurityEventRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/SecurityEventRequest"
+                                "$ref": "#/components/schemas/PatchedSecurityEventRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -10906,10 +10915,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_security_security_events_partial_update",
-                "description": "Partially update an existing security event.",
-                "summary": "Partial update security event",
+            "put": {
+                "operationId": "v1_security_security_events_update",
+                "description": "Update an existing security event.",
+                "summary": "Update security event",
                 "parameters": [
                     {
                         "in": "path",
@@ -10929,15 +10938,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedSecurityEventRequest"
+                                "$ref": "#/components/schemas/SecurityEventRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedSecurityEventRequest"
+                                "$ref": "#/components/schemas/SecurityEventRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
@@ -11446,28 +11456,67 @@
             }
         },
         "/api/v1/security/security-settings/": {
-            "post": {
-                "operationId": "v1_security_security_settings_create",
-                "description": "Create a new security setting for system configuration.",
-                "summary": "Create security setting",
+            "get": {
+                "operationId": "v1_security_security_settings_list",
+                "description": "Retrieve a list of security settings with optional filtering by setting type and enabled status.",
+                "summary": "List security settings",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "is_enabled",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Filter by enabled status"
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "setting_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter by setting type"
+                    }
+                ],
                 "tags": [
                     "Security"
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SecuritySettingsRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SecuritySettingsRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -11489,11 +11538,11 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SecuritySettings"
+                                    "$ref": "#/components/schemas/PaginatedSecuritySettingsList"
                                 }
                             }
                         },
@@ -11616,67 +11665,28 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_security_security_settings_list",
-                "description": "Retrieve a list of security settings with optional filtering by setting type and enabled status.",
-                "summary": "List security settings",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "is_enabled",
-                        "schema": {
-                            "type": "boolean"
-                        },
-                        "description": "Filter by enabled status"
-                    },
-                    {
-                        "name": "ordering",
-                        "required": false,
-                        "in": "query",
-                        "description": "Which field to use when ordering the results.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "required": false,
-                        "in": "query",
-                        "description": "A search term.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "setting_type",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "Filter by setting type"
-                    }
-                ],
+            "post": {
+                "operationId": "v1_security_security_settings_create",
+                "description": "Create a new security setting for system configuration.",
+                "summary": "Create security setting",
                 "tags": [
                     "Security"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SecuritySettingsRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SecuritySettingsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -11698,11 +11708,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedSecuritySettingsList"
+                                    "$ref": "#/components/schemas/SecuritySettings"
                                 }
                             }
                         },
@@ -12154,6 +12164,187 @@
                     }
                 }
             },
+            "patch": {
+                "operationId": "v1_security_security_settings_partial_update",
+                "description": "Partially update an existing security setting.",
+                "summary": "Partial update security setting",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this security settings.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Security"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSecuritySettingsRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSecuritySettingsRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "jwtHeaderAuth": []
+                    },
+                    {
+                        "jwtCookieAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    },
+                    {
+                        "JWTAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SecuritySettings"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad request - invalid input",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "validation_error": {
+                                                    "summary": "Validation Error",
+                                                    "value": {
+                                                        "type": "validation_error",
+                                                        "errors": {
+                                                            "field": [
+                                                                "Error message"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Authentication required",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "auth_required": {
+                                                    "summary": "Authentication Required",
+                                                    "value": {
+                                                        "detail": "Authentication credentials were not provided."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Permission denied",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "permission_denied": {
+                                                    "summary": "Permission Denied",
+                                                    "value": {
+                                                        "detail": "You do not have permission to perform this action."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Resource not found",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "not_found": {
+                                                    "summary": "Not Found",
+                                                    "value": {
+                                                        "detail": "Not found."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Server error",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "server_error": {
+                                                    "summary": "Server Error",
+                                                    "value": {
+                                                        "detail": "A server error occurred."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
             "put": {
                 "operationId": "v1_security_security_settings_update",
                 "description": "Update an existing security setting.",
@@ -12335,360 +12526,9 @@
                         "description": ""
                     }
                 }
-            },
-            "patch": {
-                "operationId": "v1_security_security_settings_partial_update",
-                "description": "Partially update an existing security setting.",
-                "summary": "Partial update security setting",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "description": "A UUID string identifying this security settings.",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "Security"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedSecuritySettingsRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedSecuritySettingsRequest"
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "jwtHeaderAuth": []
-                    },
-                    {
-                        "jwtCookieAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    },
-                    {
-                        "JWTAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SecuritySettings"
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "400": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Bad request - invalid input",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "validation_error": {
-                                                    "summary": "Validation Error",
-                                                    "value": {
-                                                        "type": "validation_error",
-                                                        "errors": {
-                                                            "field": [
-                                                                "Error message"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "401": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Authentication required",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "auth_required": {
-                                                    "summary": "Authentication Required",
-                                                    "value": {
-                                                        "detail": "Authentication credentials were not provided."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "403": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Permission denied",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "permission_denied": {
-                                                    "summary": "Permission Denied",
-                                                    "value": {
-                                                        "detail": "You do not have permission to perform this action."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "404": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Resource not found",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "not_found": {
-                                                    "summary": "Not Found",
-                                                    "value": {
-                                                        "detail": "Not found."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "500": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Server error",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "server_error": {
-                                                    "summary": "Server Error",
-                                                    "value": {
-                                                        "detail": "A server error occurred."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
             }
         },
         "/api/v1/security/api-keys/": {
-            "post": {
-                "operationId": "v1_security_api_keys_create",
-                "description": "Create a new API key for programmatic access.",
-                "summary": "Create API key",
-                "tags": [
-                    "Security"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/APIKeyCreateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/APIKeyCreateRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "jwtHeaderAuth": []
-                    },
-                    {
-                        "jwtCookieAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    },
-                    {
-                        "JWTAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIKey"
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "400": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Bad request - invalid input",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "validation_error": {
-                                                    "summary": "Validation Error",
-                                                    "value": {
-                                                        "type": "validation_error",
-                                                        "errors": {
-                                                            "field": [
-                                                                "Error message"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "401": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Authentication required",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "auth_required": {
-                                                    "summary": "Authentication Required",
-                                                    "value": {
-                                                        "detail": "Authentication credentials were not provided."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "403": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Permission denied",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "permission_denied": {
-                                                    "summary": "Permission Denied",
-                                                    "value": {
-                                                        "detail": "You do not have permission to perform this action."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "404": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Resource not found",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "not_found": {
-                                                    "summary": "Not Found",
-                                                    "value": {
-                                                        "detail": "Not found."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "500": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Server error",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "server_error": {
-                                                    "summary": "Server Error",
-                                                    "value": {
-                                                        "detail": "A server error occurred."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
             "get": {
                 "operationId": "v1_security_api_keys_list",
                 "description": "Retrieve a list of API keys with optional filtering by key type and active status. Users can only see their own keys unless they have security admin permissions.",
@@ -12776,6 +12616,176 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/PaginatedAPIKeyList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad request - invalid input",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "validation_error": {
+                                                    "summary": "Validation Error",
+                                                    "value": {
+                                                        "type": "validation_error",
+                                                        "errors": {
+                                                            "field": [
+                                                                "Error message"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Authentication required",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "auth_required": {
+                                                    "summary": "Authentication Required",
+                                                    "value": {
+                                                        "detail": "Authentication credentials were not provided."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Permission denied",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "permission_denied": {
+                                                    "summary": "Permission Denied",
+                                                    "value": {
+                                                        "detail": "You do not have permission to perform this action."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Resource not found",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "not_found": {
+                                                    "summary": "Not Found",
+                                                    "value": {
+                                                        "detail": "Not found."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Server error",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "server_error": {
+                                                    "summary": "Server Error",
+                                                    "value": {
+                                                        "detail": "A server error occurred."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "v1_security_api_keys_create",
+                "description": "Create a new API key for programmatic access.",
+                "summary": "Create API key",
+                "tags": [
+                    "Security"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/APIKeyCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/APIKeyCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "jwtHeaderAuth": []
+                    },
+                    {
+                        "jwtCookieAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    },
+                    {
+                        "JWTAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIKey"
                                 }
                             }
                         },
@@ -13227,10 +13237,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_security_api_keys_update",
-                "description": "Update an existing API key.",
-                "summary": "Update API key",
+            "patch": {
+                "operationId": "v1_security_api_keys_partial_update",
+                "description": "Partially update an existing API key.",
+                "summary": "Partial update API key",
                 "parameters": [
                     {
                         "in": "path",
@@ -13250,16 +13260,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/APIKeyRequest"
+                                "$ref": "#/components/schemas/PatchedAPIKeyRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/APIKeyRequest"
+                                "$ref": "#/components/schemas/PatchedAPIKeyRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -13409,10 +13418,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_security_api_keys_partial_update",
-                "description": "Partially update an existing API key.",
-                "summary": "Partial update API key",
+            "put": {
+                "operationId": "v1_security_api_keys_update",
+                "description": "Update an existing API key.",
+                "summary": "Update API key",
                 "parameters": [
                     {
                         "in": "path",
@@ -13432,15 +13441,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedAPIKeyRequest"
+                                "$ref": "#/components/schemas/APIKeyRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedAPIKeyRequest"
+                                "$ref": "#/components/schemas/APIKeyRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
@@ -14471,28 +14481,65 @@
             }
         },
         "/api/v1/notifications/templates/": {
-            "post": {
-                "operationId": "v1_notifications_templates_create",
-                "description": "Create a new notification template for sending notifications.",
-                "summary": "Create notification template",
+            "get": {
+                "operationId": "v1_notifications_templates_list",
+                "description": "Retrieve a list of notification templates with optional filtering by type.",
+                "summary": "List notification templates",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "type",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "email",
+                                "in_app",
+                                "push",
+                                "sms"
+                            ]
+                        },
+                        "description": "Filter by template type (email, sms, push, in_app)"
+                    }
+                ],
                 "tags": [
                     "Notifications"
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/NotificationTemplateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/NotificationTemplateRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -14514,11 +14561,11 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/NotificationTemplate"
+                                    "$ref": "#/components/schemas/PaginatedNotificationTemplateList"
                                 }
                             }
                         },
@@ -14641,65 +14688,28 @@
                     }
                 }
             },
-            "get": {
-                "operationId": "v1_notifications_templates_list",
-                "description": "Retrieve a list of notification templates with optional filtering by type.",
-                "summary": "List notification templates",
-                "parameters": [
-                    {
-                        "name": "ordering",
-                        "required": false,
-                        "in": "query",
-                        "description": "Which field to use when ordering the results.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "page_size",
-                        "required": false,
-                        "in": "query",
-                        "description": "Number of results to return per page.",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "required": false,
-                        "in": "query",
-                        "description": "A search term.",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "type",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "email",
-                                "in_app",
-                                "push",
-                                "sms"
-                            ]
-                        },
-                        "description": "Filter by template type (email, sms, push, in_app)"
-                    }
-                ],
+            "post": {
+                "operationId": "v1_notifications_templates_create",
+                "description": "Create a new notification template for sending notifications.",
+                "summary": "Create notification template",
                 "tags": [
                     "Notifications"
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NotificationTemplateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NotificationTemplateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "tokenAuth": []
@@ -14721,11 +14731,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedNotificationTemplateList"
+                                    "$ref": "#/components/schemas/NotificationTemplate"
                                 }
                             }
                         },
@@ -15177,6 +15187,187 @@
                     }
                 }
             },
+            "patch": {
+                "operationId": "v1_notifications_templates_partial_update",
+                "description": "Partially update a notification template.",
+                "summary": "Partial update notification template",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this Notification Template.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Notifications"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedNotificationTemplateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedNotificationTemplateRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "jwtHeaderAuth": []
+                    },
+                    {
+                        "jwtCookieAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    },
+                    {
+                        "JWTAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotificationTemplate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad request - invalid input",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "validation_error": {
+                                                    "summary": "Validation Error",
+                                                    "value": {
+                                                        "type": "validation_error",
+                                                        "errors": {
+                                                            "field": [
+                                                                "Error message"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Authentication required",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "auth_required": {
+                                                    "summary": "Authentication Required",
+                                                    "value": {
+                                                        "detail": "Authentication credentials were not provided."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Permission denied",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "permission_denied": {
+                                                    "summary": "Permission Denied",
+                                                    "value": {
+                                                        "detail": "You do not have permission to perform this action."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Resource not found",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "not_found": {
+                                                    "summary": "Not Found",
+                                                    "value": {
+                                                        "detail": "Not found."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Server error",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "server_error": {
+                                                    "summary": "Server Error",
+                                                    "value": {
+                                                        "detail": "A server error occurred."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
             "put": {
                 "operationId": "v1_notifications_templates_update",
                 "description": "Update an existing notification template.",
@@ -15358,360 +15549,9 @@
                         "description": ""
                     }
                 }
-            },
-            "patch": {
-                "operationId": "v1_notifications_templates_partial_update",
-                "description": "Partially update a notification template.",
-                "summary": "Partial update notification template",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string",
-                            "format": "uuid"
-                        },
-                        "description": "A UUID string identifying this Notification Template.",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "Notifications"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedNotificationTemplateRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedNotificationTemplateRequest"
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "jwtHeaderAuth": []
-                    },
-                    {
-                        "jwtCookieAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    },
-                    {
-                        "JWTAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/NotificationTemplate"
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "400": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Bad request - invalid input",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "validation_error": {
-                                                    "summary": "Validation Error",
-                                                    "value": {
-                                                        "type": "validation_error",
-                                                        "errors": {
-                                                            "field": [
-                                                                "Error message"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "401": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Authentication required",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "auth_required": {
-                                                    "summary": "Authentication Required",
-                                                    "value": {
-                                                        "detail": "Authentication credentials were not provided."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "403": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Permission denied",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "permission_denied": {
-                                                    "summary": "Permission Denied",
-                                                    "value": {
-                                                        "detail": "You do not have permission to perform this action."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "404": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Resource not found",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "not_found": {
-                                                    "summary": "Not Found",
-                                                    "value": {
-                                                        "detail": "Not found."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "500": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Server error",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "server_error": {
-                                                    "summary": "Server Error",
-                                                    "value": {
-                                                        "detail": "A server error occurred."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
             }
         },
         "/api/v1/notifications/notifications/": {
-            "post": {
-                "operationId": "v1_notifications_notifications_create",
-                "description": "Create a new notification manually.",
-                "summary": "Create notification",
-                "tags": [
-                    "Notifications"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/NotificationRequest"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/NotificationRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "tokenAuth": []
-                    },
-                    {
-                        "jwtHeaderAuth": []
-                    },
-                    {
-                        "jwtCookieAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    },
-                    {
-                        "JWTAuth": []
-                    },
-                    {
-                        "SessionAuth": []
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Notification"
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "400": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Bad request - invalid input",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "validation_error": {
-                                                    "summary": "Validation Error",
-                                                    "value": {
-                                                        "type": "validation_error",
-                                                        "errors": {
-                                                            "field": [
-                                                                "Error message"
-                                                            ]
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "401": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Authentication required",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "auth_required": {
-                                                    "summary": "Authentication Required",
-                                                    "value": {
-                                                        "detail": "Authentication credentials were not provided."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "403": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Permission denied",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "permission_denied": {
-                                                    "summary": "Permission Denied",
-                                                    "value": {
-                                                        "detail": "You do not have permission to perform this action."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "404": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Resource not found",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "not_found": {
-                                                    "summary": "Not Found",
-                                                    "value": {
-                                                        "detail": "Not found."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    },
-                    "500": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "description": "Server error",
-                                    "content": {
-                                        "application/json": {
-                                            "examples": {
-                                                "server_error": {
-                                                    "summary": "Server Error",
-                                                    "value": {
-                                                        "detail": "A server error occurred."
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
             "get": {
                 "operationId": "v1_notifications_notifications_list",
                 "description": "Retrieve a list of notifications with optional filtering by status, priority, and template type.",
@@ -15834,6 +15674,176 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/PaginatedNotificationList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Bad request - invalid input",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "validation_error": {
+                                                    "summary": "Validation Error",
+                                                    "value": {
+                                                        "type": "validation_error",
+                                                        "errors": {
+                                                            "field": [
+                                                                "Error message"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Authentication required",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "auth_required": {
+                                                    "summary": "Authentication Required",
+                                                    "value": {
+                                                        "detail": "Authentication credentials were not provided."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Permission denied",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "permission_denied": {
+                                                    "summary": "Permission Denied",
+                                                    "value": {
+                                                        "detail": "You do not have permission to perform this action."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Resource not found",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "not_found": {
+                                                    "summary": "Not Found",
+                                                    "value": {
+                                                        "detail": "Not found."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Server error",
+                                    "content": {
+                                        "application/json": {
+                                            "examples": {
+                                                "server_error": {
+                                                    "summary": "Server Error",
+                                                    "value": {
+                                                        "detail": "A server error occurred."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "v1_notifications_notifications_create",
+                "description": "Create a new notification manually.",
+                "summary": "Create notification",
+                "tags": [
+                    "Notifications"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NotificationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NotificationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "tokenAuth": []
+                    },
+                    {
+                        "jwtHeaderAuth": []
+                    },
+                    {
+                        "jwtCookieAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    },
+                    {
+                        "JWTAuth": []
+                    },
+                    {
+                        "SessionAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Notification"
                                 }
                             }
                         },
@@ -16540,10 +16550,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_notifications_notifications_update",
-                "description": "Update an existing notification.",
-                "summary": "Update notification",
+            "patch": {
+                "operationId": "v1_notifications_notifications_partial_update",
+                "description": "Partially update a notification.",
+                "summary": "Partial update notification",
                 "parameters": [
                     {
                         "in": "path",
@@ -16563,16 +16573,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/NotificationRequest"
+                                "$ref": "#/components/schemas/PatchedNotificationRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/NotificationRequest"
+                                "$ref": "#/components/schemas/PatchedNotificationRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -16722,10 +16731,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_notifications_notifications_partial_update",
-                "description": "Partially update a notification.",
-                "summary": "Partial update notification",
+            "put": {
+                "operationId": "v1_notifications_notifications_update",
+                "description": "Update an existing notification.",
+                "summary": "Update notification",
                 "parameters": [
                     {
                         "in": "path",
@@ -16745,15 +16754,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedNotificationRequest"
+                                "$ref": "#/components/schemas/NotificationRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedNotificationRequest"
+                                "$ref": "#/components/schemas/NotificationRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
@@ -17826,10 +17836,10 @@
                     }
                 }
             },
-            "put": {
-                "operationId": "v1_notifications_preferences_update",
-                "description": "Update the current user's notification preferences.",
-                "summary": "Update notification preferences",
+            "patch": {
+                "operationId": "v1_notifications_preferences_partial_update",
+                "description": "Partially update the current user's notification preferences.",
+                "summary": "Partial update notification preferences",
                 "parameters": [
                     {
                         "in": "path",
@@ -17849,16 +17859,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/NotificationPreferenceRequest"
+                                "$ref": "#/components/schemas/PatchedNotificationPreferenceRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/NotificationPreferenceRequest"
+                                "$ref": "#/components/schemas/PatchedNotificationPreferenceRequest"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -18008,10 +18017,10 @@
                     }
                 }
             },
-            "patch": {
-                "operationId": "v1_notifications_preferences_partial_update",
-                "description": "Partially update the current user's notification preferences.",
-                "summary": "Partial update notification preferences",
+            "put": {
+                "operationId": "v1_notifications_preferences_update",
+                "description": "Update the current user's notification preferences.",
+                "summary": "Update notification preferences",
                 "parameters": [
                     {
                         "in": "path",
@@ -18031,15 +18040,16 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedNotificationPreferenceRequest"
+                                "$ref": "#/components/schemas/NotificationPreferenceRequest"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PatchedNotificationPreferenceRequest"
+                                "$ref": "#/components/schemas/NotificationPreferenceRequest"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "security": [
                     {
