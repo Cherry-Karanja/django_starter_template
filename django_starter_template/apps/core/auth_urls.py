@@ -26,7 +26,6 @@ urlpatterns = [
     path('registration/verify-email/', auth_views.VerifyEmailView.as_view(), name='rest_verify_email'),
     path('registration/resend-email/', auth_views.ResendEmailVerificationView.as_view(), name='rest_resend_email'),
 
-    
     # Two-Factor Authentication
     path('2fa/setup/', auth_views.TwoFactorSetupView.as_view(), name='2fa-setup'),
     path('2fa/verify-setup/', auth_views.TwoFactorVerifySetupView.as_view(), name='2fa-verify-setup'),

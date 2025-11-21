@@ -29,12 +29,13 @@ from .serializers import (
     PasswordResetConfirmResponseSerializer,
     PasswordResetSerializer
 )
-from dj_rest_auth.jwt_auth import get_refresh_view
+from rest_framework_simplejwt.views import TokenRefreshView
 from .services import TwoFactorAuthService
 from .serializers import (
     CustomRegisterSerializer, CustomLoginSerializer,
     TwoFactorSetupSerializer, TwoFactorVerifySerializer, TwoFactorVerifyLoginSerializer,
-    TwoFactorStatusSerializer, TwoFactorBackupCodesSerializer
+    TwoFactorStatusSerializer, TwoFactorBackupCodesSerializer,
+    CustomTokenRefreshSerializer
 )
 
 from apps.core.utils import get_client_ip
@@ -43,9 +44,11 @@ from rest_framework import status, permissions, views, filters, generics
 from rest_framework.response import Response
 
 # Create a custom TokenRefreshView with proper tags
-class CustomTokenRefreshView(get_refresh_view()):
-    # Use the built-in CookieTokenRefreshSerializer from dj-rest-auth
-    # serializer_class = CustomTokenRefreshSerializer
+class CustomTokenRefreshView(TokenRefreshView):
+    """
+    Custom token refresh view that uses cookies for refresh tokens.
+    """
+    serializer_class = CustomTokenRefreshSerializer
 
     @extend_schema(
         tags=['Authentication'],
@@ -53,7 +56,14 @@ class CustomTokenRefreshView(get_refresh_view()):
         description="Refresh JWT access token using refresh token from httpOnly cookies. No request body required.",
     )
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        response = super().post(request, *args, **kwargs)
+        
+        # Set the new access token in cookie if refresh was successful
+        if response.status_code == 200 and 'access' in response.data:
+            from dj_rest_auth.jwt_auth import set_jwt_access_cookie
+            set_jwt_access_cookie(response, response.data['access'])
+            
+        return response
 
 
 # Simple response serializers for API documentation
@@ -580,3 +590,48 @@ class TwoFactorStatusView(views.APIView):
         status_data = TwoFactorAuthService.get_2fa_status(request.user)
         serializer = TwoFactorStatusSerializer(status_data)
         return Response(serializer.data)
+
+
+# Email Confirmation Redirect View
+class EmailConfirmationRedirectView(views.APIView):
+    """
+    Custom email confirmation view that processes the confirmation
+    and redirects to the frontend.
+    """
+    permission_classes = []  # Allow unauthenticated access
+
+    def get(self, request, key):
+        """
+        Handle email confirmation by processing the key and redirecting to frontend.
+        """
+        from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
+        from django.shortcuts import redirect
+        from django.contrib import messages
+        from django.conf import settings
+
+        try:
+            # Try HMAC confirmation first
+            confirmation = EmailConfirmationHMAC.from_key(key)
+            if confirmation:
+                confirmation.confirm(request)
+                # Success - redirect to frontend with success
+                frontend_url = f"{settings.FRONTEND_URL}/auth/confirm-email?status=success&email={confirmation.email_address.email}"
+                return redirect(frontend_url)
+        except Exception as e:
+            pass
+
+        try:
+            # Try regular EmailConfirmation
+            confirmation = EmailConfirmation.objects.get(key=key)
+            confirmation.confirm(request)
+            # Success - redirect to frontend with success
+            frontend_url = f"{settings.FRONTEND_URL}/auth/confirm-email?status=success&email={confirmation.email_address.email}"
+            return redirect(frontend_url)
+        except EmailConfirmation.DoesNotExist:
+            # Invalid key - redirect to frontend with error
+            frontend_url = f"{settings.FRONTEND_URL}/auth/confirm-email?status=error&message=invalid_key"
+            return redirect(frontend_url)
+        except Exception as e:
+            # Other error - redirect to frontend with error
+            frontend_url = f"{settings.FRONTEND_URL}/auth/confirm-email?status=error&message={str(e)}"
+            return redirect(frontend_url)

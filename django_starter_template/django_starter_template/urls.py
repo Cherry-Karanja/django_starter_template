@@ -20,12 +20,18 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from django.conf import settings
 from django.conf.urls.static import static
+from apps.core import auth_views
 
 urlpatterns = [
     # Root redirect to API documentation
     path('', lambda request: redirect('/api/v1/docs/', permanent=False)),
     
     path('admin/', admin.site.urls),
+
+    # Django allauth URLs for email confirmation and social auth (must be at root level)
+    # Override the email confirmation URL to redirect to frontend
+    path('accounts/confirm-email/<str:key>/', auth_views.EmailConfirmationRedirectView.as_view(), name='account_confirm_email'),
+    path('accounts/', include('allauth.urls')),
 
     # API v1 endpoints
     path('api/v1/', include([

@@ -12,8 +12,9 @@ from decouple import config
 # REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'apps.core.authentication.CustomJWTCookieAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
         'apps.core.authentication.CSRFExemptSessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [

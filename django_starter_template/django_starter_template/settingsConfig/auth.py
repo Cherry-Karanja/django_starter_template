@@ -20,6 +20,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+# frontend URL for email templates
+FRONTEND_URL='http://localhost:3000'
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -88,6 +90,11 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Email confirmation redirect URLs - redirect to frontend
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = f'{FRONTEND_URL}/auth/confirm-email'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = f'{FRONTEND_URL}/dashboard'
+ACCOUNT_EMAIL_CONFIRMATION_URL = f'{FRONTEND_URL}/auth/confirm-email'
 
 # Enhanced Social Authentication Configuration
 SOCIALACCOUNT_PROVIDERS = {
@@ -221,9 +228,9 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'access',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh',
     'JWT_AUTH_REFRESH_COOKIE_PATH': '/',
-    'JWT_AUTH_SECURE': False,
+    'JWT_AUTH_SECURE': False,  # Set to True in production with HTTPS
     'JWT_AUTH_HTTPONLY': True,  # Changed to True for security - frontend cannot access httpOnly cookies
-    'JWT_AUTH_SAMESITE': 'Lax',
+    'JWT_AUTH_SAMESITE': 'Lax',  # Changed to 'None' for cross-site requests, but requires Secure=True
     'JWT_AUTH_RETURN_EXPIRATION': False,
     'JWT_AUTH_COOKIE_USE_CSRF': False,
     'JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED': False,
@@ -269,3 +276,20 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+
+
+# Allauth Configuration
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = f'{FRONTEND_URL}/auth/confirm-email?status=success'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = f'{FRONTEND_URL}/auth/confirm-email?status=success'
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # 5 minutes
+ACCOUNT_LOGOUT_REDIRECT_URL = f'{FRONTEND_URL}/auth/login'
+ACCOUNT_SIGNUP_REDIRECT_URL = f'{FRONTEND_URL}/auth/login'
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = True

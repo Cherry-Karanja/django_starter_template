@@ -41,9 +41,14 @@ class CustomJWTCookieAuthentication(JWTAuthentication):
         if raw_token is None:
             return None
 
-        validated_token = self.get_validated_token(raw_token)
-        user = self.get_user(validated_token)
-        return (user, validated_token)
+        try:
+            validated_token = self.get_validated_token(raw_token)
+            user = self.get_user(validated_token)
+            return (user, validated_token)
+        except Exception as e:
+            # Re-raise the exception so it can be handled by the view/middleware
+            # This ensures expired tokens return proper error messages
+            raise
 
 
 class CustomJWTAuthentication(JWTAuthentication):
@@ -60,9 +65,14 @@ class CustomJWTAuthentication(JWTAuthentication):
         if raw_token is None:
             return None
 
-        validated_token = self.get_validated_token(raw_token)
-        user = self.get_user(validated_token)
-        return (user, validated_token)
+        try:
+            validated_token = self.get_validated_token(raw_token)
+            user = self.get_user(validated_token)
+            return (user, validated_token)
+        except Exception as e:
+            # Re-raise the exception so it can be handled by the view/middleware
+            # This ensures expired tokens return proper error messages
+            raise
 
 
 class CSRFExemptSessionAuthenticationScheme(OpenApiAuthenticationExtension):

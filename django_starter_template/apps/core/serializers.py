@@ -41,16 +41,25 @@ class CustomRegisterSerializer(RegisterSerializer):
         self.fields['password2'].required = False
         self.fields['password2'].help_text = "Optional. If not provided, a random password will be set."
 
+    def validate_password1(self, password):
+        # If password is provided, validate it; otherwise, we'll generate one
+        if password:
+            return super().validate_password1(password)
+        return password
+
     def validate(self, data):
         # Auto-generate password if not provided
         if not data.get('password1'):
             import random
             import string
             random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
-            self.initial_data['password1'] = random_password
-            self.initial_data['password2'] = random_password
+            data['password1'] = random_password
+            data['password2'] = random_password
+        elif not data.get('password2'):
+            data['password2'] = data['password1']
 
-        self.cleaned_data = {}
+        # Call parent validate method
+        return super().validate(data)
     
     def validate_email(self, email):
         """Custom email validation to provide better error messages"""
@@ -77,7 +86,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             'first_name': self.validated_data.get('first_name', ''),
             'last_name': self.validated_data.get('last_name', ''),
             'phone_number': self.validated_data.get('phone_number', ''),
-            'employee_id': self.validated_data.get('employee_id', ''),
+            'employee_id': self.validated_data.get('employee_id') or None,
             'department': self.validated_data.get('department', ''),
             'role': self.validated_data.get('role', ''),
         })
@@ -89,7 +98,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         # Set additional fields on user
         user.first_name = self.validated_data.get('first_name', '')
         user.last_name = self.validated_data.get('last_name', '')
-        user.employee_id = self.validated_data.get('employee_id', '')
+        user.employee_id = self.validated_data.get('employee_id') or None
 
         # Set role if provided
         role_name = self.validated_data.get('role')
@@ -180,6 +189,69 @@ class CustomLogoutSerializer(TokenBlacklistSerializer):
                 raise InvalidToken('Token is invalid or expired.')
             elif 'Signature has expired' in error_msg:
                 raise InvalidToken('Token has expired.')
+            else:
+                # Re-raise the original exception for other errors
+                raise
+
+
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    """
+    Custom token refresh serializer that reads refresh token from cookies
+    instead of request body, since frontend cannot access httpOnly cookies.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make refresh field optional since we can get it from cookies
+        self.fields['refresh'].required = False
+        self.fields['refresh'].allow_blank = True
+
+    def extract_refresh_token(self):
+        """
+        Extract refresh token from cookies or request data.
+        """
+        request = self.context.get('request')
+        if not request:
+            raise InvalidToken('No request context available.')
+
+        # First check if refresh token is provided in request data
+        if 'refresh' in request.data and request.data['refresh']:
+            return request.data['refresh']
+
+        # Then check cookies
+        refresh_token = request.COOKIES.get('refresh')
+        if refresh_token:
+            return refresh_token
+
+        raise InvalidToken('No valid refresh token found in request data or cookies.')
+
+    def validate(self, attrs):
+        # Extract refresh token using our custom method
+        refresh_token_str = self.extract_refresh_token()
+        attrs['refresh'] = refresh_token_str
+        
+        try:
+            return super().validate(attrs)
+        except Exception as e:
+            # Provide more detailed error information
+            error_msg = str(e)
+            if 'Token is invalid or expired' in error_msg:
+                # Try to decode the token to see what's wrong
+                try:
+                    from rest_framework_simplejwt.tokens import RefreshToken
+                    token = RefreshToken(refresh_token_str)
+                    # If we get here, the token is valid, so the error must be elsewhere
+                    raise serializers.ValidationError('Token appears valid but validation failed')
+                except Exception as token_error:
+                    token_error_msg = str(token_error)
+                    if 'Signature has expired' in token_error_msg:
+                        raise serializers.ValidationError('Refresh token has expired')
+                    elif 'Invalid signature' in token_error_msg:
+                        raise serializers.ValidationError('Refresh token has invalid signature')
+                    elif 'Invalid token' in token_error_msg:
+                        raise serializers.ValidationError('Refresh token is malformed')
+                    else:
+                        raise serializers.ValidationError(f'Token validation error: {token_error_msg}')
             else:
                 # Re-raise the original exception for other errors
                 raise
