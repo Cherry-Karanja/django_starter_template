@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 import logging
+from apps.core.views import BaseModelViewSet
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiResponse
 from drf_spectacular.types import OpenApiTypes
 from .models import User, UserSession, LoginAttempt, UserRole, UserProfile, UserRoleHistory
@@ -138,11 +139,10 @@ logger = logging.getLogger(__name__)
     )
 )
 @extend_schema(tags=["Users"])
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(BaseModelViewSet):
     """User management viewset"""
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = APIConstants.USER_SEARCH_FIELDS
     ordering_fields = APIConstants.USER_ORDERING_FIELDS
     ordering = ['-created_at']
@@ -361,8 +361,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
         return Response(response_serializer.data)
 
-
-@extend_schema_view(
+    def get_extra_statistics(self, request, queryset, filtered_queryset):
+        """Add user-specific statistics"""
+        return {
+            'active_users': queryset.filter(is_active=True).count(),
+            'staff_users': queryset.filter(is_staff=True).count(),
+            'superuser_count': queryset.filter(is_superuser=True).count(),
+        }
     list=extend_schema(
         tags=["Roles"],
         summary="List roles",
@@ -430,13 +435,11 @@ class UserViewSet(viewsets.ModelViewSet):
             **common_responses
         }
     )
-)
 @extend_schema(tags=["Roles"])
-class UserRoleViewSet(viewsets.ModelViewSet):
+class UserRoleViewSet(BaseModelViewSet):
     """User role management viewset"""
     queryset = UserRole.objects.all()
     permission_classes = [permissions.IsAuthenticated, IsAdminOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = APIConstants.ROLE_SEARCH_FIELDS
     ordering_fields = APIConstants.ROLE_ORDERING_FIELDS
     ordering = ['name']

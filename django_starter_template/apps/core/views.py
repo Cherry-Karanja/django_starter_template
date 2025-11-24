@@ -5,9 +5,17 @@ from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status, viewsets, filters
+from rest_framework.parsers import MultiPartParser, FormParser
+from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiTypes
+import csv
+import io
+from django.db import transaction
+from openpyxl import Workbook, load_workbook
 from rest_framework import status
 from rest_framework import generics, permissions, filters
 from django.contrib.admin.models import LogEntry
@@ -17,6 +25,250 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiRespon
 import django_filters
 from .filters import LogEntryFilter
 from .schema import common_responses, pagination_parameters
+
+
+class BaseModelViewSet(viewsets.ModelViewSet):
+    """
+    Base ModelViewSet with enhanced features including bulk operations, import/export, and statistics.
+
+    This base viewset provides:
+    - Standard CRUD operations from ModelViewSet
+    - Search and ordering filters
+    - Bulk creation endpoint
+    - Bulk import from CSV
+    - Bulk export to CSV
+    - Statistics endpoint
+
+    Subclasses should define:
+    - queryset
+    - serializer_class (or get_serializer_class)
+    - search_fields (optional)
+    - ordering_fields (optional)
+    - ordering (optional)
+    - permission_classes
+    """
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    parser_classes = [MultiPartParser, FormParser]
+
+    @extend_schema(
+        summary="Bulk create objects",
+        description="Create multiple objects in a single request",
+        request={'type': 'array', 'items': {'type': 'object'}},
+        responses={
+            201: OpenApiResponse(
+                description="Objects created successfully",
+                response={
+                    'type': 'object',
+                    'properties': {
+                        'count': {'type': 'integer', 'description': 'Number of objects created'},
+                        'objects': {'type': 'array', 'items': {'type': 'object'}},
+                    }
+                }
+            ),
+            **common_responses
+        }
+    )
+    @action(detail=False, methods=['post'])
+    def bulk_create(self, request):
+        """Create multiple objects in bulk"""
+        serializer = self.get_serializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+
+        with transaction.atomic():
+            instances = serializer.save()
+
+        response_serializer = self.get_serializer(instances, many=True)
+        return Response({
+            'count': len(instances),
+            'objects': response_serializer.data
+        }, status=status.HTTP_201_CREATED)
+
+    @extend_schema(
+        summary="Bulk import from CSV or Excel",
+        description="Import objects from a CSV or Excel (.xlsx) file",
+        request={
+            'type': 'object',
+            'properties': {
+                'file': {'type': 'string', 'format': 'binary', 'description': 'CSV or Excel file to import'},
+            }
+        },
+        responses={
+            200: OpenApiResponse(
+                description="Import completed",
+                response={
+                    'type': 'object',
+                    'properties': {
+                        'imported': {'type': 'integer', 'description': 'Number of objects imported'},
+                        'errors': {'type': 'array', 'items': {'type': 'string'}},
+                    }
+                }
+            ),
+            **common_responses
+        }
+    )
+    @action(detail=False, methods=['post'])
+    def bulk_import(self, request):
+        """Import objects from CSV or Excel file"""
+        if 'file' not in request.FILES:
+            return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['file']
+        file_name = file.name.lower()
+
+        if file_name.endswith('.csv'):
+            # Handle CSV
+            file_data = file.read().decode('utf-8')
+            reader = csv.DictReader(io.StringIO(file_data))
+            rows = list(reader)
+        elif file_name.endswith('.xlsx'):
+            # Handle Excel
+            workbook = load_workbook(file, read_only=True)
+            sheet = workbook.active
+            headers = [cell.value for cell in sheet[1]]  # First row as headers
+            rows = []
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                row_dict = dict(zip(headers, row))
+                rows.append(row_dict)
+        else:
+            return Response({'error': 'File must be CSV or Excel (.xlsx)'}, status=status.HTTP_400_BAD_REQUEST)
+
+        imported = 0
+        errors = []
+
+        with transaction.atomic():
+            for row_num, row in enumerate(rows, start=2 if file_name.endswith('.csv') else 2):
+                try:
+                    serializer = self.get_serializer(data=row)
+                    if serializer.is_valid():
+                        serializer.save()
+                        imported += 1
+                    else:
+                        errors.append(f"Row {row_num}: {serializer.errors}")
+                except Exception as e:
+                    errors.append(f"Row {row_num}: {str(e)}")
+
+        return Response({
+            'imported': imported,
+            'errors': errors
+        })
+
+    @extend_schema(
+        summary="Bulk export to CSV or Excel",
+        description="Export all objects to CSV or Excel format",
+        parameters=[
+            OpenApiParameter(name="fields", type=OpenApiTypes.STR, description="Comma-separated list of fields to export"),
+            OpenApiParameter(name="format", type=OpenApiTypes.STR, description="Export format: 'csv' or 'xlsx' (default: 'xlsx')", default="xlsx"),
+        ],
+        responses={
+            200: OpenApiResponse(
+                description="CSV or Excel file",
+                response={'type': 'string', 'format': 'binary'}
+            ),
+            **common_responses
+        }
+    )
+    @action(detail=False, methods=['get'])
+    def bulk_export(self, request):
+        """Export objects to CSV or Excel"""
+        queryset = self.filter_queryset(self.get_queryset())
+        fields = request.query_params.get('fields', None)
+        export_format = request.query_params.get('format', 'xlsx').lower()
+
+        if fields:
+            fields = [f.strip() for f in fields.split(',')]
+        else:
+            # Default to model fields
+            model = queryset.model
+            fields = [f.name for f in model._meta.fields]
+
+        if export_format == 'csv':
+            # CSV export
+            output = io.StringIO()
+            writer = csv.writer(output)
+            writer.writerow(fields)
+
+            for obj in queryset:
+                row = []
+                for field in fields:
+                    value = getattr(obj, field, '')
+                    if callable(value):
+                        value = value()
+                    row.append(str(value))
+                writer.writerow(row)
+
+            output.seek(0)
+            response = Response(output.getvalue(), content_type='text/csv')
+            response['Content-Disposition'] = f'attachment; filename="{self.queryset.model._meta.model_name}.csv"'
+        elif export_format == 'xlsx':
+            # Excel export
+            workbook = Workbook()
+            sheet = workbook.active
+            sheet.title = self.queryset.model._meta.model_name
+
+            # Write headers
+            for col_num, field in enumerate(fields, 1):
+                sheet.cell(row=1, column=col_num, value=field)
+
+            # Write data
+            for row_num, obj in enumerate(queryset, 2):
+                for col_num, field in enumerate(fields, 1):
+                    value = getattr(obj, field, '')
+                    if callable(value):
+                        value = value()
+                    sheet.cell(row=row_num, column=col_num, value=str(value))
+
+            # Save to bytes
+            output = io.BytesIO()
+            workbook.save(output)
+            output.seek(0)
+
+            response = Response(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="{self.queryset.model._meta.model_name}.xlsx"'
+        else:
+            return Response({'error': 'Invalid format. Use "csv" or "xlsx"'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return response
+
+    @extend_schema(
+        summary="Get statistics",
+        description="Get basic statistics for the model",
+        responses={
+            200: OpenApiResponse(
+                description="Model statistics",
+                response={
+                    'type': 'object',
+                    'properties': {
+                        'total_count': {'type': 'integer', 'description': 'Total number of objects'},
+                        'filtered_count': {'type': 'integer', 'description': 'Number of objects after filtering'},
+                    }
+                }
+            ),
+            **common_responses
+        }
+    )
+    @action(detail=False, methods=['get'])
+    def statistics(self, request):
+        """Get basic statistics"""
+        queryset = self.get_queryset()
+        filtered_queryset = self.filter_queryset(queryset)
+
+        stats = {
+            'total_count': queryset.count(),
+            'filtered_count': filtered_queryset.count(),
+        }
+
+        # Allow subclasses to add more stats
+        extra_stats = self.get_extra_statistics(request, queryset, filtered_queryset)
+        stats.update(extra_stats)
+
+        return Response(stats)
+
+    def get_extra_statistics(self, request, queryset, filtered_queryset):
+        """
+        Override this method in subclasses to add custom statistics.
+        Should return a dict of additional statistics.
+        """
+        return {}
 
 
 @extend_schema(
